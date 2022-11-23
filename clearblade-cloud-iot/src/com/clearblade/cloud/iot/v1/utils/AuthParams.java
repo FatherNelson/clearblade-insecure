@@ -105,7 +105,7 @@ public class AuthParams {
 		ConfigParameters configParameters = new ConfigParameters();
 		String finalURL = baseURL.concat(configParameters.getGetSystemCredentialsExtension())
 				.concat(adminSystemKey)
-				.concat("/" + Constants.GET_REGISTRY_CREDENTIALS);
+				.concat("/getRegistryCredentials");
 		URL obj = new URL(finalURL);
 		SetHttpConnection setCon = new SetHttpConnection();
 		HttpsURLConnection con = setCon.getConnection(obj);

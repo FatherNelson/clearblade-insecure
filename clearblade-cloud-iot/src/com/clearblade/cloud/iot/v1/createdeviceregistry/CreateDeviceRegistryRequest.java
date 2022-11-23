@@ -1,6 +1,6 @@
 package com.clearblade.cloud.iot.v1.createdeviceregistry;
 
-import com.clearblade.cloud.iot.v1.utils.DeviceRegistry;
+import com.clearblade.cloud.iot.v1.registrytypes.DeviceRegistry;
 
 public class CreateDeviceRegistryRequest {
     private String parent;

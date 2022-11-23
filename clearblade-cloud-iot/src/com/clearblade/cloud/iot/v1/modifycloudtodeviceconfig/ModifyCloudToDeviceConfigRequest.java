@@ -5,7 +5,6 @@ import java.util.Arrays;
 import org.json.simple.JSONObject;
 
 import com.clearblade.cloud.iot.v1.utils.ByteString;
-import com.clearblade.cloud.iot.v1.utils.Constants;
 
 public class ModifyCloudToDeviceConfigRequest {
 
@@ -73,7 +72,7 @@ public class ModifyCloudToDeviceConfigRequest {
 	@SuppressWarnings("unchecked")
 	public String[] getBodyAndParams() {
 		String[] output = new String[2];
-		String params = "name=" + this.deviceName + "&method=" + Constants.MODIFY_CLOUD_TO_DEVICE_CONFIG;
+		String params = "name=" + this.deviceName + "&method=modifyCloudToDeviceConfig";
 		String bData = "EMPTY";
 		if (this.binaryData != null) {
 			bData = new String(this.binaryData.getBinaryDataArray());

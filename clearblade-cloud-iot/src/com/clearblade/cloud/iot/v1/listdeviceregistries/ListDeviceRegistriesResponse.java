@@ -3,13 +3,14 @@ package com.clearblade.cloud.iot.v1.listdeviceregistries;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import com.clearblade.cloud.iot.v1.utils.DeviceRegistry;
+import com.clearblade.cloud.iot.v1.registrytypes.DeviceRegistry;
 
 public class ListDeviceRegistriesResponse {
 	static Logger log = Logger.getLogger(ListDeviceRegistriesResponse.class.getName());
@@ -73,7 +74,7 @@ public class ListDeviceRegistriesResponse {
 					nextPageToken = jsonObj.get("nextPageToken").toString();
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.log(Level.SEVERE, e.getMessage());
 			}
 			return this;
 		}

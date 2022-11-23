@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 import org.json.simple.JSONObject;
 
+import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
 import com.clearblade.cloud.iot.v1.utils.ByteString;
 import com.clearblade.cloud.iot.v1.utils.Constants;
-import com.clearblade.cloud.iot.v1.utils.DeviceName;
 
 public class SendCommandToDeviceRequest {
 

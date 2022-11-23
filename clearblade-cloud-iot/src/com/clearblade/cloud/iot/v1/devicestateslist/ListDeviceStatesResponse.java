@@ -1,6 +1,7 @@
 package com.clearblade.cloud.iot.v1.devicestateslist;
 
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -9,7 +10,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import com.clearblade.cloud.iot.v1.utils.DeviceState;
+import com.clearblade.cloud.iot.v1.devicetypes.DeviceState;
 
 public class ListDeviceStatesResponse {
 
@@ -57,7 +58,7 @@ public class ListDeviceStatesResponse {
 				}
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.log(Level.SEVERE, e.getMessage());
 			}
 			return this;
 

@@ -1,6 +1,6 @@
 package com.clearblade.cloud.iot.v1.deviceslist;
 
-import com.clearblade.cloud.iot.v1.utils.GatewayListOptions;
+import com.clearblade.cloud.iot.v1.devicetypes.GatewayListOptions;
 
 public class DevicesListRequest {
 

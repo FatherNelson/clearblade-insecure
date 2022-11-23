@@ -1,5 +1,6 @@
 package com.clearblade.cloud.iot.v1;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import com.clearblade.cloud.iot.v1.binddevicetogateway.BindDeviceToGatewayRequest;
@@ -12,6 +13,9 @@ import com.clearblade.cloud.iot.v1.deviceslist.DevicesListRequest;
 import com.clearblade.cloud.iot.v1.deviceslist.DevicesListResponse;
 import com.clearblade.cloud.iot.v1.devicestateslist.ListDeviceStatesRequest;
 import com.clearblade.cloud.iot.v1.devicestateslist.ListDeviceStatesResponse;
+import com.clearblade.cloud.iot.v1.devicetypes.Device;
+import com.clearblade.cloud.iot.v1.devicetypes.DeviceConfig;
+import com.clearblade.cloud.iot.v1.exception.ApplicationException;
 import com.clearblade.cloud.iot.v1.getdevice.GetDeviceRequest;
 import com.clearblade.cloud.iot.v1.getdeviceregistry.GetDeviceRegistryRequest;
 import com.clearblade.cloud.iot.v1.listdeviceconfigversions.ListDeviceConfigVersionsRequest;
@@ -19,15 +23,13 @@ import com.clearblade.cloud.iot.v1.listdeviceconfigversions.ListDeviceConfigVers
 import com.clearblade.cloud.iot.v1.listdeviceregistries.ListDeviceRegistriesRequest;
 import com.clearblade.cloud.iot.v1.listdeviceregistries.ListDeviceRegistriesResponse;
 import com.clearblade.cloud.iot.v1.modifycloudtodeviceconfig.ModifyCloudToDeviceConfigRequest;
+import com.clearblade.cloud.iot.v1.registrytypes.DeviceRegistry;
 import com.clearblade.cloud.iot.v1.sendcommandtodevice.SendCommandToDeviceRequest;
 import com.clearblade.cloud.iot.v1.sendcommandtodevice.SendCommandToDeviceResponse;
 import com.clearblade.cloud.iot.v1.unbinddevicefromgateway.UnbindDeviceFromGatewayRequest;
 import com.clearblade.cloud.iot.v1.unbinddevicefromgateway.UnbindDeviceFromGatewayResponse;
 import com.clearblade.cloud.iot.v1.updatedevice.UpdateDeviceRequest;
 import com.clearblade.cloud.iot.v1.updatedeviceregistry.UpdateDeviceRegistryRequest;
-import com.clearblade.cloud.iot.v1.utils.Device;
-import com.clearblade.cloud.iot.v1.utils.DeviceConfig;
-import com.clearblade.cloud.iot.v1.utils.DeviceRegistry;
 
 public class DeviceManagerClient {
 
@@ -38,6 +40,8 @@ public class DeviceManagerClient {
 	 * 
 	 * @param request
 	 * @return Device object
+	 * @throws IOException
+	 * @throws ApplicationException
 	 */
 
 	public Device getDevice(GetDeviceRequest request) {
@@ -50,6 +54,8 @@ public class DeviceManagerClient {
 	 * 
 	 * @param request
 	 * @return Device object
+	 * @throws IOException
+	 * @throws ApplicationException
 	 */
 	public Device createDevice(CreateDeviceRequest request) {
 		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
@@ -61,6 +67,8 @@ public class DeviceManagerClient {
 	 * 
 	 * @param request
 	 * @return
+	 * @throws IOException
+	 * @throws ApplicationException
 	 */
 	public BindDeviceToGatewayResponse bindDeviceToGateway(BindDeviceToGatewayRequest request) {
 		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
@@ -72,6 +80,8 @@ public class DeviceManagerClient {
 	 * 
 	 * @param request
 	 * @return
+	 * @throws IOException
+	 * @throws ApplicationException
 	 */
 	public UnbindDeviceFromGatewayResponse unbindDeviceFromGateway(UnbindDeviceFromGatewayRequest request) {
 		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
@@ -82,6 +92,8 @@ public class DeviceManagerClient {
 	 * Calling deleteDevice api
 	 * 
 	 * @param request
+	 * @throws IOException
+	 * @throws ApplicationException
 	 */
 	public void deleteDevice(DeleteDeviceRequest request) {
 		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
@@ -133,6 +145,8 @@ public class DeviceManagerClient {
 	 * 
 	 * @param request
 	 * @return DeviceRegistry object
+	 * @throws IOException
+	 * @throws ApplicationException
 	 */
 	public DeviceRegistry getDeviceRegistry(GetDeviceRegistryRequest request) {
 		ClearBladeRegistryManager cbManager = new ClearBladeRegistryManager();

@@ -1,6 +1,6 @@
 package com.clearblade.cloud.iot.v1.deletedevice;
 
-import com.clearblade.cloud.iot.v1.utils.DeviceName;
+import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
 
 public class DeleteDeviceRequest {
 	private DeviceName name;

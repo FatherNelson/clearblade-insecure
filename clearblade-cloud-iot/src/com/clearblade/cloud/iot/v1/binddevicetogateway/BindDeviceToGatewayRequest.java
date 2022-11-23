@@ -2,8 +2,6 @@ package com.clearblade.cloud.iot.v1.binddevicetogateway;
 
 import org.json.simple.JSONObject;
 
-import com.clearblade.cloud.iot.v1.utils.Constants;
-
 public class BindDeviceToGatewayRequest {
 	private final String parent;
 	private final String gateway;
@@ -76,7 +74,8 @@ public class BindDeviceToGatewayRequest {
 	public String toString() {
 		requestParams = new JSONObject();
 		bodyParams = new JSONObject();
-		String method = Constants.BIND_DEVICE_TO_GATEWAY;
+
+		String method = "bindDeviceToGateway";
 		requestParams.put("method", method);
 		requestParams.put("parent", this.parent);
 
@@ -92,7 +91,7 @@ public class BindDeviceToGatewayRequest {
 	@SuppressWarnings("unchecked")
 	public String[] getBodyAndParams() {
 		String[] output = new String[2];
-		String params = "parent=" + this.parent + "&method=" + Constants.BIND_DEVICE_TO_GATEWAY;
+		String params = "parent=" + this.parent + "&method=" + "bindDeviceToGateway";
 		bodyParams = new JSONObject();
 		bodyParams.put("gatewayId", this.gateway);
 		bodyParams.put("deviceId", this.device);

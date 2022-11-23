@@ -1,36 +1,41 @@
 package com.clearblade.cloud.iot.v1;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import com.clearblade.cloud.iot.v1.exception.ApplicationException;
 import com.clearblade.cloud.iot.v1.utils.AuthParams;
 import com.clearblade.cloud.iot.v1.utils.ConfigParameters;
 import com.clearblade.cloud.iot.v1.utils.Constants;
 import com.clearblade.cloud.iot.v1.utils.SetHttpConnection;
 
 public class SyncClient {
-	
+
+	static Logger log = Logger.getLogger(SyncClient.class.getName());
 	private ConfigParameters configParameters = new ConfigParameters();
-	
-	
+
 	/**
 	 * Method used to generate URL for apicall
+	 * 
 	 * @param apiName - path to api
-	 * @param params - parameters to be attached to request
+	 * @param params  - parameters to be attached to request
 	 * @return URL formed and to be used
 	 */
 	private String generateURL(String apiName, String params) {
 
 		return AuthParams.getApiBaseURL()
-	  					 .concat(configParameters.getEndpointPort())
-	  					  .concat(configParameters.getBaseURL())
-	  					  .concat(AuthParams.getUserSystemKey())
-	  					  .concat(apiName)
-	  					  .concat("?"+params);
+				.concat(configParameters.getEndpointPort())
+				.concat(configParameters.getBaseURL())
+				.concat(AuthParams.getUserSystemKey())
+				.concat(apiName)
+				.concat("?" + params);
 	}
 
 	/**
@@ -51,26 +56,28 @@ public class SyncClient {
 
 	/**
 	 * Method used to Calls HTTP Get request
+	 * 
 	 * @param apiName
 	 * @param params
 	 * @return String[] containing responseCode, responseMessage and response object
+	 * @throws IOException
+	 * @throws ApplicationException
 	 */
-	public String[] get(String apiName,String params,boolean isAdmin) {
+	public String[] get(String apiName, String params, boolean isAdmin) {
 		String[] responseArray = new String[3];
 		String finalURL = "";
-		if (isAdmin) {
-			AuthParams.setAdminCredentials();
-			finalURL = generateAdminURL(apiName, params);
-		} else {
-			AuthParams.setRegistryCredentials();
-			finalURL = generateURL(apiName, params);
-		}
 		try {
-			System.out.println(finalURL);
+			if (isAdmin) {
+				AuthParams.setAdminCredentials();
+				finalURL = generateAdminURL(apiName, params);
+			} else {
+				AuthParams.setRegistryCredentials();
+				finalURL = generateURL(apiName, params);
+			}
 			URL obj = new URL(finalURL);
 			SetHttpConnection setCon = new SetHttpConnection();
 			HttpsURLConnection con = setCon.getConnection(obj);
-			if(isAdmin)
+			if (isAdmin)
 				con.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, AuthParams.getAdminToken());
 			else
 				con.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, AuthParams.getUserToken());
@@ -98,33 +105,38 @@ public class SyncClient {
 				responseMessage = response.toString();
 				responseArray[2] = responseMessage;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (ApplicationException | IOException e) {
+			log.log(Level.SEVERE, e.getMessage());
 		}
-		
+
+		catch (Exception e) {
+			log.log(Level.SEVERE, e.getMessage());
+		}
+
 		return responseArray;
 	}
 
 	/**
 	 * Method used to call HTTP Post request
+	 * 
 	 * @param apiName
 	 * @param params
 	 * @param body
 	 * @return String[] containing responseCode, responseMessage and response object
+	 * @throws IOException
+	 * @throws ApplicationException
 	 */
 	public String[] post(String apiName, String params, String body, boolean isAdmin) {
 		String[] responseArray = new String[3];
 		String finalURL = "";
-		if (isAdmin) {
-			AuthParams.setAdminCredentials();
-			finalURL = generateAdminURL(apiName, params);
-		} else {
-			AuthParams.setRegistryCredentials();
-			finalURL = generateURL(apiName, params);
-		}
 		try {
-
-			System.out.println(finalURL);
+			if (isAdmin) {
+				AuthParams.setAdminCredentials();
+				finalURL = generateAdminURL(apiName, params);
+			} else {
+				AuthParams.setRegistryCredentials();
+				finalURL = generateURL(apiName, params);
+			}
 
 			URL obj = new URL(finalURL);
 			SetHttpConnection setCon = new SetHttpConnection();
@@ -164,31 +176,35 @@ public class SyncClient {
 				responseArray[2] = responseMessage;
 			}
 
+		} catch (ApplicationException | IOException e) {
+			log.log(Level.SEVERE, e.getMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 		}
-		
+
 		return responseArray;
 	}
-	
+
 	/**
 	 * Method used to call HTTP delete request
+	 * 
 	 * @param apiName
 	 * @param params
 	 * @return String[] containing responseCode, responseMessage and response object
+	 * @throws IOException
+	 * @throws ApplicationException
 	 */
-	public String[] delete(String apiName,String params,boolean isAdmin) {
+	public String[] delete(String apiName, String params, boolean isAdmin) {
 		String[] responseArray = new String[3];
 		String finalURL = "";
-		if (isAdmin) {
-			AuthParams.setAdminCredentials();
-			finalURL = generateAdminURL(apiName, params);
-		} else {
-			AuthParams.setRegistryCredentials();
-			finalURL = generateURL(apiName, params);
-		}
 		try {
-			System.out.println(finalURL);
+			if (isAdmin) {
+				AuthParams.setAdminCredentials();
+				finalURL = generateAdminURL(apiName, params);
+			} else {
+				AuthParams.setRegistryCredentials();
+				finalURL = generateURL(apiName, params);
+			}
 			URL obj = new URL(finalURL);
 			SetHttpConnection setCon = new SetHttpConnection();
 			HttpsURLConnection con = setCon.getConnection(obj);
@@ -221,26 +237,28 @@ public class SyncClient {
 				responseMessage = response.toString();
 				responseArray[2] = responseMessage;
 			}
+		} catch (ApplicationException | IOException e) {
+			log.log(Level.SEVERE, e.getMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 		}
-		
+
 		return responseArray;
 	}
-	
+
 	/**
 	 * Method used to call HTTP Patch request
+	 * 
 	 * @param apiName
 	 * @param params
 	 * @param body
 	 * @return String[] containing responseCode, responseMessage and response object
 	 */
-	public String[] update(String apiName,String params,String body) {
+	public String[] update(String apiName, String params, String body) {
 		String[] responseArray = new String[3];
-		AuthParams.setRegistryCredentials();
-		String finalURL = generateURL(apiName, params);
 		try {
-			System.out.println(finalURL);
+			AuthParams.setRegistryCredentials();
+			String finalURL = generateURL(apiName, params);
 			URL obj = new URL(finalURL);
 			SetHttpConnection setCon = new SetHttpConnection();
 			HttpsURLConnection con = setCon.getConnection(obj);
@@ -274,8 +292,10 @@ public class SyncClient {
 				responseMessage = response.toString();
 				responseArray[2] = responseMessage;
 			}
+		} catch (ApplicationException | IOException e) {
+			log.log(Level.SEVERE, e.getMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 		}
 
 		return responseArray;

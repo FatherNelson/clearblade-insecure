@@ -12,6 +12,8 @@ import com.clearblade.cloud.iot.v1.deviceslist.DevicesListRequest;
 import com.clearblade.cloud.iot.v1.deviceslist.DevicesListResponse;
 import com.clearblade.cloud.iot.v1.devicestateslist.ListDeviceStatesRequest;
 import com.clearblade.cloud.iot.v1.devicestateslist.ListDeviceStatesResponse;
+import com.clearblade.cloud.iot.v1.devicetypes.Device;
+import com.clearblade.cloud.iot.v1.devicetypes.DeviceConfig;
 import com.clearblade.cloud.iot.v1.getdevice.GetDeviceRequest;
 import com.clearblade.cloud.iot.v1.getdeviceregistry.GetDeviceRegistryRequest;
 import com.clearblade.cloud.iot.v1.listdeviceconfigversions.ListDeviceConfigVersionsRequest;
@@ -19,15 +21,13 @@ import com.clearblade.cloud.iot.v1.listdeviceconfigversions.ListDeviceConfigVers
 import com.clearblade.cloud.iot.v1.listdeviceregistries.ListDeviceRegistriesRequest;
 import com.clearblade.cloud.iot.v1.listdeviceregistries.ListDeviceRegistriesResponse;
 import com.clearblade.cloud.iot.v1.modifycloudtodeviceconfig.ModifyCloudToDeviceConfigRequest;
+import com.clearblade.cloud.iot.v1.registrytypes.DeviceRegistry;
 import com.clearblade.cloud.iot.v1.sendcommandtodevice.SendCommandToDeviceRequest;
 import com.clearblade.cloud.iot.v1.sendcommandtodevice.SendCommandToDeviceResponse;
 import com.clearblade.cloud.iot.v1.unbinddevicefromgateway.UnbindDeviceFromGatewayRequest;
 import com.clearblade.cloud.iot.v1.unbinddevicefromgateway.UnbindDeviceFromGatewayResponse;
 import com.clearblade.cloud.iot.v1.updatedevice.UpdateDeviceRequest;
 import com.clearblade.cloud.iot.v1.updatedeviceregistry.UpdateDeviceRegistryRequest;
-import com.clearblade.cloud.iot.v1.utils.Device;
-import com.clearblade.cloud.iot.v1.utils.DeviceConfig;
-import com.clearblade.cloud.iot.v1.utils.DeviceRegistry;
 
 public class DeviceManagerAsyncClient {
 
@@ -68,6 +68,7 @@ public class DeviceManagerAsyncClient {
 
 	/**
 	 * Calling updateDevice api
+	 * 
 	 * @param request
 	 * @return Device object
 	 */
@@ -123,8 +124,8 @@ public class DeviceManagerAsyncClient {
 		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
 		return cbManager.asyncListDeviceConfigVersions(request);
 	}
-	
-	//Registry Apis
+
+	// Registry Apis
 	/**
 	 * Calling getDevice api
 	 * 

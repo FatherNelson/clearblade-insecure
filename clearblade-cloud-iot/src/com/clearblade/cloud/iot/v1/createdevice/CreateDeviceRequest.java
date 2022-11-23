@@ -1,7 +1,7 @@
 package com.clearblade.cloud.iot.v1.createdevice;
 
-import com.clearblade.cloud.iot.v1.utils.Device;
-import com.clearblade.cloud.iot.v1.utils.RegistryName;
+import com.clearblade.cloud.iot.v1.devicetypes.Device;
+import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
 
 public class CreateDeviceRequest {
 	private final RegistryName parent;
@@ -46,7 +46,7 @@ public class CreateDeviceRequest {
 
 	public String[] getParams() {
 		String[] params = new String[2];
-		params[0] = "parent="+this.parent.getRegistryFullName();
+		params[0] = "parent=" + this.parent.getRegistryFullName();
 		params[1] = this.device.createDeviceJSONObject();
 		return params;
 	}

@@ -3,13 +3,14 @@ package com.clearblade.cloud.iot.v1.listdeviceconfigversions;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import com.clearblade.cloud.iot.v1.utils.DeviceConfig;
+import com.clearblade.cloud.iot.v1.devicetypes.DeviceConfig;
 
 public class ListDeviceConfigVersionsResponse {
 
@@ -19,7 +20,6 @@ public class ListDeviceConfigVersionsResponse {
 	protected ListDeviceConfigVersionsResponse(Builder builder) {
 		this.deviceConfigList = builder.deviceConfigList;
 	}
-
 
 	// Static class Builder
 	public static class Builder {
@@ -38,6 +38,7 @@ public class ListDeviceConfigVersionsResponse {
 		public Builder setDeviceConfigVersionsListRequest(ListDeviceConfigVersionsRequest request) {
 			return this;
 		}
+
 		public Builder buildResponse(String configList) {
 			try {
 				JSONObject jsonObj = new JSONObject();
@@ -49,7 +50,8 @@ public class ListDeviceConfigVersionsResponse {
 				Iterator configIterator = configArray.iterator();
 				while (configIterator.hasNext()) {
 					JSONObject configJson = (JSONObject) configIterator.next();
-					DeviceConfig configObj = DeviceConfig.newBuilder().setBinaryData((String) configJson.get("binaryData"))
+					DeviceConfig configObj = DeviceConfig.newBuilder()
+							.setBinaryData((String) configJson.get("binaryData"))
 							.setCloudUpdateTime((String) configJson.get("cloudUpdateTime"))
 							.setDeviceAckTime((String) configJson.get("deviceAckTime"))
 							.setVersion((String) configJson.get("version"))
@@ -58,7 +60,7 @@ public class ListDeviceConfigVersionsResponse {
 				}
 
 			} catch (Exception e) {
-				e.printStackTrace();
+				log.log(Level.SEVERE, e.getMessage());
 			}
 			return this;
 		}
@@ -70,15 +72,12 @@ public class ListDeviceConfigVersionsResponse {
 		}
 	}
 
-
 	public List<DeviceConfig> getDeviceConfigList() {
 		return deviceConfigList;
 	}
 
-
 	public void setDeviceConfigList(List<DeviceConfig> deviceConfigList) {
 		this.deviceConfigList = deviceConfigList;
 	}
-	
-	
+
 }

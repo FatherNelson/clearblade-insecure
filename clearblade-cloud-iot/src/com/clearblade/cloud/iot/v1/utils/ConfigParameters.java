@@ -3,16 +3,19 @@ package com.clearblade.cloud.iot.v1.utils;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ConfigParameters {
-	
+	static Logger log = Logger.getLogger(ConfigParameters.class.getName());
+
 	// Fields used to set values from properties file
 
 	private String project;
 	private String region;
 	private String registry;
 	private String endpointPort;
-	
+
 	private String getSystemCredentialsExtension;
 
 	private String baseURL;
@@ -20,8 +23,8 @@ public class ConfigParameters {
 	private String devicesURLExtension;
 	private String devicesStatesURLExtension;
 	private String cloudiotdevicesURLExtension;
-    private String cloudiotDeviceConfigURLExtension;
-    private String cloudiotConfigURLExtension;
+	private String cloudiotDeviceConfigURLExtension;
+	private String cloudiotConfigURLExtension;
 
 	// Fields used to fetch values from Properties file
 	Properties properties;
@@ -50,7 +53,7 @@ public class ConfigParameters {
 				try {
 					input.close();
 				} catch (IOException e) {
-					e.printStackTrace();
+					log.log(Level.SEVERE, e.getMessage());
 				}
 			}
 		}
@@ -72,7 +75,7 @@ public class ConfigParameters {
 		this.setProject(properties.getProperty("project"));
 		this.setRegion(properties.getProperty("region"));
 		this.setRegistry(properties.getProperty("registry"));
-		this.setGetSystemCredentialsExtension(properties.getProperty("getSystemCredentialsExtension"));		
+		this.setGetSystemCredentialsExtension(properties.getProperty("getSystemCredentialsExtension"));
 		this.setEndpointPort(properties.getProperty("endPointPort"));
 	}
 
@@ -107,8 +110,7 @@ public class ConfigParameters {
 	public void setCloudiotdevicesURLExtension(String cloudiotdevicesURLExtension) {
 		this.cloudiotdevicesURLExtension = cloudiotdevicesURLExtension;
 	}
-	
-	
+
 	public String getCloudiotDeviceConfigURLExtension() {
 		return cloudiotDeviceConfigURLExtension;
 	}
@@ -116,7 +118,7 @@ public class ConfigParameters {
 	public void setCloudiotDeviceConfigURLExtension(String cloudiotDeviceConfigURLExtension) {
 		this.cloudiotDeviceConfigURLExtension = cloudiotDeviceConfigURLExtension;
 	}
-	 
+
 	public String getProject() {
 		return project;
 	}
@@ -171,6 +173,6 @@ public class ConfigParameters {
 
 	public void setCloudiotConfigURLExtension(String cloudiotConfigURLExtension) {
 		this.cloudiotConfigURLExtension = cloudiotConfigURLExtension;
-	}	
+	}
 
 }

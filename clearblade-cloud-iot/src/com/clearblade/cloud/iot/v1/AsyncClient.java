@@ -1,6 +1,7 @@
 package com.clearblade.cloud.iot.v1;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
@@ -9,15 +10,20 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import com.clearblade.cloud.iot.v1.exception.ApplicationException;
 import com.clearblade.cloud.iot.v1.utils.AuthParams;
 import com.clearblade.cloud.iot.v1.utils.ConfigParameters;
 import com.clearblade.cloud.iot.v1.utils.Constants;
 import com.clearblade.cloud.iot.v1.utils.SetHttpConnection;
 
 public class AsyncClient {
+
+	static Logger log = Logger.getLogger(AsyncClient.class.getName());
 
 	private ConfigParameters configParameters = new ConfigParameters();
 	private String[] responseArray = new String[3];
@@ -28,8 +34,9 @@ public class AsyncClient {
 
 	/**
 	 * Method used to generate URL for apicall
+	 * 
 	 * @param apiName - path to api
-	 * @param params - parameters to be attached to request
+	 * @param params  - parameters to be attached to request
 	 * @return URL formed and to be used
 	 */
 	private String generateURL(String apiName, String params) {
@@ -60,25 +67,27 @@ public class AsyncClient {
 
 	/**
 	 * Method used to Calls HTTP Get request
+	 * 
 	 * @param apiName
 	 * @param params
 	 * @return String[] containing responseCode, responseMessage and response object
+	 * @throws IOException
+	 * @throws ApplicationException
 	 */
 	private Object get() {
 		String finalURL = "";
-		if (isAdmin) {
-			AuthParams.setAdminCredentials();
-			finalURL = generateAdminURL(apiName, params);
-		} else {
-			AuthParams.setRegistryCredentials();
-			finalURL = generateURL(apiName, params);
-		}
 		try {
-			System.out.println(finalURL);
+			if (isAdmin) {
+				AuthParams.setAdminCredentials();
+				finalURL = generateAdminURL(apiName, params);
+			} else {
+				AuthParams.setRegistryCredentials();
+				finalURL = generateURL(apiName, params);
+			}
 			URL obj = new URL(finalURL);
 			SetHttpConnection setCon = new SetHttpConnection();
 			HttpsURLConnection con = setCon.getConnection(obj);
-			if(isAdmin)
+			if (isAdmin)
 				con.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, AuthParams.getAdminToken());
 			else
 				con.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, AuthParams.getUserToken());
@@ -105,33 +114,38 @@ public class AsyncClient {
 				responseMessage = response.toString();
 				responseArray[2] = responseMessage;
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (ApplicationException | IOException e) {
+			log.log(Level.SEVERE, e.getMessage());
 		}
-		
+
+		catch (Exception e) {
+			log.log(Level.SEVERE, e.getMessage());
+		}
+
 		return responseArray;
 	}
 
-
 	/**
 	 * Method used to call HTTP Post request
+	 * 
 	 * @param apiName
 	 * @param params
 	 * @param body
 	 * @return String[] containing responseCode, responseMessage and response object
+	 * @throws IOException
+	 * @throws ApplicationException
 	 */
 	public Object post() {
 		String finalURL = "";
-		if (isAdmin) {
-			AuthParams.setAdminCredentials();
-			finalURL = generateAdminURL(apiName, params);
-		} else {
-			AuthParams.setRegistryCredentials();
-			finalURL = generateURL(apiName, params);
-		}
-
 		try {
-			System.out.println(finalURL);
+			if (isAdmin) {
+				AuthParams.setAdminCredentials();
+				finalURL = generateAdminURL(apiName, params);
+			} else {
+				AuthParams.setRegistryCredentials();
+				finalURL = generateURL(apiName, params);
+			}
+
 			URL obj = new URL(finalURL);
 			SetHttpConnection setCon = new SetHttpConnection();
 			HttpsURLConnection con = setCon.getConnection(obj);
@@ -169,31 +183,34 @@ public class AsyncClient {
 				responseMessage = response.toString();
 				responseArray[2] = responseMessage;
 			}
+		} catch (ApplicationException | IOException e) {
+			log.log(Level.SEVERE, e.getMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 		}
-		
+
 		return responseArray;
 	}
-	
 
 	/**
 	 * Method used to call HTTP delete request
+	 * 
 	 * @param apiName
 	 * @param params
 	 * @return String[] containing responseCode, responseMessage and response object
+	 * @throws IOException
+	 * @throws ApplicationException
 	 */
 	public Object delete() {
 		String finalURL = "";
-		if (isAdmin) {
-			AuthParams.setAdminCredentials();
-			finalURL = generateAdminURL(apiName, params);
-		} else {
-			AuthParams.setRegistryCredentials();
-			finalURL = generateURL(apiName, params);
-		}
 		try {
-			System.out.println(finalURL);
+			if (isAdmin) {
+				AuthParams.setAdminCredentials();
+				finalURL = generateAdminURL(apiName, params);
+			} else {
+				AuthParams.setRegistryCredentials();
+				finalURL = generateURL(apiName, params);
+			}
 			URL obj = new URL(finalURL);
 			SetHttpConnection setCon = new SetHttpConnection();
 			HttpsURLConnection con = setCon.getConnection(obj);
@@ -226,25 +243,29 @@ public class AsyncClient {
 				responseMessage = response.toString();
 				responseArray[2] = responseMessage;
 			}
+		} catch (ApplicationException | IOException e) {
+			log.log(Level.SEVERE, e.getMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 		}
-		
+
 		return responseArray;
 	}
-	
+
 	/**
 	 * Method used to call HTTP Patch request
+	 * 
 	 * @param apiName
 	 * @param params
 	 * @param body
-	 * @return String[] Object containing responseCode, responseMessage and response object
+	 * @return String[] Object containing responseCode, responseMessage and response
+	 *         object
 	 */
 	public Object update() {
-		AuthParams.setRegistryCredentials();
-		String	finalURL = generateURL(apiName, params);
 		try {
-			System.out.println(finalURL);
+			AuthParams.setRegistryCredentials();
+			String finalURL = generateURL(apiName, params);
+
 			URL obj = new URL(finalURL);
 			SetHttpConnection setCon = new SetHttpConnection();
 			HttpsURLConnection con = setCon.getConnection(obj);
@@ -279,34 +300,37 @@ public class AsyncClient {
 				responseMessage = response.toString();
 				responseArray[2] = responseMessage;
 			}
+		} catch (ApplicationException | IOException e) {
+			log.log(Level.SEVERE, e.getMessage());
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 		}
-		
+
 		return responseArray;
-	}	
-	private Future<Object> getObjectAsync() {
+	}
+
+	private Future<Object> getDeviceAsync() {
 		return CompletableFuture.supplyAsync(this::get);
 	}
 
-	public String[] asyncGet(String apiName,String params) throws InterruptedException {
+	public String[] asyncGetDevice(String apiName, String params) throws InterruptedException {
 		this.apiName = apiName;
 		this.params = params;
-		Future<Object> future = getObjectAsync();
+		Future<Object> future = getDeviceAsync();
 		try {
 			future.get(15000, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 			Thread.currentThread().interrupt();
 		}
 		return responseArray;
 	}
-	
+
 	private Future<Object> createObjectAsync() {
 		return CompletableFuture.supplyAsync(this::post);
 	}
 
-	public String[] asyncCreate(String apiName,String params,String body) throws InterruptedException {
+	public String[] asyncCreate(String apiName, String params, String body) throws InterruptedException {
 		this.apiName = apiName;
 		this.params = params;
 		this.body = body;
@@ -314,7 +338,7 @@ public class AsyncClient {
 		try {
 			future.get(15000, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 			Thread.currentThread().interrupt();
 		}
 		return responseArray;
@@ -324,7 +348,7 @@ public class AsyncClient {
 		return CompletableFuture.supplyAsync(this::post);
 	}
 
-	public String[] asyncBindDeviceToGateway(String apiName,String params,String body) throws InterruptedException {
+	public String[] asyncBindDeviceToGateway(String apiName, String params, String body) throws InterruptedException {
 		this.apiName = apiName;
 		this.params = params;
 		this.body = body;
@@ -332,7 +356,7 @@ public class AsyncClient {
 		try {
 			future.get(15000, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 			Thread.currentThread().interrupt();
 		}
 		return responseArray;
@@ -351,7 +375,7 @@ public class AsyncClient {
 		try {
 			future.get(15000, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 			Thread.currentThread().interrupt();
 		}
 		return responseArray;
@@ -369,7 +393,7 @@ public class AsyncClient {
 		try {
 			future.get(15000, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 			Thread.currentThread().interrupt();
 		}
 		return responseArray;
@@ -388,7 +412,7 @@ public class AsyncClient {
 		try {
 			future.get(15000, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 			Thread.currentThread().interrupt();
 		}
 		return responseArray;
@@ -406,33 +430,34 @@ public class AsyncClient {
 		try {
 			future.get(15000, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 			Thread.currentThread().interrupt();
 		}
 		return responseArray;
 	}
+
 	private Future<Object> deleteObjectAsync() {
 		return CompletableFuture.supplyAsync(this::delete);
 	}
 
-	public String[] asyncDelete(String apiName,String params) throws InterruptedException {
+	public String[] asyncDelete(String apiName, String params) throws InterruptedException {
 		this.apiName = apiName;
 		this.params = params;
 		Future<Object> future = deleteObjectAsync();
 		try {
 			future.get(15000, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 			Thread.currentThread().interrupt();
 		}
 		return responseArray;
 	}
-	
+
 	private Future<Object> updateObjectAsync() {
 		return CompletableFuture.supplyAsync(this::update);
 	}
 
-	public String[] asyncUpdate(String apiName,String params,String body) throws InterruptedException {
+	public String[] asyncUpdate(String apiName, String params, String body) throws InterruptedException {
 		this.apiName = apiName;
 		this.params = params;
 		this.body = body;
@@ -440,23 +465,24 @@ public class AsyncClient {
 		try {
 			future.get(15000, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 			Thread.currentThread().interrupt();
 		}
 		return responseArray;
 	}
+
 	private Future<Object> listObjectAsync() {
 		return CompletableFuture.supplyAsync(this::get);
 	}
 
-	public String[] asyncListDevices(String apiName,String params) throws InterruptedException {
+	public String[] asyncListDevices(String apiName, String params) throws InterruptedException {
 		this.apiName = apiName;
 		this.params = params;
 		Future<Object> future = listObjectAsync();
 		try {
 			future.get(15000, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 			Thread.currentThread().interrupt();
 		}
 		return responseArray;
@@ -474,7 +500,7 @@ public class AsyncClient {
 		try {
 			future.get(15000, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 			Thread.currentThread().interrupt();
 		}
 		return responseArray;
@@ -486,14 +512,14 @@ public class AsyncClient {
 		return CompletableFuture.supplyAsync(this::get);
 	}
 
-	public String[] asyncGetRegistry(String apiName,String params) throws InterruptedException {
+	public String[] asyncGetRegistry(String apiName, String params) throws InterruptedException {
 		this.apiName = apiName;
 		this.params = params;
 		Future<Object> future = getRegistryAsync();
 		try {
 			future.get(15000, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 			Thread.currentThread().interrupt();
 		}
 		return responseArray;
@@ -513,7 +539,7 @@ public class AsyncClient {
 		try {
 			future.get(15000, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 			Thread.currentThread().interrupt();
 		}
 		return responseArray;
@@ -532,7 +558,7 @@ public class AsyncClient {
 		try {
 			future.get(15000, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 			Thread.currentThread().interrupt();
 		}
 		return responseArray;
@@ -552,16 +578,17 @@ public class AsyncClient {
 		try {
 			future.get(15000, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 			Thread.currentThread().interrupt();
 		}
 		return responseArray;
 	}
+
 	private Future<Object> listDeviceRegistriesAsync() {
 		return CompletableFuture.supplyAsync(this::get);
 	}
 
-	public String[] asyncListDeviceRegistries(String apiName, String params,boolean isAdmin)
+	public String[] asyncListDeviceRegistries(String apiName, String params, boolean isAdmin)
 			throws InterruptedException {
 		this.apiName = apiName;
 		this.params = params;
@@ -570,10 +597,10 @@ public class AsyncClient {
 		try {
 			future.get(15000, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException | ExecutionException | TimeoutException e) {
-			e.printStackTrace();
+			log.log(Level.SEVERE, e.getMessage());
 			Thread.currentThread().interrupt();
 		}
 		return responseArray;
 	}
-		
+
 }

@@ -2,7 +2,7 @@ package com.clearblade.cloud.iot.v1.updatedevice;
 
 import org.json.simple.JSONObject;
 
-import com.clearblade.cloud.iot.v1.utils.Device;
+import com.clearblade.cloud.iot.v1.devicetypes.Device;
 
 public class UpdateDeviceRequest {
 	private final String name;
@@ -16,6 +16,7 @@ public class UpdateDeviceRequest {
 		this.updateMask = builder.updateMask;
 		this.device = builder.device;
 	}
+
 	public JSONObject getRequestParams() {
 		return requestParams;
 	}
@@ -52,7 +53,7 @@ public class UpdateDeviceRequest {
 			this.name = name;
 			return this;
 		}
-		
+
 		public Builder setDevice(Device device) {
 			this.device = device;
 			return this;
@@ -62,7 +63,7 @@ public class UpdateDeviceRequest {
 			this.updateMask = updateMask;
 			return this;
 		}
-		
+
 		// build method to deal with outer class
 		// to return outer instance
 		public UpdateDeviceRequest build() {
@@ -75,27 +76,28 @@ public class UpdateDeviceRequest {
 	public String toString() {
 		requestParams.put("name", this.name);
 		requestParams.put("updateMask", this.updateMask);
-		
+
 		bodyParams.put("id", this.device.toBuilder().getId());
 		bodyParams.put("name", this.device.toBuilder().getName());
 		bodyParams.put("logLevel", this.device.toBuilder().getLogLevel());
 		bodyParams.put("blocked", this.device.toBuilder().isBlocked());
-		
-		return "name=" + this.name + ",updateMask=" + this.updateMask+", logLevel= "+this.device.toBuilder().getLogLevel();
+
+		return "name=" + this.name + ",updateMask=" + this.updateMask + ", logLevel= "
+				+ this.device.toBuilder().getLogLevel();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public String[] getBodyAndParams() {
 		String[] output = new String[2];
-		
-		String params = "name="+this.name+"&updateMask="+this.updateMask;
+
+		String params = "name=" + this.name + "&updateMask=" + this.updateMask;
 		bodyParams = new JSONObject();
 
 		bodyParams.put("id", this.device.toBuilder().getId());
 		bodyParams.put("name", this.device.toBuilder().getName());
 		bodyParams.put("logLevel", this.device.toBuilder().getLogLevel().toString());
 		bodyParams.put("blocked", this.device.toBuilder().isBlocked());
-		
+
 		output[0] = params;
 		output[1] = bodyParams.toString();
 		return output;

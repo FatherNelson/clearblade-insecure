@@ -2,8 +2,6 @@ package com.clearblade.cloud.iot.v1.unbinddevicefromgateway;
 
 import org.json.simple.JSONObject;
 
-import com.clearblade.cloud.iot.v1.utils.Constants;
-
 public class UnbindDeviceFromGatewayRequest {
 	private final String parent;
 	private final String gateway;
@@ -74,10 +72,10 @@ public class UnbindDeviceFromGatewayRequest {
 	@SuppressWarnings("unchecked")
 	@Override
 	public String toString() {
+
 		requestParams = new JSONObject();
 		bodyParams = new JSONObject();
-		String method = Constants.UNBIND_DEVICE_FROM_GATEWAY;
-		requestParams.put("method", method);
+		requestParams.put("method", "unbindDeviceFromGateway");
 		requestParams.put("parent", this.parent);
 
 		bodyParams.put("gatewayId", this.gateway);
@@ -92,7 +90,7 @@ public class UnbindDeviceFromGatewayRequest {
 	@SuppressWarnings("unchecked")
 	public String[] getBodyAndParams() {
 		String[] output = new String[2];
-		String params = "parent=" + this.parent + "&method=" + Constants.UNBIND_DEVICE_FROM_GATEWAY;
+		String params = "parent=" + this.parent + "&method=unbindDeviceFromGateway";
 		bodyParams = new JSONObject();
 		bodyParams.put("gatewayId", this.gateway);
 		bodyParams.put("deviceId", this.device);

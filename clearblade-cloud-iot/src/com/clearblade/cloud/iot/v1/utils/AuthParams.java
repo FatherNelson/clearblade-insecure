@@ -19,7 +19,7 @@ import com.clearblade.cloud.iot.v1.exception.ApplicationException;
 
 public class AuthParams {
 	static Logger log = Logger.getLogger(AuthParams.class.getName());
-
+	static ConfigParameters configParameters = ConfigParameters.getInstance();
 	private static String adminSystemKey = null;
 	private static String project = null;
 	private static String baseURL = null;
@@ -91,18 +91,36 @@ public class AuthParams {
 
 		} catch (Exception e) {
 			log.log(Level.SEVERE, e.getMessage());
-			log.log(Level.SEVERE, e.getMessage());
 			throw new ApplicationException(e.getMessage());
 		}
 	}
 
+	private static void setRegistryRegion() throws ApplicationException {
+		if(configParameters.getRegistry()==null) {
+			String registryName = System.getenv(Constants.AUTH_REGISTRY);
+			if(registryName != null) { 
+				configParameters.setRegistry(registryName);
+			} else {
+				log.log(Level.SEVERE, "CLEARBLADE_REGISTRY Enviornment variable not set");
+				throw new ApplicationException("CLEARBLADE_REGISTRY Enviornment variable not set");
+			}
+			String regionName = System.getenv(Constants.AUTH_REGION);
+			if(regionName != null) { 
+				configParameters.setRegion(regionName);
+			} else {
+				log.log(Level.SEVERE, "CLEARBLADE_REGION Enviornment variable not set");
+				throw new ApplicationException("CLEARBLADE_REGION Enviornment variable not set");
+			}
+		}
+	}
+	
 	@SuppressWarnings("unchecked")
 	public static void setRegistryCredentials() throws ApplicationException, IOException {
 		if (userSystemKey != null) {
 			return;
 		}
 		setAdminCredentials();
-		ConfigParameters configParameters = new ConfigParameters();
+		setRegistryRegion();
 		String finalURL = baseURL.concat(configParameters.getGetSystemCredentialsExtension())
 				.concat(adminSystemKey)
 				.concat("/getRegistryCredentials");
@@ -153,7 +171,9 @@ public class AuthParams {
 						apiBaseURL = responseJSONObject.get(Constants.API_BASE_URL).toString();
 					}
 				}
-			}
+			}else {
+					log.log(Level.INFO, "Response code " + responseCode + " received with message::" + responseMessage);
+				}
 		} catch (Exception e) {
 			log.log(Level.SEVERE, e.getMessage());
 		}

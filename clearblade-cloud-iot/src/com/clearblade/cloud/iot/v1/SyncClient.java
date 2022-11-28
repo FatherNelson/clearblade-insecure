@@ -19,7 +19,8 @@ import com.clearblade.cloud.iot.v1.utils.SetHttpConnection;
 public class SyncClient {
 
 	static Logger log = Logger.getLogger(SyncClient.class.getName());
-	private ConfigParameters configParameters = new ConfigParameters();
+	private ConfigParameters configParameters = ConfigParameters.getInstance();
+	
 
 	/**
 	 * Method used to generate URL for apicall
@@ -32,7 +33,7 @@ public class SyncClient {
 
 		return AuthParams.getApiBaseURL()
 				.concat(configParameters.getEndpointPort())
-				.concat(configParameters.getBaseURL())
+				.concat(configParameters.getWebhook())
 				.concat(AuthParams.getUserSystemKey())
 				.concat(apiName)
 				.concat("?" + params);
@@ -40,7 +41,6 @@ public class SyncClient {
 
 	/**
 	 * Method used to generate URL for apicall
-	 * 
 	 * @param apiName - path to api
 	 * @param params  - parameters to be attached to request
 	 * @return URL formed and to be used
@@ -48,7 +48,7 @@ public class SyncClient {
 	private String generateAdminURL(String apiName, String params) {
 
 		return AuthParams.getBaseURL()
-				.concat(configParameters.getBaseURL())
+				.concat(configParameters.getWebhook())
 				.concat(AuthParams.getAdminSystemKey())
 				.concat(apiName)
 				.concat("?" + params);

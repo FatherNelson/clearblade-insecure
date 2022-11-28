@@ -28,7 +28,7 @@ import com.clearblade.cloud.iot.v1.utils.ConfigParameters;
 
 public class ClearBladeDeviceManager {
 	static Logger log = Logger.getLogger(ClearBladeDeviceManager.class.getName());
-	ConfigParameters configParameters = new ConfigParameters();
+	ConfigParameters configParameters = ConfigParameters.getInstance();
 
 	public Device getDevice(GetDeviceRequest request) {
 		SyncClient syncClient = new SyncClient();

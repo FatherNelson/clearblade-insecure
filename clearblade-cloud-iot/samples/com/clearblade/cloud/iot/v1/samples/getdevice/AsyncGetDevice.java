@@ -10,15 +10,22 @@ import com.clearblade.cloud.iot.v1.getdevice.GetDeviceRequest;
 
 public class AsyncGetDevice {
 	static Logger log = Logger.getLogger(AsyncGetDevice.class.getName());
+	public static String PROJECT = "";
+	public static String  LOCATION = "";
+	public static String  REGISTRY = "";
+	public static String  DEVICE = "";
 
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
+		PROJECT = args[0];
+		LOCATION = args[1];
+		REGISTRY = args[2];
+		DEVICE = args[3];
 		asyncGetDevice();
 	}
 
 	public static void asyncGetDevice() {
 		DeviceManagerAsyncClient deviceManagerAsyncClient = new DeviceManagerAsyncClient();
-		DeviceName name = DeviceName.of("ingressdevelopmentenv", "us-central1", "Rashmi_Registry_Test",
-				"Rashmi_Device_Test");
+		DeviceName name = DeviceName.of(PROJECT, LOCATION, REGISTRY,DEVICE);
 		GetDeviceRequest request = GetDeviceRequest.Builder.newBuilder().setName(name)
 				.setFieldMask(FieldMask.newBuilder().build()).build();
 		Device response = deviceManagerAsyncClient.getDevice(request);

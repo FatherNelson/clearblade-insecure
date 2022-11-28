@@ -25,7 +25,7 @@ public class AsyncClient {
 
 	static Logger log = Logger.getLogger(AsyncClient.class.getName());
 
-	private ConfigParameters configParameters = new ConfigParameters();
+	private ConfigParameters configParameters = ConfigParameters.getInstance();
 	private String[] responseArray = new String[3];
 	private String apiName;
 	private String params;
@@ -43,7 +43,7 @@ public class AsyncClient {
 
 		return AuthParams.getApiBaseURL()
 				.concat(configParameters.getEndpointPort())
-				.concat(configParameters.getBaseURL())
+				.concat(configParameters.getWebhook())
 				.concat(AuthParams.getUserSystemKey())
 				.concat(apiName)
 				.concat("?" + params);
@@ -59,7 +59,7 @@ public class AsyncClient {
 	private String generateAdminURL(String apiName, String params) {
 
 		return AuthParams.getBaseURL()
-				.concat(configParameters.getBaseURL())
+				.concat(configParameters.getWebhook())
 				.concat(AuthParams.getAdminSystemKey())
 				.concat(apiName)
 				.concat("?" + params);

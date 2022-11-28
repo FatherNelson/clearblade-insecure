@@ -1,14 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>clearblade-cloud-iot</groupId>
-	<artifactId>clearblade-cloud-iot</artifactId>
+	<artifactId>clearblade-cloud-iot-samples</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<build>
-		<sourceDirectory>src</sourceDirectory>
+		<sourceDirectory>.</sourceDirectory>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>3.8.0</version>
 				<configuration>
 					<release>17</release>
 				</configuration>
@@ -25,13 +26,67 @@
 						</goals>
 						<configuration>
 							<sources>
-								<source>src</source>
-							</sources>
+								<source>.</source>																
+								<source>../src</source>								
+							</sources>	
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-		</plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.3.0</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>./target</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+							<excludeTransitive>true</excludeTransitive>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- 
+      		<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.3.0</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>							
+							<mainClass>com.clearblade.cloud.iot.v1.samples.getdevice.SyncGetDevice</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.4.0</version>
+				<configuration>
+					<executable>java</executable>					
+				</configuration>				
+				<dependencies>
+					<dependency>
+						<groupId>clearblade-cloud-iot</groupId>
+						<artifactId>clearblade-cloud-iot-samples</artifactId>
+						<version>0.0.1-SNAPSHOT</version>
+						<type>jar</type>
+					</dependency>
+				</dependencies>
+			
+			</plugin>
+		</plugins>	
 	</build>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->

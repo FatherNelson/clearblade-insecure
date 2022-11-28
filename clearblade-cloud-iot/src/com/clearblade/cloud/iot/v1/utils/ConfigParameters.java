@@ -1,82 +1,48 @@
 package com.clearblade.cloud.iot.v1.utils;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class ConfigParameters {
 	static Logger log = Logger.getLogger(ConfigParameters.class.getName());
 
-	// Fields used to set values from properties file
-
+	private static ConfigParameters single_instance = null;
+	
 	private String project;
 	private String region;
 	private String registry;
-	private String endpointPort;
-
 	private String getSystemCredentialsExtension;
-
-	private String baseURL;
+	private String webhook;
 	private String cloudiotURLExtension;
 	private String devicesURLExtension;
 	private String devicesStatesURLExtension;
 	private String cloudiotdevicesURLExtension;
-	private String cloudiotDeviceConfigURLExtension;
 	private String cloudiotConfigURLExtension;
-
-	// Fields used to fetch values from Properties file
-	Properties properties;
-	InputStream input;
+	private String endpointPort;
+	
+	public static ConfigParameters getInstance()
+    {
+        if (single_instance == null)
+            single_instance = new ConfigParameters();
+  
+        return single_instance;
+    }	
 
 	public ConfigParameters() {
-		properties = null;
-		input = null;
 		setValues();
-	}
-
-	/**
-	 * Method used to read values form config.properties file and setting in field
-	 * setters
-	 */
-	public void getConfigurations() {
-		// Read inputs from properties file
-		properties = new Properties();
-		input = getClass().getClassLoader().getResourceAsStream("config.properties");
-		try {
-			properties.load(input);
-		} catch (IOException ex) {
-			ex.printStackTrace();
-		} finally {
-			if (input != null) {
-				try {
-					input.close();
-				} catch (IOException e) {
-					log.log(Level.SEVERE, e.getMessage());
-				}
-			}
-		}
 	}
 
 	/**
 	 * Method used to set values in Constants setter method
 	 */
 	public void setValues() {
-		// get Configurations uploaded from config.properties file
-		getConfigurations();
-		this.setBaseURL(properties.getProperty("baseURL"));
-		this.setCloudiotURLExtension(properties.getProperty("cloudiotURLExtension"));
-		this.setDevicesURLExtension(properties.getProperty("devicesURLExtension"));
-		this.setCloudiotdevicesURLExtension(properties.getProperty("cloudiotdevicesURLExtension"));
-		this.setDevicesStatesURLExtension(properties.getProperty("devicesStatesURLExtension"));
-		this.setCloudiotdevicesURLExtension(properties.getProperty("cloudiotDeviceConfigURLExtension"));
-		this.setCloudiotConfigURLExtension(properties.getProperty("cloudiotConfigURLExtension"));
-		this.setProject(properties.getProperty("project"));
-		this.setRegion(properties.getProperty("region"));
-		this.setRegistry(properties.getProperty("registry"));
-		this.setGetSystemCredentialsExtension(properties.getProperty("getSystemCredentialsExtension"));
-		this.setEndpointPort(properties.getProperty("endPointPort"));
+		this.setWebhook(Constants.WEBHOOK);
+		this.setCloudiotURLExtension(Constants.CLOUDIOT_URL_EXTENSION);
+		this.setDevicesURLExtension(Constants.DEVICES_URL_EXTENSION);
+		this.setCloudiotdevicesURLExtension(Constants.CLOUDIOT_DEVICES_URL_EXTENSION);
+		this.setDevicesStatesURLExtension(Constants.DEVICES_STATES_URL_EXTENSION);
+		this.setCloudiotdevicesURLExtension(Constants.CLOUDIOT_DEVICE_CONFIG_URL_EXTENSION);
+		this.setGetSystemCredentialsExtension(Constants.GET_SYSTEM_CREDENTIALS_EXTENSION);
+		this.setEndpointPort(Constants.ENDPOINTPORT);
 	}
 
 	public String getCloudiotURLExtension() {
@@ -109,14 +75,6 @@ public class ConfigParameters {
 
 	public void setCloudiotdevicesURLExtension(String cloudiotdevicesURLExtension) {
 		this.cloudiotdevicesURLExtension = cloudiotdevicesURLExtension;
-	}
-
-	public String getCloudiotDeviceConfigURLExtension() {
-		return cloudiotDeviceConfigURLExtension;
-	}
-
-	public void setCloudiotDeviceConfigURLExtension(String cloudiotDeviceConfigURLExtension) {
-		this.cloudiotDeviceConfigURLExtension = cloudiotDeviceConfigURLExtension;
 	}
 
 	public String getProject() {
@@ -159,12 +117,12 @@ public class ConfigParameters {
 		this.endpointPort = endpointPort;
 	}
 
-	public String getBaseURL() {
-		return baseURL;
+	public String getWebhook() {
+		return webhook;
 	}
 
-	public void setBaseURL(String baseURL) {
-		this.baseURL = baseURL;
+	public void setWebhook(String webhook) {
+		this.webhook = webhook;
 	}
 
 	public String getCloudiotConfigURLExtension() {

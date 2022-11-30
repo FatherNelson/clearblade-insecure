@@ -1,16 +1,18 @@
 package com.clearblade.cloud.iot.v1.utils;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.URL;
+import java.net.ProxySelector;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpRequest.BodyPublisher;
+import java.net.http.HttpRequest.BodyPublishers;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
-import javax.net.ssl.HttpsURLConnection;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -28,6 +30,8 @@ public class AuthParams {
 	private static String userToken = null;
 	private static String apiBaseURL = null;
 
+	private AuthParams() {}
+	
 	public static String getAdminSystemKey() {
 		return adminSystemKey;
 	}
@@ -114,53 +118,43 @@ public class AuthParams {
 		}
 	}
 	
+
 	@SuppressWarnings("unchecked")
 	public static void setRegistryCredentials() throws ApplicationException, IOException {
+		
 		if (userSystemKey != null) {
 			return;
 		}
-		setAdminCredentials();
-		setRegistryRegion();
-		String finalURL = baseURL.concat(configParameters.getGetSystemCredentialsExtension())
-				.concat(adminSystemKey)
-				.concat("/getRegistryCredentials");
-		URL obj = new URL(finalURL);
-		SetHttpConnection setCon = new SetHttpConnection();
-		HttpsURLConnection con = setCon.getConnection(obj);
-		con.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, adminToken);
-		con.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY,
-				Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
-		con.addRequestProperty(Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY,
-				Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
-		con.setRequestMethod(Constants.HTTP_REQUEST_METHOD_TYPE_POST);
-		con.setDoOutput(true);
-		StringBuilder response = new StringBuilder();
-		try (OutputStream os = con.getOutputStream()) {
+		try {
+			setAdminCredentials();
+			setRegistryRegion();
+			String finalURL = baseURL.concat(configParameters.getGetSystemCredentialsExtension())
+					.concat(adminSystemKey)
+					.concat("/getRegistryCredentials");
+			
 			JSONObject js = new JSONObject();
 			js.put("region", configParameters.getRegion());
 			js.put("registry", configParameters.getRegistry());
 			js.put("project", project);
+			BodyPublisher jsonPayload = BodyPublishers.ofString(js.toString());
+			
+			HttpRequest request = HttpRequest.newBuilder()					
+                    .uri(URI.create(finalURL))
+                    .method(Constants.HTTP_REQUEST_METHOD_TYPE_POST, jsonPayload)
+                    .headers(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE, 
+        					Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, adminToken,
+        					Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE)
+                    .build();
 
-			byte[] input = js.toString().getBytes(Constants.UTF8);
-			os.write(input, 0, input.length);
-			os.flush();
-			int responseCode = con.getResponseCode();
-			BufferedReader in = null;
-			if (con.getErrorStream() != null) {
-				in = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-			} else if (con.getInputStream() != null) {
-				in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-			}
-			JSONObject responseJSONObject = new JSONObject();
+			HttpResponse<String> response = HttpClient.newBuilder()
+					  								  .proxy(ProxySelector.getDefault())
+					  								  .build()
+					  								  .send(request, BodyHandlers.ofString());
+			
+			int responseCode = response.statusCode();
+			String responseMessage = response.body();
 			JSONParser responseParser = new JSONParser();
-			String inputLine;
-			String responseMessage = "";
-			if (in != null) {
-				while ((inputLine = in.readLine()) != null) {
-					response.append(inputLine);
-				}
-				responseMessage = response.toString();
-			}
+			JSONObject responseJSONObject;
 			if (responseCode == 200) {
 				if (responseMessage != null && responseMessage.length() > 0) {
 					Object responseObj = responseParser.parse(responseMessage);
@@ -172,11 +166,15 @@ public class AuthParams {
 					}
 				}
 			}else {
-					log.log(Level.INFO, "Response code " + responseCode + " received with message::" + responseMessage);
-				}
-		} catch (Exception e) {
+					log.log(Level.INFO, ()->"Response code " + responseCode + " received with message::" + responseMessage);
+			}
+		} catch (ApplicationException | IOException e) {
 			log.log(Level.SEVERE, e.getMessage());
+		} catch (InterruptedException ex) {
+			log.log(Level.SEVERE, ex.getMessage());
+			Thread.currentThread().interrupt();
+		}catch(Exception ec) {
+			log.log(Level.SEVERE, ec.getMessage());
 		}
 	}
-
 }

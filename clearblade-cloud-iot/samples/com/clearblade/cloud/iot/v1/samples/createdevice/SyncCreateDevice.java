@@ -2,7 +2,6 @@ package com.clearblade.cloud.iot.v1.samples.createdevice;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Logger;
 
 import com.clearblade.cloud.iot.v1.DeviceManagerClient;
 import com.clearblade.cloud.iot.v1.createdevice.CreateDeviceRequest;
@@ -15,21 +14,30 @@ import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
 import com.clearblade.cloud.iot.v1.utils.LogLevel;
 
 public class SyncCreateDevice {
-	static Logger log = Logger.getLogger(SyncCreateDevice.class.getName());
 
-	public static void main(String[] args) {
+	public static String PROJECT = "";
+	public static String LOCATION = "";
+	public static String REGISTRY = "";
+	public static String DEVICE = "";
+	public static String NUMID = "";
+	public static void main(String[] args) {		
+		PROJECT = System.getProperty("projectName");
+		LOCATION = System.getProperty("location");
+		REGISTRY = System.getProperty("registryName");
+		DEVICE = System.getProperty("deviceName");
+		NUMID = System.getProperty("numId");
 		syncCreateDevice();
 	}
 
 	public static void syncCreateDevice() {
 
 		DeviceManagerClient deviceManagerClient = new DeviceManagerClient();
-		RegistryName parent = RegistryName.of("ingressdevelopmentenv", "us-central1", "Rashmi_Registry_Test");
+		RegistryName parent = RegistryName.of(PROJECT,LOCATION, REGISTRY);
 		GatewayConfig gatewayCfg = new GatewayConfig();
-		gatewayCfg.setGatewayType(GatewayType.NON_GATEWAY);
+		gatewayCfg.setGatewayType(GatewayType.GATEWAY);
 		Device device = Device.newBuilder()
-				.setId("SyncTest22").setName("SyncTest22")
-				.setNumId("2314").setBlocked(false)
+				.setId(DEVICE).setName(DEVICE)
+				.setNumId(NUMID).setBlocked(false)
 				.setGatewayConfig(gatewayCfg)
 				.setLogLevel(LogLevel.DEBUG)
 				.setCredentials(new ArrayList<>())
@@ -40,7 +48,10 @@ public class SyncCreateDevice {
 		CreateDeviceRequest request = CreateDeviceRequest.Builder.newBuilder().setParent(parent).setDevice(device)
 				.build();
 		Device response = deviceManagerClient.createDevice(request);
-		System.out.println(response.toBuilder().getName());
-
+		if(response != null) {
+			System.out.println("CreateDevice execution successful");
+		}else {
+			System.out.println("CreateDevice execution failed");
+		}
 	}
 }

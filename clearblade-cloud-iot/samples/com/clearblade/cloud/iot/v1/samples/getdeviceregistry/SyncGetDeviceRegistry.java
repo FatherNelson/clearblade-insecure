@@ -1,32 +1,33 @@
 package com.clearblade.cloud.iot.v1.samples.getdeviceregistry;
 
-import java.util.logging.Logger;
-
-import com.clearblade.cloud.iot.v1.DeviceManagerAsyncClient;
+import com.clearblade.cloud.iot.v1.DeviceManagerClient;
 import com.clearblade.cloud.iot.v1.getdeviceregistry.GetDeviceRegistryRequest;
 import com.clearblade.cloud.iot.v1.registrytypes.DeviceRegistry;
 import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
 
 public class SyncGetDeviceRegistry {
-	static Logger log = Logger.getLogger(SyncGetDeviceRegistry.class.getName());
 	public static String PROJECT = "";
 	public static String  LOCATION = "";
 	public static String  REGISTRY = "";
 	
 	public static void main(String[] args) {		
-		PROJECT = args[0];
-		LOCATION = args[1];
-		REGISTRY = args[2];
+		PROJECT = System.getProperty("projectName");
+		LOCATION = System.getProperty("location");
+		REGISTRY = System.getProperty("registryName");
 		syncGetDeviceRegistry();
 	}
 
 	public static void syncGetDeviceRegistry() {
-		DeviceManagerAsyncClient deviceManagerAsyncClient = new DeviceManagerAsyncClient();
+		DeviceManagerClient deviceManagerClient = new DeviceManagerClient();
 		GetDeviceRegistryRequest request = GetDeviceRegistryRequest.Builder.newBuilder()
 				.setName(RegistryName.of(PROJECT, LOCATION, REGISTRY).getRegistryFullName())
 				.build();
-		DeviceRegistry response = deviceManagerAsyncClient.getDeviceRegistry(request);
-		System.out.println(response.createDeviceJSONObject(""));
+		DeviceRegistry response = deviceManagerClient.getDeviceRegistry(request);
+		if(response != null) {
+			System.out.println("GetDeviceRegistry execution successful ::"+response.toBuilder().getId());
+		}else {
+			System.out.println("GetDeviceRegistry execution failed");			
+		}
 	}
 
 }

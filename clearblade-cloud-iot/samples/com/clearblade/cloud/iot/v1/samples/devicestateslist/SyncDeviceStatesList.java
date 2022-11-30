@@ -1,7 +1,5 @@
 package com.clearblade.cloud.iot.v1.samples.devicestateslist;
 
-import java.util.logging.Logger;
-
 import com.clearblade.cloud.iot.v1.DeviceManagerClient;
 import com.clearblade.cloud.iot.v1.devicestateslist.ListDeviceStatesRequest;
 import com.clearblade.cloud.iot.v1.devicestateslist.ListDeviceStatesResponse;
@@ -9,9 +7,16 @@ import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceState;
 
 public class SyncDeviceStatesList {
-	static Logger log = Logger.getLogger(SyncDeviceStatesList.class.getName());
+	public static String PROJECT = "";
+	public static String  LOCATION = "";
+	public static String  REGISTRY = "";
+	public static String  DEVICE = "";
 
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
+		PROJECT = System.getProperty("projectName");
+		LOCATION = System.getProperty("location");
+		REGISTRY = System.getProperty("registryName");
+		DEVICE = System.getProperty("deviceName");
 		syncDeviceStatesList();
 	}
 
@@ -19,12 +24,16 @@ public class SyncDeviceStatesList {
 		DeviceManagerClient deviceManagerClient = new DeviceManagerClient();
 
 		ListDeviceStatesRequest request = ListDeviceStatesRequest.Builder.newBuilder().setName(DeviceName
-				.of("ingressdevelopmentenv", "us-central1", "Rashmi_Registry_Test", "Rashmi_Device_Test")
+				.of(PROJECT, LOCATION, REGISTRY, DEVICE)
 				.toString()).setNumStates(1643330779).build();
 		ListDeviceStatesResponse response = deviceManagerClient.listDeviceStates(request);
-
-		for (DeviceState element : response.getDeviceStatesList()) {
-			System.out.println(element.toString());
+		if(response != null) {
+			System.out.println("DeviceStatesList fetch successful");
+			for (DeviceState element : response.getDeviceStatesList()) {
+				System.out.println(element.toString());
+			}
+		}else {
+			System.out.println("DeviceStatesList fetch failed");			
 		}
 	}
 

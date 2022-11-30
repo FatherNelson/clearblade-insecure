@@ -1,7 +1,5 @@
 package com.clearblade.cloud.iot.v1.samples.modifycloudtodeviceconfig;
 
-import java.util.logging.Logger;
-
 import com.clearblade.cloud.iot.v1.DeviceManagerAsyncClient;
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceConfig;
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
@@ -9,20 +7,34 @@ import com.clearblade.cloud.iot.v1.modifycloudtodeviceconfig.ModifyCloudToDevice
 import com.clearblade.cloud.iot.v1.utils.ByteString;
 
 public class AsyncModifyCloudToDeviceConfig {
-	static Logger log = Logger.getLogger(AsyncModifyCloudToDeviceConfig.class.getName());
 
-	public static void main(String[] args) {
+	public static String PROJECT = "";
+	public static String LOCATION = "";
+	public static String REGISTRY = "";
+	public static String DEVICE = "";
+	public static String BINARYDATA = "";
+	public static String VERSIONTOUPDATE = "";
+	
+	public static void main(String[] args) {		
+		PROJECT = System.getProperty("projectName");
+		LOCATION = System.getProperty("location");
+		REGISTRY = System.getProperty("registryName");
+		DEVICE = System.getProperty("deviceName");
+		BINARYDATA = System.getProperty("binaryData");
+		VERSIONTOUPDATE = System.getProperty("versionToUpdate");
 		asyncModifyCloudToDeviceConfig();
 	}
 
 	public static void asyncModifyCloudToDeviceConfig() {
 		DeviceManagerAsyncClient deviceManagerClient = new DeviceManagerAsyncClient();
 		ModifyCloudToDeviceConfigRequest request = ModifyCloudToDeviceConfigRequest.Builder.newBuilder()
-				.setName(DeviceName
-						.of("ingressdevelopmentenv", "us-central1", "MandarTest1", "mandar_device")
-						.toString())
-				.setBinaryData(new ByteString("WWV0QW5vdGhlck1lc3NhZ2U=")).setVersionToUpdate("3").build();
+				.setName(DeviceName.of(PROJECT,LOCATION, REGISTRY, DEVICE).toString())
+				.setBinaryData(new ByteString(BINARYDATA)).setVersionToUpdate(VERSIONTOUPDATE).build();
 		DeviceConfig response = deviceManagerClient.modifyCloudToDeviceConfig(request);
-		System.out.println(response.toString());
+		if(response != null) {
+			System.out.println("ModifyDeviceToConfig execution successful");
+		}else {
+			System.out.println("ModifyDeviceToConfig execution failed");
+		}
 	}
 }

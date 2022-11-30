@@ -1,7 +1,5 @@
 package com.clearblade.cloud.iot.v1.samples.modifycloudtodeviceconfig;
 
-import java.util.logging.Logger;
-
 import com.clearblade.cloud.iot.v1.DeviceManagerClient;
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceConfig;
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
@@ -9,9 +7,20 @@ import com.clearblade.cloud.iot.v1.modifycloudtodeviceconfig.ModifyCloudToDevice
 import com.clearblade.cloud.iot.v1.utils.ByteString;
 
 public class SyncModifyCloudToDeviceConfig {
-	static Logger log = Logger.getLogger(SyncModifyCloudToDeviceConfig.class.getName());
-
-	public static void main(String[] args) {
+	public static String PROJECT = "";
+	public static String LOCATION = "";
+	public static String REGISTRY = "";
+	public static String DEVICE = "";
+	public static String BINARYDATA = "";
+	public static String VERSIONTOUPDATE = "";
+	
+	public static void main(String[] args) {		
+		PROJECT = System.getProperty("projectName");
+		LOCATION = System.getProperty("location");
+		REGISTRY = System.getProperty("registryName");
+		DEVICE = System.getProperty("deviceName");
+		BINARYDATA = System.getProperty("binaryData");
+		VERSIONTOUPDATE = System.getProperty("versionToUpdate");
 		syncModifyCloudToDeviceConfig();
 	}
 
@@ -19,11 +28,13 @@ public class SyncModifyCloudToDeviceConfig {
 
 		DeviceManagerClient deviceManagerClient = new DeviceManagerClient();
 		ModifyCloudToDeviceConfigRequest request = ModifyCloudToDeviceConfigRequest.Builder.newBuilder()
-				.setName(DeviceName
-						.of("ingressdevelopmentenv", "us-central1", "Rashmi_Registry_Test", "Rashmi_Device_Test")
-						.toString())
-				.setBinaryData(new ByteString("bmV3TWVzc2FnZUZvckNvbmZpZw==")).setVersionToUpdate("6").build();
+				.setName(DeviceName.of(PROJECT,LOCATION, REGISTRY, DEVICE).toString())
+				.setBinaryData(new ByteString(BINARYDATA)).setVersionToUpdate(VERSIONTOUPDATE).build();
 		DeviceConfig response = deviceManagerClient.modifyCloudToDeviceConfig(request);
-		System.out.println(response.toString());
+		if(response != null) {
+			System.out.println("ModifyDeviceToConfig execution successful");
+		}else {
+			System.out.println("ModifyDeviceToConfig execution failed");
+		}
 	}
 }

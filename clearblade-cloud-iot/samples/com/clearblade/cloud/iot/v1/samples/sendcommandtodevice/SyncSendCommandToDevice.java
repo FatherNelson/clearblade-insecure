@@ -1,7 +1,5 @@
 package com.clearblade.cloud.iot.v1.samples.sendcommandtodevice;
 
-import java.util.logging.Logger;
-
 import com.clearblade.cloud.iot.v1.DeviceManagerClient;
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
 import com.clearblade.cloud.iot.v1.sendcommandtodevice.SendCommandToDeviceRequest;
@@ -10,20 +8,33 @@ import com.clearblade.cloud.iot.v1.utils.ByteString;
 
 public class SyncSendCommandToDevice {
 
-	static Logger log = Logger.getLogger(SyncSendCommandToDevice.class.getName());
-
-	public static void main(String[] args) {
+	public static String PROJECT = "";
+	public static String LOCATION = "";
+	public static String REGISTRY = "";
+	public static String DEVICE = "";
+	public static String BINARYDATA = "";
+	public static String SUBFOLDER = "";
+	
+	public static void main(String[] args) {		
+		PROJECT = System.getProperty("projectName");
+		LOCATION = System.getProperty("location");
+		REGISTRY = System.getProperty("registryName");
+		DEVICE = System.getProperty("deviceName");
+		BINARYDATA = System.getProperty("binaryData");
+		SUBFOLDER = System.getProperty("subFolder");
 		syncSendCommandToDevice();
 	}
 
 	public static void syncSendCommandToDevice() {
 		DeviceManagerClient deviceManagerClient = new DeviceManagerClient();
 		SendCommandToDeviceRequest request = SendCommandToDeviceRequest.Builder.newBuilder()
-				.setName(DeviceName
-						.of("ingressdevelopmentenv", "us-central1", "MandarTest1", "mandar_device")
-						.toString())
-				.setBinaryData(new ByteString("c2VuZEZ1bm55TWVzc2FnZVRvRGV2aWNl")).setSubfolder("testdata").build();
+				.setName(DeviceName.of(PROJECT, LOCATION, REGISTRY, DEVICE).toString())
+				.setBinaryData(new ByteString(BINARYDATA)).setSubfolder(SUBFOLDER).build();
 		SendCommandToDeviceResponse response = deviceManagerClient.sendCommandToDevice(request);
-		System.out.println(response.toString());
+		if(response != null) {
+			System.out.println("SendCommandToDevice execution successful");
+		}else {
+			System.out.println("SendCommandToDevice execution failed");
+		}
 	}
 }

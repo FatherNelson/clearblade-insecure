@@ -31,7 +31,7 @@ public class ClearBladeRegistryManager {
 	public DeviceRegistry asyncGetDeviceRegistry(GetDeviceRegistryRequest request) {
 		try {
 			AsyncClient asyncClient = new AsyncClient();
-			String[] responseArray = asyncClient.asyncGetRegistry(configParameters.getCloudiotURLExtension(),
+			String[] responseArray = asyncClient.get(configParameters.getCloudiotURLExtension(),
 					request.toString());
 			if (responseArray[0] != null) {
 				int responseCode = Integer.parseInt(responseArray[0]);
@@ -87,18 +87,23 @@ public class ClearBladeRegistryManager {
 	}
 
 	public DeviceRegistry updateDeviceRegistry(UpdateDeviceRegistryRequest request) {
+		try {
 		SyncClient syncClient = new SyncClient();
-		String[] bodyParams = request.getBodyAndParams();
-
-		String[] responseArray = syncClient.update(configParameters.getCloudiotURLExtension(), bodyParams[0],
-				bodyParams[1]);
-		if (responseArray[0] != null) {
-			int responseCode = Integer.parseInt(responseArray[0]);
-			if (responseCode == 200) {
-				DeviceRegistry deviceRegistry = DeviceRegistry.newBuilder().build();
-				deviceRegistry.loadFromString(responseArray[2]);
-				return deviceRegistry;
+			String[] bodyParams = request.getBodyAndParams();
+	
+			String[] responseArray = syncClient.update(configParameters.getCloudiotURLExtension(), bodyParams[0],
+					bodyParams[1]);
+			if (responseArray[0] != null) {
+				int responseCode = Integer.parseInt(responseArray[0]);
+				if (responseCode == 200) {
+					DeviceRegistry deviceRegistry = DeviceRegistry.newBuilder().build();
+					deviceRegistry.loadFromString(responseArray[2]);
+					return deviceRegistry;
+				}
 			}
+		}catch(InterruptedException e) {
+			log.log(Level.SEVERE, e.getMessage());
+			Thread.currentThread().interrupt();
 		}
 		return null;
 	}
@@ -108,7 +113,7 @@ public class ClearBladeRegistryManager {
 			AsyncClient asyncClient = new AsyncClient();
 			String[] bodyParams = request.getBodyAndParams();
 
-			String[] responseArray = asyncClient.asyncUpdateDeviceRegistry(configParameters.getCloudiotURLExtension(),
+			String[] responseArray = asyncClient.update(configParameters.getCloudiotURLExtension(),
 					bodyParams[0],
 					bodyParams[1]);
 			if (responseArray[0] != null) {
@@ -131,7 +136,7 @@ public class ClearBladeRegistryManager {
 
 		String[] responseArray = syncClient.delete(configParameters.getCloudiotURLExtension(), bodyParams, true);
 		if (responseArray[0] != null) {
-			log.log(Level.INFO, "Response code " + responseArray[0] + " received with message" + responseArray[2]);
+			log.log(Level.INFO, ()->"Response code " + responseArray[0] + " received with message" + responseArray[2]);
 		}
 
 	}
@@ -141,11 +146,12 @@ public class ClearBladeRegistryManager {
 			AsyncClient asyncClient = new AsyncClient();
 			String bodyParams = request.getParams();
 
-			String[] responseArray = asyncClient.asyncDeleteDeviceRegistry(configParameters.getCloudiotURLExtension(),
-					bodyParams,
-					"", true);
+			String[] responseArray = asyncClient.asyncDeleteDeviceRegistry(configParameters.getCloudiotURLExtension(), bodyParams, true);
 			if (responseArray[0] != null) {
-				log.log(Level.INFO, "Response code " + responseArray[0] + " received with message" + responseArray[2]);
+				System.out.println("DeleteDeviceRegistry execution successful");
+				log.log(Level.INFO, ()->"Response code " + responseArray[0] + " received with message" + responseArray[2]);
+			}else {
+				System.out.println("DeleteDeviceRegistry execution failed");
 			}
 
 		} catch (Exception e) {

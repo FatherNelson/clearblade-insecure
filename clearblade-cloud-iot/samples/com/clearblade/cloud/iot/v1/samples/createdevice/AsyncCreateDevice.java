@@ -2,7 +2,6 @@ package com.clearblade.cloud.iot.v1.samples.createdevice;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.logging.Logger;
 
 import com.clearblade.cloud.iot.v1.DeviceManagerAsyncClient;
 import com.clearblade.cloud.iot.v1.createdevice.CreateDeviceRequest;
@@ -15,20 +14,28 @@ import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
 import com.clearblade.cloud.iot.v1.utils.LogLevel;
 
 public class AsyncCreateDevice {
-	static Logger log = Logger.getLogger(AsyncCreateDevice.class.getName());
-
-	public static void main(String[] args) {
+	public static String PROJECT = "";
+	public static String LOCATION = "";
+	public static String REGISTRY = "";
+	public static String DEVICE = "";
+	public static String NUMID = "";
+	public static void main(String[] args) {		
+		PROJECT = System.getProperty("projectName");
+		LOCATION = System.getProperty("location");
+		REGISTRY = System.getProperty("registryName");
+		DEVICE = System.getProperty("deviceName");
+		NUMID = System.getProperty("numId");
 		asyncCreateDevice();
 	}
 
 	public static void asyncCreateDevice() {
 		DeviceManagerAsyncClient deviceManagerAsyncClient = new DeviceManagerAsyncClient();
-		RegistryName parent = RegistryName.of("ingressdevelopmentenv", "us-central1", "Rashmi_Registry_Test");
+		RegistryName parent = RegistryName.of(PROJECT, LOCATION, REGISTRY);
 		GatewayConfig gatewayCfg = new GatewayConfig();
 		gatewayCfg.setGatewayType(GatewayType.NON_GATEWAY);
 		Device device = Device.newBuilder()
-				.setId("AsyncTest22").setName("AsyncTest22")
-				.setNumId("2315").setBlocked(false)
+				.setId(DEVICE).setName(DEVICE)
+				.setNumId(NUMID).setBlocked(false)
 				.setGatewayConfig(gatewayCfg)
 				.setLogLevel(LogLevel.ERROR)
 				.setCredentials(new ArrayList<>())
@@ -39,6 +46,10 @@ public class AsyncCreateDevice {
 		CreateDeviceRequest request = CreateDeviceRequest.Builder.newBuilder().setParent(parent).setDevice(device)
 				.build();
 		Device response = deviceManagerAsyncClient.createDevice(request);
-		System.out.println(response.toBuilder().getName());
+		if(response != null) {
+			System.out.println("CreateDevice execution successful");
+		}else {
+			System.out.println("CreateDevice execution failed");
+		}
 	}
 }

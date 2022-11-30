@@ -1,26 +1,37 @@
 package com.clearblade.cloud.iot.v1.samples.unbinddevicefromgateway;
 
-import java.util.logging.Logger;
-
 import com.clearblade.cloud.iot.v1.DeviceManagerClient;
 import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
 import com.clearblade.cloud.iot.v1.unbinddevicefromgateway.UnbindDeviceFromGatewayRequest;
 import com.clearblade.cloud.iot.v1.unbinddevicefromgateway.UnbindDeviceFromGatewayResponse;
 
 public class SyncUnbindDeviceFromGateway {
-	static Logger log = Logger.getLogger(SyncUnbindDeviceFromGateway.class.getName());
+	public static String PROJECT = "";
+	public static String LOCATION = "";
+	public static String REGISTRY = "";
+	public static String GATEWAY = "";
+	public static String DEVICE = "";
 
-	public static void main(String[] args) {
+	public static void main(String[] args) {		
+		PROJECT = System.getProperty("projectName");
+		LOCATION = System.getProperty("location");
+		REGISTRY = System.getProperty("registryName");
+		GATEWAY = System.getProperty("gatewayName");
+		DEVICE = System.getProperty("deviceName");
 		syncUnbindDeviceFromGateway();
 	}
 
 	public static void syncUnbindDeviceFromGateway() {
 		DeviceManagerClient deviceManagerClient = new DeviceManagerClient();
 		UnbindDeviceFromGatewayRequest request = UnbindDeviceFromGatewayRequest.Builder.newBuilder()
-				.setParent(RegistryName.of("ingressdevelopmentenv", "us-central1", "Rashmi_Registry_Test").toString())
-				.setGateway("Rashmi_Gateway_Test").setDevice("Rashmi_Device_Test").build();
+				.setParent(RegistryName.of(PROJECT, LOCATION, REGISTRY).toString())
+				.setGateway(GATEWAY).setDevice(DEVICE).build();
 
 		UnbindDeviceFromGatewayResponse response = deviceManagerClient.unbindDeviceFromGateway(request);
-		System.out.println(response.toString());
+		if(response != null) {
+			System.out.println("UnbindDeviceFromGateway execution successful");
+		}else {
+			System.out.println("UnbindDeviceFromGateway execution failed");
+		}
 	}
 }

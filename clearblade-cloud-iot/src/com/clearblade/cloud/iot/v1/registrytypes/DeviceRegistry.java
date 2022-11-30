@@ -31,7 +31,7 @@ public class DeviceRegistry {
 		name = "";
 		eventNotificationConfigs = new ArrayList<>();
 		stateNotificationConfig = null;
-		mqttConfig = MqttConfig.newBuilder().build();
+		mqttConfig = null;
 		httpConfig = null;
 		logLevel = null;
 		credentials = new ArrayList<>();
@@ -331,5 +331,4 @@ public class DeviceRegistry {
 			log.log(Level.SEVERE, e.getMessage());
 		}
 	}
-
 }

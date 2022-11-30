@@ -8,24 +8,35 @@ import com.clearblade.cloud.iot.v1.utils.LogLevel;
 
 public class SyncUpdateDeviceRegistry {
 
-	public static void main(String[] args) throws Exception {
+	public static String  PROJECT = "";
+	public static String  LOCATION = "";
+	public static String  REGISTRY = "";
+	public static String  LOGLEVEL = "";
+
+	public static void main(String[] args) throws Exception{		
+		PROJECT = System.getProperty("projectName");
+		LOCATION = System.getProperty("location");
+		REGISTRY = System.getProperty("registryName");
+		LOGLEVEL = System.getProperty("logLevel");
 		syncUpdateDeviceRegistry();
 	}
 
 	public static void syncUpdateDeviceRegistry() throws Exception {
 		DeviceManagerClient deviceManagerClient = new DeviceManagerClient();
-		RegistryName name = RegistryName.of("ingressdevelopmentenv", "us-central1", "Rashmi_Registry_Test");
+		RegistryName name = RegistryName.of(PROJECT, LOCATION, REGISTRY);
 
 		UpdateDeviceRegistryRequest request = UpdateDeviceRegistryRequest.Builder.newBuilder()
-				.setDeviceRegistry(DeviceRegistry.newBuilder().setId("Rashmi_Registry_Test")
+				.setDeviceRegistry(DeviceRegistry.newBuilder().setId(REGISTRY)
 						.setName(name.getRegistryFullName())
-						.setLogLevel(LogLevel.DEBUG)
+						.setLogLevel(LogLevel.valueOf(LOGLEVEL))
 						.build())
 				.setName(name.getRegistryFullName()).setUpdateMask("logLevel").build();
 
 		DeviceRegistry response = deviceManagerClient.updateDeviceRegistry(request);
-		if (response != null) {
-			System.out.println(response.toBuilder().getName() + "::" + response.toBuilder().getLogLevel());
+		if(response != null) {
+			System.out.println("UpdateDeviceRegistry execution successful");
+		}else {
+			System.out.println("UpdateDeviceRegistry execution failed");
 		}
 	}
 }

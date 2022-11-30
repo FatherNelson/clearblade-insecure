@@ -7,19 +7,29 @@ import com.clearblade.cloud.iot.v1.registrytypes.LocationName;
 
 public class SyncCreateDeviceRegistry {
 
-    public static void main(String[] args) {
+	public static String PROJECT = "";
+	public static String LOCATION = "";
+	public static String REGISTRY = "";
+	public static void main(String[] args) {		
+		PROJECT = System.getProperty("projectName");
+		LOCATION = System.getProperty("location");
+		REGISTRY = System.getProperty("registryName");
         syncCreateDeviceRegistry();
     }
 
     public static void syncCreateDeviceRegistry() {
         DeviceManagerClient deviceManagerClient = new DeviceManagerClient();
         CreateDeviceRegistryRequest request = CreateDeviceRegistryRequest.Builder.newBuilder()
-                .setParent(LocationName.of("ingressdevelopmentenv", "us-central1").toString())
+                .setParent(LocationName.of(PROJECT, LOCATION).toString())
                 .setDeviceRegistry(
-                        DeviceRegistry.newBuilder().setId("testCreate_reg5").build())
+                        DeviceRegistry.newBuilder().setId(REGISTRY).build())
                 .build();
         DeviceRegistry response = deviceManagerClient.createDeviceRegistry(request);
-        System.out.println(response.toBuilder().getId());
+		if(response != null) {
+			System.out.println("CreateDeviceRegistry execution successful");
+		}else {
+			System.out.println("CreateDeviceRegistry execution failed");
+		}
 
     }
 }

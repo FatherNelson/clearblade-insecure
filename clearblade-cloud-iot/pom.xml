@@ -7,8 +7,9 @@
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
+				<version>3.8.0</version>
 				<configuration>
 					<release>17</release>
 				</configuration>
@@ -24,14 +25,51 @@
 							<goal>add-source</goal>
 						</goals>
 						<configuration>
-							<sources>
-								<source>src</source>
-							</sources>
+							<sources>																								
+								<source>samples</source>								
+							</sources>	
 						</configuration>
 					</execution>
 				</executions>
 			</plugin>
-		</plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.3.0</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>./target</outputDirectory>
+							<overWriteReleases>false</overWriteReleases>
+							<overWriteSnapshots>true</overWriteSnapshots>
+							<excludeTransitive>true</excludeTransitive>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.4.0</version>
+				<configuration>
+					<executable>java</executable>					
+				</configuration>				
+				<dependencies>
+					<dependency>
+						<groupId>clearblade-cloud-iot</groupId>
+						<artifactId>clearblade-cloud-iot</artifactId>
+						<version>0.0.1-SNAPSHOT</version>
+						<type>jar</type>
+					</dependency>
+				</dependencies>
+			
+			</plugin>
+		</plugins>	
 	</build>
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/com.googlecode.json-simple/json-simple -->

@@ -12,8 +12,10 @@ ClearBlade IoT Core platform.
 
 3. Use the following to set your environment variables keys:
 
-   export CLEARBLADE_REGISTRY=[your-registry]
-   export CLEARBLADE_CONFIGURATION=PATH to json file
-   export CLEARBLADE_REGION=[your-region]
+   ```
+    export CLEARBLADE_CONFIGURATION=/path/to/file.json
+    export CLEARBLADE_REGISTRY=[your-registry]
+    export CLEARBLADE_REGION=[your-region]
+   ```
 
 4. Use the HTTP or MQTT samples in the [samples](./clearblade-cloud-iot/samples/com/clearblade/cloud/iot/v1/samples) folder.

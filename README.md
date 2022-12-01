@@ -7,7 +7,7 @@ Java library and samples for [ClearBlade Internet of Things (IoT) Core][product-
 
 ## Supported Java Versions
 
-Java 11 or above is required for using this client. Java 17 are the best choice for new development.
+Java 11 or above is required for using this client. Java 17 is the best choice for new development.
 
 ## Quickstart
 
@@ -37,7 +37,8 @@ and terminal as described in the Quickstart above or the [samples](./clearblade-
 
 Before running the samples, you can set the `CLEARBLADE_CONFIGURATION`, `CLEARBLADE_REGISTRY` and
 `CLEARBLADE_REGION` environment variables to avoid passing them to
-the sample every time you run it.
+the sample every time you run it. Update the `CLEARBLADE_REGISTRY` and
+`CLEARBLADE_REGION` environment variables whenever switching to use new registries and regions.
 
 ### Installation and setup
 

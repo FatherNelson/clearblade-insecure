@@ -5,6 +5,25 @@ Java library and samples for [ClearBlade Internet of Things (IoT) Core][product-
 - [Product Documentation][product-docs]
 - [Client Library Documentation][javasdk]
 
+## Quickstart
+
+1. From the [ClearBlade Migration from Google IoT Core section](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2202664969/Migration+from+Google+IoT+Core)
+   migrate your existing Google IoT Core registries and/or devices into ClearBlade IoT Core or using the
+   of the ClearBlade IoT Core Console, create a device registry and devices.
+
+2. [Add service accounts to a project](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2240675843/Add+service+accounts+to+a+project) and download the json file with your service
+   account’s credentials.
+
+3. Use the following to set your environment variables keys:
+
+   ```
+    export CLEARBLADE_CONFIGURATION=/path/to/file.json
+    export CLEARBLADE_REGISTRY=[your-registry]
+    export CLEARBLADE_REGION=[your-region]
+   ```
+
+4. Use the HTTP or MQTT samples in the [samples](./clearblade-cloud-iot/samples/com/clearblade/cloud/iot/v1/samples) folder.
+
 ## ClearBlade IoT Core Samples Java
 
 The sample apps demonstrates registry and device creation for ClearBlade IoT Core. These are two of the over fifteen samples codes that come with the library.
@@ -12,8 +31,8 @@ The sample apps demonstrates registry and device creation for ClearBlade IoT Cor
 Note that before you can run the sample, you must configure a Google Cloud
 PubSub topic for Cloud IoT as described in [the parent README](../README.md).
 
-Before running the samples, you can set the `GOOGLE_CLOUD_PROJECT` and
-`GOOGLE_APPLICATION_CREDENTIALS` environment variables to avoid passing them to
+Before running the samples, you can set the `CLEARBLADE_CONFIGURATION`, `CLEARBLADE_REGISTRY` and
+`CLEARBLADE_REGION` environment variables to avoid passing them to
 the sample every time you run it.
 
 ## Setup
@@ -21,7 +40,7 @@ the sample every time you run it.
 Run the following command to install the libraries and build the sample with
 Maven:
 
-    mvn clean compile assembly:single
+    mvn clean install
 
 ## Running the sample
 

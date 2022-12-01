@@ -5,6 +5,10 @@ Java library and samples for [ClearBlade Internet of Things (IoT) Core][product-
 - [Product Documentation][product-docs]
 - [Client Library Documentation][javasdk]
 
+## Supported Java Versions
+
+Java 11 or above is required for using this client. Java 17 are the best choice for new development.
+
 ## Quickstart
 
 1. From the [ClearBlade Migration from Google IoT Core section](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2202664969/Migration+from+Google+IoT+Core)
@@ -14,7 +18,7 @@ Java library and samples for [ClearBlade Internet of Things (IoT) Core][product-
 2. [Add service accounts to a project](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2240675843/Add+service+accounts+to+a+project) and download the json file with your service
    account’s credentials.
 
-3. Use the following to set your environment variables keys:
+3. Use the following to set your environment variables keys in your terminal or IDE environment configurations:
 
    ```
     export CLEARBLADE_CONFIGURATION=/path/to/file.json
@@ -29,13 +33,13 @@ Java library and samples for [ClearBlade Internet of Things (IoT) Core][product-
 The sample apps demonstrates registry and device creation for ClearBlade IoT Core. The [samples](./clearblade-cloud-iot/samples) folder contains all the Java samples that demonstrate an overview of the ClearBlade IoT Core platform.
 
 Note that before you can run the sample, you must configure your development environment
-as described in the Quickstart above or the [samples](./clearblade-cloud-iot/samples) folder.
+and terminal as described in the Quickstart above or the [samples](./clearblade-cloud-iot/samples) folder.
 
 Before running the samples, you can set the `CLEARBLADE_CONFIGURATION`, `CLEARBLADE_REGISTRY` and
 `CLEARBLADE_REGION` environment variables to avoid passing them to
 the sample every time you run it.
 
-## Setup
+### Installation and setup
 
 Run the following command to install the libraries and build the sample with
 Maven:

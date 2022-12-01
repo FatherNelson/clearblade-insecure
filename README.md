@@ -29,7 +29,7 @@ Java library and samples for [ClearBlade Internet of Things (IoT) Core][product-
 The sample apps demonstrates registry and device creation for ClearBlade IoT Core. The [samples](./clearblade-cloud-iot/samples) folder contains all the Java samples that demonstrate an overview of the ClearBlade IoT Core platform.
 
 Note that before you can run the sample, you must configure your development environment
-as described in the Qucikstart above or the [samples](./clearblade-cloud-iot/samples) folder.
+as described in the Quickstart above or the [samples](./clearblade-cloud-iot/samples) folder.
 
 Before running the samples, you can set the `CLEARBLADE_CONFIGURATION`, `CLEARBLADE_REGISTRY` and
 `CLEARBLADE_REGION` environment variables to avoid passing them to

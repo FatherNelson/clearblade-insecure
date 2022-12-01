@@ -42,7 +42,7 @@ the sample every time you run it. Update the `CLEARBLADE_REGISTRY` and
 
 ### Installation and setup
 
-Run the following command to install the libraries and build the sample with
+In the [clearblade-cloud-iot](./clearblade-cloud-iot) folder, run the following command to install the libraries and build the sample with
 Maven:
 
     mvn clean install

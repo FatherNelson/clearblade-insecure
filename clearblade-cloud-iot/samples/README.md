@@ -19,5 +19,3 @@ ClearBlade IoT Core platform.
     export CLEARBLADE_REGISTRY=[your-registry]
     export CLEARBLADE_REGION=[your-region]
    ```
-
-4. Use the HTTP or MQTT samples in the [samples](./clearblade-cloud-iot/samples/com/clearblade/cloud/iot/v1/samples) folder.

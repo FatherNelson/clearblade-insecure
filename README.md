@@ -22,7 +22,7 @@ Java library and samples for [ClearBlade Internet of Things (IoT) Core][product-
     export CLEARBLADE_REGION=[your-region]
    ```
 
-4. Use the HTTP or MQTT samples in the [samples](./clearblade-cloud-iot/samples/com/clearblade/cloud/iot/v1/samples) folder.
+4. Use the HTTP or MQTT samples in the [samples](./clearblade-cloud-iot/samples) folder.
 
 ## ClearBlade IoT Core Samples Java
 

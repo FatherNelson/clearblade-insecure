@@ -38,7 +38,7 @@ and terminal as described in the Quickstart above or the [samples](./clearblade-
 Before running the samples, you can set the `CLEARBLADE_CONFIGURATION`, `CLEARBLADE_REGISTRY` and
 `CLEARBLADE_REGION` environment variables to avoid passing them to
 the sample every time you run it. Update the `CLEARBLADE_REGISTRY` and
-`CLEARBLADE_REGION` environment variables whenever switching to use new registries and regions.
+`CLEARBLADE_REGION` environment variables when switching to use new registries and regions.
 
 ### Installation and setup
 

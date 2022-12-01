@@ -5,6 +5,26 @@ Java library and samples for [ClearBlade Internet of Things (IoT) Core][product-
 - [Product Documentation][product-docs]
 - [Client Library Documentation][javasdk]
 
+## ClearBlade IoT Core Samples Java
+
+The sample apps demonstrates registry and device creation for ClearBlade IoT Core. These are two of the over fifteen samples codes that come with the library.
+
+Note that before you can run the sample, you must configure a Google Cloud
+PubSub topic for Cloud IoT as described in [the parent README](../README.md).
+
+Before running the samples, you can set the `GOOGLE_CLOUD_PROJECT` and
+`GOOGLE_APPLICATION_CREDENTIALS` environment variables to avoid passing them to
+the sample every time you run it.
+
+## Setup
+
+Run the following command to install the libraries and build the sample with
+Maven:
+
+    mvn clean compile assembly:single
+
+## Running the sample
+
 Quick Start
 set an environment variable CLEARBLADE_CONFIGURATION which should point to your service account json file.
 set an environment variable CLEARBLADE_REGISTRY which should be the name of registry you want to work upon.

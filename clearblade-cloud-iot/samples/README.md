@@ -1,0 +1,19 @@
+# Java Samples
+
+This folder contains Java samples that demonstrate an overview of the
+ClearBlade IoT Core platform.
+
+## Quickstart
+
+1. From the [ClearBlade Migration from Google IoT Core section](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2202664969/Migration+from+Google+IoT+Core)
+   migrate your existing Google IoT Core registries and/or devices into ClearBlade IoT Core or using the
+   of the ClearBlade IoT Core Console, create a device registry and devices.
+2. [Add service accounts to a project](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2240675843/Add+service+accounts+to+a+project).
+
+3. Use the following to set your environment variables keys:
+
+   export CLEARBLADE_REGISTRY=[your-registry]
+   export CLEARBLADE_CONFIGURATION=PATH to json file
+   export CLEARBLADE_REGION=[your-region]
+
+4. Use the HTTP or MQTT samples in the [samples](./clearblade-cloud-iot/samples/com/clearblade/cloud/iot/v1/samples) folder.

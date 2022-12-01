@@ -1,3 +1,10 @@
+# ClearBlade Internet of Things (IoT) Core Client for Java
+
+Java library and samples for [ClearBlade Internet of Things (IoT) Core][product-docs].
+
+- [Product Documentation][product-docs]
+- [Client Library Documentation][javasdk]
+
 Quick Start
 set an environment variable CLEARBLADE_CONFIGURATION which should point to your service account json file.
 set an environment variable CLEARBLADE_REGISTRY which should be the name of registry you want to work upon.
@@ -14,3 +21,6 @@ Executing Samples
 You have to use following maven command from command prompt :-
 mvn exec:java -Dexec.cleanupDaemonThreads=false -Dexec.mainClass=<<Name of sample file you want to run>> -DprojectName=<<Your Project Name>> -Dlocation=<<location name>> -DregistryName=<<Registry Name>> -DdeviceName=<<Device Name>>
 Parameters to be sent will change, as the sample changes. One has to refer to list of samples to ensure which sample accepts which parameters.
+
+[product-docs]: https://clearblade.atlassian.net/wiki/spaces/IC/overview
+[javasdk]: https://clearblade.atlassian.net/wiki/spaces/IC/pages/2231173185/Java

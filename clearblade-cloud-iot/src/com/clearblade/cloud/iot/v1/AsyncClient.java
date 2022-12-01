@@ -7,6 +7,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublisher;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -130,7 +131,9 @@ public class AsyncClient {
                     .build();
 
 			CompletableFuture<HttpResponse<String>> response = HttpClient.newBuilder()
-					  .build()
+					  .version(HttpClient.Version.HTTP_2)
+					  .connectTimeout(Duration.ofSeconds(20))
+					  .build()					  
 					  .sendAsync(request, HttpResponse.BodyHandlers.ofString());
 			
 			HttpResponse<String> httpResponse = response.get();

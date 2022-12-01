@@ -12,5 +12,7 @@ Supported JAVA Version
 Minimum JAVA 11 version is required to use current library version. Clearblade JAVA SDK library is built using MAVEN version 4.0.0 and Junit Jupiter API version 5.8.2 for test cases to run.
 Executing Samples
 You have to use following maven command from command prompt :-
-mvn exec:java -Dexec.cleanupDaemonThreads=false -Dexec.mainClass=<<Name of sample file you want to run>> -DprojectName=<<Your Project Name>>  -Dlocation=<<location name>> -DregistryName=<<Registry Name>> -DdeviceName=<<Device Name>>
+mvn exec:java -Dexec.cleanupDaemonThreads=false -Dexec.mainClass=<<Name of sample file you want to run>> -DprojectName=<<Your Project Name>> -Dlocation=<<location name>> -DregistryName=<<Registry Name>> -DdeviceName=<<Device Name>>
 Parameters to be sent will change, as the sample changes. One has to refer to list of samples to ensure which sample accepts which parameters.
+
+TO DOs

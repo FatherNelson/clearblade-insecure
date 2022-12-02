@@ -5,6 +5,7 @@ import com.clearblade.cloud.iot.v1.devicetypes.DeviceConfig;
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
 import com.clearblade.cloud.iot.v1.listdeviceconfigversions.ListDeviceConfigVersionsRequest;
 import com.clearblade.cloud.iot.v1.listdeviceconfigversions.ListDeviceConfigVersionsResponse;
+import com.clearblade.cloud.iot.v1.utils.ConfigParameters;
 
 public class SyncListDeviceConfigVersions {
 
@@ -13,6 +14,7 @@ public class SyncListDeviceConfigVersions {
 	public static String REGISTRY = "";
 	public static String DEVICE = "";
 	public static String NUMVERSION = "";
+	static ConfigParameters configParameters = ConfigParameters.getInstance();
 	
 	public static void main(String[] args) {		
 		PROJECT = System.getProperty("projectName");
@@ -20,6 +22,12 @@ public class SyncListDeviceConfigVersions {
 		REGISTRY = System.getProperty("registryName");
 		DEVICE = System.getProperty("deviceName");
 		NUMVERSION = System.getProperty("numVersion");
+		if(REGISTRY != null) {
+			configParameters.setRegistry(REGISTRY);
+		} 
+		if(LOCATION != null) {
+			configParameters.setRegion(LOCATION);
+		}
 		syncDevicesConfigVersionsList();
 	}
 

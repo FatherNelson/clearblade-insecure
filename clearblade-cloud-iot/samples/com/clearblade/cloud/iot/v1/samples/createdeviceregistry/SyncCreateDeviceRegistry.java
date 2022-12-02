@@ -4,17 +4,26 @@ import com.clearblade.cloud.iot.v1.DeviceManagerClient;
 import com.clearblade.cloud.iot.v1.createdeviceregistry.CreateDeviceRegistryRequest;
 import com.clearblade.cloud.iot.v1.registrytypes.DeviceRegistry;
 import com.clearblade.cloud.iot.v1.registrytypes.LocationName;
+import com.clearblade.cloud.iot.v1.utils.ConfigParameters;
 
 public class SyncCreateDeviceRegistry {
 
 	public static String PROJECT = "";
 	public static String LOCATION = "";
 	public static String REGISTRY = "";
+	static ConfigParameters configParameters = ConfigParameters.getInstance();
+	
 	public static void main(String[] args) {		
 		PROJECT = System.getProperty("projectName");
 		LOCATION = System.getProperty("location");
 		REGISTRY = System.getProperty("registryName");
-        syncCreateDeviceRegistry();
+		if(REGISTRY != null) {
+			configParameters.setRegistry(REGISTRY);
+		} 
+		if(LOCATION != null) {
+			configParameters.setRegion(LOCATION);
+		}
+    syncCreateDeviceRegistry();
     }
 
     public static void syncCreateDeviceRegistry() {

@@ -11,19 +11,32 @@ import com.clearblade.cloud.iot.v1.devicetypes.DeviceCredential;
 import com.clearblade.cloud.iot.v1.registrytypes.PublicKeyCredential;
 import com.clearblade.cloud.iot.v1.registrytypes.PublicKeyFormat;
 import com.clearblade.cloud.iot.v1.updatedevice.UpdateDeviceRequest;
+import com.clearblade.cloud.iot.v1.utils.ConfigParameters;
 import com.clearblade.cloud.iot.v1.utils.LogLevel;
 
 public class SyncUpdateDevice {
+	
+	public static String LOCATION = "";
+	public static String REGISTRY = "";
 	public static String  DEVICE = "";
 	public static String  UPDATEMASK = "";
 	public static String  ARG="";
 	public static String[]  NEWARGS = null;
 	public static String KEYFORMAT ="";
 	public static String KEYVAL = "";
+	static ConfigParameters configParameters = ConfigParameters.getInstance();
 
 	public static void main(String[] args) {		
+		LOCATION = System.getProperty("location");
+		REGISTRY = System.getProperty("registryName");
 		DEVICE = System.getProperty("deviceName");
 		UPDATEMASK = System.getProperty("updateMask");
+		if(REGISTRY != null) {
+			configParameters.setRegistry(REGISTRY);
+		} 
+		if(LOCATION != null) {
+			configParameters.setRegion(LOCATION);
+		}
 		if(!(System.getProperty("arg").isBlank() || System.getProperty("arg").isEmpty()|| System.getProperty("arg")==null))
 			ARG = System.getProperty("arg");
 		if(System.getProperty("newArgs") != null)

@@ -4,16 +4,24 @@ import com.clearblade.cloud.iot.v1.DeviceManagerAsyncClient;
 import com.clearblade.cloud.iot.v1.getdeviceregistry.GetDeviceRegistryRequest;
 import com.clearblade.cloud.iot.v1.registrytypes.DeviceRegistry;
 import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
+import com.clearblade.cloud.iot.v1.utils.ConfigParameters;
 
 public class AsyncGetDeviceRegistry {
 	public static String PROJECT = "";
 	public static String  LOCATION = "";
 	public static String  REGISTRY = "";
+	static ConfigParameters configParameters = ConfigParameters.getInstance();
 	
 	public static void main(String[] args) {		
 		PROJECT = System.getProperty("projectName");
 		LOCATION = System.getProperty("location");
 		REGISTRY = System.getProperty("registryName");
+		if(REGISTRY != null) {
+			configParameters.setRegistry(REGISTRY);
+		} 
+		if(LOCATION != null) {
+			configParameters.setRegion(LOCATION);
+		}
 		asyncGetDeviceRegistry();
 	}
 

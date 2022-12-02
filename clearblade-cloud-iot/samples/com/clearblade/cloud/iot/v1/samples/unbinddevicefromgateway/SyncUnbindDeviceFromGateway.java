@@ -4,6 +4,7 @@ import com.clearblade.cloud.iot.v1.DeviceManagerClient;
 import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
 import com.clearblade.cloud.iot.v1.unbinddevicefromgateway.UnbindDeviceFromGatewayRequest;
 import com.clearblade.cloud.iot.v1.unbinddevicefromgateway.UnbindDeviceFromGatewayResponse;
+import com.clearblade.cloud.iot.v1.utils.ConfigParameters;
 
 public class SyncUnbindDeviceFromGateway {
 	public static String PROJECT = "";
@@ -11,6 +12,7 @@ public class SyncUnbindDeviceFromGateway {
 	public static String REGISTRY = "";
 	public static String GATEWAY = "";
 	public static String DEVICE = "";
+	static ConfigParameters configParameters = ConfigParameters.getInstance();
 
 	public static void main(String[] args) {		
 		PROJECT = System.getProperty("projectName");
@@ -18,6 +20,12 @@ public class SyncUnbindDeviceFromGateway {
 		REGISTRY = System.getProperty("registryName");
 		GATEWAY = System.getProperty("gatewayName");
 		DEVICE = System.getProperty("deviceName");
+		if(REGISTRY != null) {
+			configParameters.setRegistry(REGISTRY);
+		} 
+		if(LOCATION != null) {
+			configParameters.setRegion(LOCATION);
+		}
 		syncUnbindDeviceFromGateway();
 	}
 

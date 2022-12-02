@@ -11,6 +11,7 @@ import com.clearblade.cloud.iot.v1.devicetypes.GatewayConfig;
 import com.clearblade.cloud.iot.v1.devicetypes.GatewayType;
 import com.clearblade.cloud.iot.v1.devicetypes.Status;
 import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
+import com.clearblade.cloud.iot.v1.utils.ConfigParameters;
 import com.clearblade.cloud.iot.v1.utils.LogLevel;
 
 public class SyncCreateDevice {
@@ -20,12 +21,20 @@ public class SyncCreateDevice {
 	public static String REGISTRY = "";
 	public static String DEVICE = "";
 	public static String NUMID = "";
-	public static void main(String[] args) {		
+	static ConfigParameters configParameters = ConfigParameters.getInstance();
+	
+	public static void main(String[] args){
 		PROJECT = System.getProperty("projectName");
 		LOCATION = System.getProperty("location");
 		REGISTRY = System.getProperty("registryName");
 		DEVICE = System.getProperty("deviceName");
 		NUMID = System.getProperty("numId");
+		if(REGISTRY != null) {
+			configParameters.setRegistry(REGISTRY);
+		} 
+		if(LOCATION != null) {
+			configParameters.setRegion(LOCATION);
+		}
 		syncCreateDevice();
 	}
 

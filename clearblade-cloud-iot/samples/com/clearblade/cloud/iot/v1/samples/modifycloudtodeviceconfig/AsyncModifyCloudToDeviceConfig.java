@@ -5,6 +5,7 @@ import com.clearblade.cloud.iot.v1.devicetypes.DeviceConfig;
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
 import com.clearblade.cloud.iot.v1.modifycloudtodeviceconfig.ModifyCloudToDeviceConfigRequest;
 import com.clearblade.cloud.iot.v1.utils.ByteString;
+import com.clearblade.cloud.iot.v1.utils.ConfigParameters;
 
 public class AsyncModifyCloudToDeviceConfig {
 
@@ -14,6 +15,7 @@ public class AsyncModifyCloudToDeviceConfig {
 	public static String DEVICE = "";
 	public static String BINARYDATA = "";
 	public static String VERSIONTOUPDATE = "";
+	static ConfigParameters configParameters = ConfigParameters.getInstance();
 	
 	public static void main(String[] args) {		
 		PROJECT = System.getProperty("projectName");
@@ -22,6 +24,12 @@ public class AsyncModifyCloudToDeviceConfig {
 		DEVICE = System.getProperty("deviceName");
 		BINARYDATA = System.getProperty("binaryData");
 		VERSIONTOUPDATE = System.getProperty("versionToUpdate");
+		if(REGISTRY != null) {
+			configParameters.setRegistry(REGISTRY);
+		} 
+		if(LOCATION != null) {
+			configParameters.setRegion(LOCATION);
+		}
 		asyncModifyCloudToDeviceConfig();
 	}
 

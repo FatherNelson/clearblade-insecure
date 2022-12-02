@@ -4,6 +4,7 @@ import com.clearblade.cloud.iot.v1.DeviceManagerClient;
 import com.clearblade.cloud.iot.v1.registrytypes.DeviceRegistry;
 import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
 import com.clearblade.cloud.iot.v1.updatedeviceregistry.UpdateDeviceRegistryRequest;
+import com.clearblade.cloud.iot.v1.utils.ConfigParameters;
 import com.clearblade.cloud.iot.v1.utils.LogLevel;
 
 public class SyncUpdateDeviceRegistry {
@@ -12,12 +13,19 @@ public class SyncUpdateDeviceRegistry {
 	public static String  LOCATION = "";
 	public static String  REGISTRY = "";
 	public static String  LOGLEVEL = "";
+	static ConfigParameters configParameters = ConfigParameters.getInstance();
 
 	public static void main(String[] args) throws Exception{		
 		PROJECT = System.getProperty("projectName");
 		LOCATION = System.getProperty("location");
 		REGISTRY = System.getProperty("registryName");
 		LOGLEVEL = System.getProperty("logLevel");
+		if(REGISTRY != null) {
+			configParameters.setRegistry(REGISTRY);
+		} 
+		if(LOCATION != null) {
+			configParameters.setRegion(LOCATION);
+		}
 		syncUpdateDeviceRegistry();
 	}
 

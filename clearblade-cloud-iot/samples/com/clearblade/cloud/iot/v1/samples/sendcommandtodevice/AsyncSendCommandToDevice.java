@@ -5,6 +5,7 @@ import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
 import com.clearblade.cloud.iot.v1.sendcommandtodevice.SendCommandToDeviceRequest;
 import com.clearblade.cloud.iot.v1.sendcommandtodevice.SendCommandToDeviceResponse;
 import com.clearblade.cloud.iot.v1.utils.ByteString;
+import com.clearblade.cloud.iot.v1.utils.ConfigParameters;
 
 public class AsyncSendCommandToDevice {
 
@@ -14,6 +15,7 @@ public class AsyncSendCommandToDevice {
 	public static String DEVICE = "";
 	public static String BINARYDATA = "";
 	public static String SUBFOLDER = "";
+	static ConfigParameters configParameters = ConfigParameters.getInstance();
 	
 	public static void main(String[] args) {		
 		PROJECT = System.getProperty("projectName");
@@ -22,6 +24,12 @@ public class AsyncSendCommandToDevice {
 		DEVICE = System.getProperty("deviceName");
 		BINARYDATA = System.getProperty("binaryData");
 		SUBFOLDER = System.getProperty("subFolder");
+		if(REGISTRY != null) {
+			configParameters.setRegistry(REGISTRY);
+		} 
+		if(LOCATION != null) {
+			configParameters.setRegion(LOCATION);
+		}
 		asyncSendCommandToDevice();
 	}
 

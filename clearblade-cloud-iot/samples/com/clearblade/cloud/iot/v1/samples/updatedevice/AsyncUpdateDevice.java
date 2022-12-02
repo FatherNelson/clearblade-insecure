@@ -39,7 +39,11 @@ public class AsyncUpdateDevice {
 		if(!(System.getProperty("arg").isBlank() || System.getProperty("arg").isEmpty()|| System.getProperty("arg")==null))
 			ARG = System.getProperty("arg");
 		if(System.getProperty("newArgs") != null)
-			NEWARGS = System.getProperty("newArgs").split(","); 
+			NEWARGS = System.getProperty("newArgs").split(",");
+		if(System.getProperty("keyFormat") != null)
+			KEYFORMAT = System.getProperty("keyFormat"); 
+		if(System.getProperty("keyVal") != null)
+			KEYVAL = System.getProperty("keyVal"); 
 		asyncUpdateDevice();
 	}
 

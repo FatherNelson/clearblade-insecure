@@ -43,6 +43,17 @@
   		</repository>
 	</distributionManagement>
 
+	<profiles>
+  		<profile>
+    		<id>java8-doclint-disabled</id>
+    		<activation>
+      			<jdk>[11,17)</jdk>
+    		</activation>
+    		<properties>
+      			<javadoc.opts>-Xdoclint:none</javadoc.opts>
+    		</properties>
+  		</profile>
+	</profiles>	
 
 	<build>
 		<sourceDirectory>src</sourceDirectory>
@@ -50,7 +61,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.0</version>
 				<configuration>
                     <source>11</source>
                     <target>11</target>
@@ -137,20 +147,23 @@
     		<plugin>
       			<groupId>org.apache.maven.plugins</groupId>
       			<artifactId>maven-javadoc-plugin</artifactId>
-      			<version>2.9.1</version>
+      			<version>3.4.1</version>
       			<executions>
         			<execution>
           				<id>attach-javadocs</id>
           				<goals>
             				<goal>jar</goal>
           				</goals>
+						<configuration>
+                    		<doclint>none</doclint>
+                		</configuration>
         			</execution>
       			</executions>
    	 		</plugin>
 			<plugin>
       			<groupId>org.apache.maven.plugins</groupId>
       			<artifactId>maven-gpg-plugin</artifactId>
-      			<version>1.5</version>
+      			<version>3.0.1</version>
      			 <executions>
         			<execution>
           				<id>sign-artifacts</id>
@@ -164,7 +177,7 @@
 			<plugin>
   				<groupId>org.sonatype.plugins</groupId>
   				<artifactId>nexus-staging-maven-plugin</artifactId>
-  				<version>1.6.7</version>
+  				<version>1.6.13</version>
   				<extensions>true</extensions>
   				<configuration>
      				<serverId>ossrh</serverId>

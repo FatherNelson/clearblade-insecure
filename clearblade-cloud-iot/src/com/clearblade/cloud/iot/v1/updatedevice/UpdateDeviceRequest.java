@@ -1,8 +1,14 @@
 package com.clearblade.cloud.iot.v1.updatedevice;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import com.clearblade.cloud.iot.v1.devicetypes.Device;
+import com.clearblade.cloud.iot.v1.devicetypes.DeviceCredential;
 
 public class UpdateDeviceRequest {
 	private final String name;
@@ -95,8 +101,20 @@ public class UpdateDeviceRequest {
 
 		bodyParams.put("id", this.device.toBuilder().getId());
 		bodyParams.put("name", this.device.toBuilder().getName());
-		bodyParams.put("logLevel", this.device.toBuilder().getLogLevel().toString());
+		if (this.device.toBuilder().getLogLevel() != null) {
+			bodyParams.put("logLevel", this.device.toBuilder().getLogLevel().toString());
+		}
 		bodyParams.put("blocked", this.device.toBuilder().isBlocked());
+		if (this.device.toBuilder().getCredentials().size() > 0) {
+			JSONArray jsonArray = new JSONArray();
+			for (int i = 0; i < this.device.toBuilder().getCredentials().size(); i++) {
+				if (!this.device.toBuilder().getCredentials().get(i).isEmpty()) {
+					DeviceCredential credentialObj = this.device.toBuilder().getCredentials().get(i);
+					jsonArray.add(credentialObj.toJSONObject());
+				}
+			}
+			bodyParams.put("credentials", jsonArray);
+		}
 
 		output[0] = params;
 		output[1] = bodyParams.toString();

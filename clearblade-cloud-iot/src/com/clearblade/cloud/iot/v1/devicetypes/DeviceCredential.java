@@ -1,10 +1,12 @@
 package com.clearblade.cloud.iot.v1.devicetypes;
 
+import org.json.simple.JSONObject;
+
 import com.clearblade.cloud.iot.v1.registrytypes.PublicKeyCredential;
 
 public class DeviceCredential {
 
-	private String expirationTime;
+	private String expirationTime = "";
 	private PublicKeyCredential publicKey;
 
 	public DeviceCredential() {
@@ -67,4 +69,14 @@ public class DeviceCredential {
 		this.publicKey = publicKey;
 	}
 
+	public boolean isEmpty() {
+		return publicKey == null;
+	}
+
+	public JSONObject toJSONObject() {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("expirationTime", this.expirationTime);
+		jsonObject.put("publicKey", this.publicKey.toJSONObject());
+		return jsonObject;
+	}
 }

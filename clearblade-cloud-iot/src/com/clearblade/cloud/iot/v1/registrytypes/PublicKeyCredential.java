@@ -1,5 +1,7 @@
 package com.clearblade.cloud.iot.v1.registrytypes;
 
+import org.json.simple.JSONObject;
+
 public class PublicKeyCredential {
 
 	private PublicKeyFormat format;
@@ -63,6 +65,13 @@ public class PublicKeyCredential {
 		public PublicKeyCredential build() {
 			return new PublicKeyCredential(this);
 		}
+	}
+
+	public JSONObject toJSONObject() {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("format", this.format.name());
+		jsonObject.put("key", this.key);
+		return jsonObject;
 	}
 
 }

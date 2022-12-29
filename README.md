@@ -9,6 +9,29 @@ Java library and samples for [ClearBlade Internet of Things (IoT) Core][product-
 
 Java 11 or above is required for using this client. Java 17 is the best choice for new development.
 
+## Usage
+
+# Maven artifact
+
+If you are using Maven artifact, simply add the following dependency to your pom.xml file in a newly created/generated Maven App:
+
+```xml
+<dependency>
+  <groupId>io.github.clearblade</groupId>
+  <artifactId>clearblade-cloud-iot</artifactId>
+  <version>0.1.0</version>
+</dependency>
+```
+
+# Local Installation and setup
+
+For local installation of Maven:
+
+In the [clearblade-cloud-iot](./clearblade-cloud-iot) folder, run the following command to install the libraries and build the sample with
+Maven:
+
+    mvn clean install
+
 ## Quickstart
 
 1. From the [ClearBlade Migration from Google IoT Core section](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2202664969/Migration+from+Google+IoT+Core)
@@ -40,13 +63,6 @@ Before running the samples, you can set the `CLEARBLADE_CONFIGURATION`, `CLEARBL
 the sample every time you run it. Update the `CLEARBLADE_REGISTRY` and
 `CLEARBLADE_REGION` environment variables when switching to use new registries and regions.
 
-## Installation and setup
-
-In the [clearblade-cloud-iot](./clearblade-cloud-iot) folder, run the following command to install the libraries and build the sample with
-Maven:
-
-    mvn clean install
-
 ## Running the sample
 
 The following command summarizes the sample usage:
@@ -64,12 +80,11 @@ Run device example:
 
     mvn exec:java \
     	-Dexec.cleanupDaemonThreads=false \
-        -Dexec.mainClass="com.clearblade.cloud.iot.v1.samples.createdevice.SyncCreateDevice" \
+        -Dexec.mainClass="com.clearblade.cloud.iot.v1.samples.createdevice.AsyncCreateDevice" \
     	-DprojectName="your-project-id" \
     	-Dlocation="your-region" \
     	-DregistryName="your-registry" \
     	-DdeviceName="your-device-id" \
-    	-DgatewayName="your-gateway-id"
 
 [product-docs]: https://clearblade.atlassian.net/wiki/spaces/IC/overview
 [javasdk]: https://clearblade.atlassian.net/wiki/spaces/IC/pages/2231173185/Java

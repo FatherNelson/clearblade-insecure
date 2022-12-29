@@ -9,9 +9,9 @@ Java library and samples for [ClearBlade Internet of Things (IoT) Core][product-
 
 Java 11 or above is required for using this client. Java 17 is the best choice for new development.
 
-## Usage
+# Usage
 
-# Maven artifact
+## Maven artifact
 
 If you are using Maven artifact, simply add the following dependency to your pom.xml file in a newly created/generated Maven App:
 
@@ -23,7 +23,7 @@ If you are using Maven artifact, simply add the following dependency to your pom
 </dependency>
 ```
 
-# Local Installation and setup
+## Local Installation and setup
 
 For local installation of Maven:
 

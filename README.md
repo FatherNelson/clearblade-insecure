@@ -11,6 +11,8 @@ Java 11 or above is required for using this client. Java 17 is the best choice f
 
 # Usage
 
+You can either use the Maven artifact or do a local installation and setup of Maven.
+
 ## Maven artifact
 
 If you are using Maven artifact, simply add the following dependency to your pom.xml file in a newly created/generated Maven App:

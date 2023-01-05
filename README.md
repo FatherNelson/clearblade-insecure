@@ -47,6 +47,11 @@ Maven:
 
    ```
     export CLEARBLADE_CONFIGURATION=/path/to/file.json
+   ```
+
+   Optional
+
+   ```
     export CLEARBLADE_REGISTRY=[your-registry]
     export CLEARBLADE_REGION=[your-region]
    ```

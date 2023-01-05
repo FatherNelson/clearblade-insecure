@@ -65,10 +65,13 @@ The sample apps demonstrates registry and device creation for ClearBlade IoT Cor
 Note that before you can run the sample, you must configure your development environment
 and terminal as described in the Quickstart above or the [samples](./clearblade-cloud-iot/samples) folder.
 
-Before running the samples, you can set the `CLEARBLADE_CONFIGURATION`, `CLEARBLADE_REGISTRY` and
-`CLEARBLADE_REGION` environment variables to avoid passing them to
-the sample every time you run it. Update the `CLEARBLADE_REGISTRY` and
-`CLEARBLADE_REGION` environment variables when switching to use new registries and regions.
+Before running the samples, you must set the `CLEARBLADE_CONFIGURATION`. Optionally set the `CLEARBLADE_REGISTRY` and
+`CLEARBLADE_REGION` environment variables to avoid changing them in the the sample app every time you run it.
+
+When switching to use new registries and/or regions, either:
+
+1. Update the `CLEARBLADE_REGISTRY` and `CLEARBLADE_REGION` environment variables; or
+2. Change the `REGISTRY` and/or `REGION` in the sample code/app.
 
 ## Running the sample
 

@@ -71,7 +71,7 @@ Before running the samples, you must set the `CLEARBLADE_CONFIGURATION`. Optiona
 When switching to use new registries and/or regions, either:
 
 1. Update the `CLEARBLADE_REGISTRY` and `CLEARBLADE_REGION` environment variables; or
-2. Change the `REGISTRY` and/or `REGION` in the sample code/app.
+2. Change the `REGISTRY` and/or `REGION` variables in the sample code/app.
 
 ## Running the sample
 

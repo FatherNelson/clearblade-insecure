@@ -84,9 +84,9 @@ public class App {
 	static ConfigParameters configParameters = ConfigParameters.getInstance();
 
 	public static void main(String[] args) {
-		PROJECT = "enter project id here";
-		LOCATION = "enter a region or location here";
-		REGISTRY = "enter a registry here";
+		PROJECT = "your-project-id";
+		LOCATION = "your-region";
+		REGISTRY = "your-registry";
 		if (REGISTRY != null) {
 			configParameters.setRegistry(REGISTRY);
 		}

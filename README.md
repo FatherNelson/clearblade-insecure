@@ -73,9 +73,44 @@ When switching to use new registries and/or regions, either:
 1. Update the `CLEARBLADE_REGISTRY` and `CLEARBLADE_REGION` environment variables; or
 2. Change the `REGISTRY` and/or `REGION` variables in the sample code/app.
 
-## Running the sample
+## Using the client library within an Example app
+
+```
+public class App {
+
+	public static String PROJECT = "";
+	public static String LOCATION = "";
+	public static String REGISTRY = "";
+	static ConfigParameters configParameters = ConfigParameters.getInstance();
+
+	public static void main(String[] args) {
+		PROJECT = "enter project id here";
+		LOCATION = "enter a region or location here";
+		REGISTRY = "enter a registry here";
+		if (REGISTRY != null) {
+			configParameters.setRegistry(REGISTRY);
+		}
+		if (LOCATION != null) {
+			configParameters.setRegion(LOCATION);
+		}
+		asyncDevicesList();
+	}
+
+	public static void asyncDevicesList() {
+		DeviceManagerAsyncClient deviceManagerAsyncClient = new DeviceManagerAsyncClient();
+		RegistryName parent = RegistryName.of(PROJECT, LOCATION, REGISTRY);
+		DevicesListRequest request = DevicesListRequest.Builder.newBuilder().setParent(parent.toString())
+				.setGatewayListOptions(GatewayListOptions.newBuilder().setGatewayType(GatewayType.NON_GATEWAY).build())
+				.setPageSize(10)
+				.build();
+		DevicesListResponse response = deviceManagerAsyncClient.listDevices(request);
+```
+
+## Running the sample - Command Line
 
 The following command summarizes the sample usage:
+
+First compile the sample.
 
 Run registry example:
 

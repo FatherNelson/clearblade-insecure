@@ -159,4 +159,13 @@ public class DeviceConfig {
 			log.log(Level.SEVERE, e.getMessage());
 		}
 	}
+
+	public JSONObject toJSONObject() {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("version", this.getVersion());
+		jsonObject.put("cloudUpdateTime", this.getCloudUpdateTime());
+		jsonObject.put("deviceAckTime", this.getDeviceAckTime());
+		jsonObject.put("binaryData", this.getBinaryData());
+		return jsonObject;
+	}
 }

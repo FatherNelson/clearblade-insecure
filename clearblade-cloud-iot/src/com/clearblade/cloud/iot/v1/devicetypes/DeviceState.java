@@ -1,5 +1,7 @@
 package com.clearblade.cloud.iot.v1.devicetypes;
 
+import org.json.simple.JSONObject;
+
 public class DeviceState {
 	private String updateTime;
 	private String binaryData;
@@ -86,5 +88,20 @@ public class DeviceState {
 			stateStr += "\"binaryData\":\"\"}";
 		}
 		return stateStr;
+	}
+
+	public JSONObject toJSONObject() {
+		JSONObject jsonObject = new JSONObject();
+		if (this.getUpdateTime() != null) {
+			jsonObject.put("updateTime", this.getUpdateTime());
+		} else {
+			jsonObject.put("updateTime", "");
+		}
+		if (this.getBinaryData() != null) {
+			jsonObject.put("binaryData", this.getBinaryData());
+		} else {
+			jsonObject.put("binaryData", "");
+		}
+		return jsonObject;
 	}
 }

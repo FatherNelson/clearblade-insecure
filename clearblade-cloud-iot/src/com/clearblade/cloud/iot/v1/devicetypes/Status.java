@@ -2,6 +2,8 @@ package com.clearblade.cloud.iot.v1.devicetypes;
 
 import java.util.List;
 
+import org.json.simple.JSONObject;
+
 public class Status {
 	private int code;
 	private String message;
@@ -110,4 +112,16 @@ public class Status {
 		}
 		return statuStr;
 	}
+
+	public JSONObject toJSONObject() {
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("code", this.getCode());
+		if (this.getMessage() != null) {
+			jsonObject.put("message", this.getMessage());
+		} else {
+			jsonObject.put("message", "");
+		}
+		return jsonObject;
+	}
+
 }

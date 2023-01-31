@@ -53,7 +53,12 @@ public class DeviceManagerAsyncClient {
 	 */
 	public Device createDevice(CreateDeviceRequest request) {
 		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
-		return cbManager.asyncCreateDevice(request);
+		return cbManager.asyncCreateDevice(request, null);
+	}
+
+	public Device createDevice(CreateDeviceRequest request, ResponseCallback callback) {
+		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
+		return cbManager.asyncCreateDevice(request, callback);
 	}
 
 	/**

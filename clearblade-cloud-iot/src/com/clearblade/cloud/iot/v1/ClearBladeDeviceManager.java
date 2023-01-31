@@ -80,7 +80,7 @@ public class ClearBladeDeviceManager {
 		return null;
 	}
 
-	public Device asyncCreateDevice(CreateDeviceRequest request) {
+	public Device asyncCreateDevice(CreateDeviceRequest request, ResponseCallback callback) {
 		try {
 			AsyncClient asyncClient = new AsyncClient();
 			String[] params = request.getParams();
@@ -93,7 +93,10 @@ public class ClearBladeDeviceManager {
 				if (responseCode == 200) {
 					Device deviceObj = Device.newBuilder().build();
 					deviceObj.loadFromString(responseArray[2]);
+					callback.onSuccess(responseArray[2]);
 					return deviceObj;
+				} else {
+					callback.onFail(responseArray[2]);
 				}
 			}
 		} catch (Exception e) {

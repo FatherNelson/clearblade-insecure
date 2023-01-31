@@ -1,5 +1,7 @@
 package com.clearblade.cloud.iot.v1.devicetypes;
 
+import org.json.simple.JSONObject;
+
 public class GatewayConfig {
 
 	private GatewayType gatewayType;
@@ -78,32 +80,57 @@ public class GatewayConfig {
 		}
 	}
 
-	@Override
-	public String toString() {
-		String gatewayCfgStr = "";
+//	@Override
+//	public String toString() {
+//		String gatewayCfgStr = "";
+//
+//		if (this.getGatewayAuthMethod() != null) {
+//			gatewayCfgStr += "{\"gatewayAuthMethod\":\"" + this.getGatewayAuthMethod().name() + "\",";
+//		} else {
+//			gatewayCfgStr += "{\"gatewayAuthMethod\":\"" + GatewayAuthMethod.GATEWAY_AUTH_METHOD_UNSPECIFIED + "\",";
+//		}
+//		if (this.getGatewayType() != null) {
+//			gatewayCfgStr += "\"gatewayType\":\"" + this.getGatewayType().name() + "\",";
+//		} else {
+//			gatewayCfgStr += "\"gatewayType\":\"" + GatewayType.valueOf(GatewayType.NON_GATEWAY_VALUE) + "\",";
+//		}
+//		if (this.getLastAccessedGatewayId() != null) {
+//			gatewayCfgStr += "\"lastAccessedGatewayId\":\"" + this.getLastAccessedGatewayId() + "\",";
+//		} else {
+//			gatewayCfgStr += "\"lastAccessedGatewayId\":\"\",";
+//		}
+//		if (this.getLastAccessedGatewayTime() != null) {
+//			gatewayCfgStr += "\"lastAccessedGatewayTime\":\"" + this.getLastAccessedGatewayTime() + "\"}";
+//		} else {
+//			gatewayCfgStr += "\"lastAccessedGatewayTime\":\"\"}";
+//		}
+//		return gatewayCfgStr;
+//
+//	}
 
+	public JSONObject toJSONObject() {
+		JSONObject jsonObject = new JSONObject();
 		if (this.getGatewayAuthMethod() != null) {
-			gatewayCfgStr += "{\"gatewayAuthMethod\":\"" + this.getGatewayAuthMethod().name() + "\",";
+			jsonObject.put("gatewayAuthMethod", this.getGatewayAuthMethod().name());
 		} else {
-			gatewayCfgStr += "{\"gatewayAuthMethod\":\"" + GatewayAuthMethod.GATEWAY_AUTH_METHOD_UNSPECIFIED + "\",";
+			jsonObject.put("gatewayAuthMethod", GatewayAuthMethod.GATEWAY_AUTH_METHOD_UNSPECIFIED.toString());
 		}
 		if (this.getGatewayType() != null) {
-			gatewayCfgStr += "\"gatewayType\":\"" + this.getGatewayType().name() + "\",";
+			jsonObject.put("gatewayType", this.getGatewayType().name());
 		} else {
-			gatewayCfgStr += "\"gatewayType\":\"" + GatewayType.valueOf(GatewayType.NON_GATEWAY_VALUE) + "\",";
+			jsonObject.put("gatewayType", GatewayType.valueOf(GatewayType.NON_GATEWAY_VALUE));
 		}
 		if (this.getLastAccessedGatewayId() != null) {
-			gatewayCfgStr += "\"lastAccessedGatewayId\":\"" + this.getLastAccessedGatewayId() + "\",";
+			jsonObject.put("gatewayAuthMethod", this.getLastAccessedGatewayId());
 		} else {
-			gatewayCfgStr += "\"lastAccessedGatewayId\":\"\",";
+			jsonObject.put("gatewayAuthMethod", "");
 		}
 		if (this.getLastAccessedGatewayTime() != null) {
-			gatewayCfgStr += "\"lastAccessedGatewayTime\":\"" + this.getLastAccessedGatewayTime() + "\"}";
+			jsonObject.put("lastAccessedGatewayTime", this.getLastAccessedGatewayTime());
 		} else {
-			gatewayCfgStr += "\"lastAccessedGatewayTime\":\"\"}";
+			jsonObject.put("lastAccessedGatewayTime", "");
 		}
-		return gatewayCfgStr;
-
+		return jsonObject;
 	}
 
 }

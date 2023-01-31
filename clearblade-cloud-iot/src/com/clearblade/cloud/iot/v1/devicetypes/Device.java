@@ -365,17 +365,36 @@ public class Device {
 			}
 		}
 		deviceObj.put("credentials", jsonArray);
-		deviceObj.put("gatewayConfig", this.gatewayConfig.toString());
+		deviceObj.put("gatewayConfig", this.gatewayConfig.toJSONObject());
 		deviceObj.put("logLevel", this.logLevel.name());
-		deviceObj.put("lastHeartbeatTime", this.lastHeartbeatTime);
-		deviceObj.put("lastEventTime", this.lastEventTime);
-		deviceObj.put("lastStateTime", this.lastStateTime);
-		deviceObj.put("lastConfigAckTime", this.lastConfigAckTime);
-		deviceObj.put("lastConfigSendTime", this.lastConfigSendTime);
+
+		if (this.lastHeartbeatTime != null) {
+			deviceObj.put("lastHeartbeatTime", this.lastHeartbeatTime);
+		}
+
+		if (this.lastEventTime != null) {
+			deviceObj.put("lastEventTime", this.lastEventTime);
+		}
+
+		if (this.lastStateTime != null) {
+			deviceObj.put("lastStateTime", this.lastStateTime);
+		}
+
+		if (this.lastConfigAckTime != null) {
+			deviceObj.put("lastConfigAckTime", this.lastConfigAckTime);
+		}
+
+		if (this.lastConfigSendTime != null) {
+			deviceObj.put("lastConfigSendTime", this.lastConfigSendTime);
+		}
+
 		deviceObj.put("blocked", false);
-		deviceObj.put("lastErrorTime", this.lastErrorTime);
+
+		if (this.lastErrorTime != null)
+			deviceObj.put("lastErrorTime", this.lastErrorTime);
+
 		String metaStr = "";
-		if (this.metadata != null) {
+		if (this.metadata != null && this.metadata.size() > 0) {
 			Set metaSet = this.metadata.keySet();
 			Iterator itr = metaSet.iterator();
 			int setSize = metaSet.size();
@@ -392,23 +411,27 @@ public class Device {
 				}
 				i++;
 			}
+			deviceObj.put("metadata", metaStr);
 		}
-		deviceObj.put("metadata", metaStr);
-		String errorStatusStr = "";
-		if (this.lastErrorStatus != null) {
-			errorStatusStr += this.lastErrorStatus.toString();
+
+		if (this.lastErrorStatus != null && this.lastErrorStatus.getCode() != 0) {
+			deviceObj.put("lastErrorStatus", this.lastErrorStatus.toJSONObject());
 		}
-		deviceObj.put("lastErrorStatus", errorStatusStr);
-		String configStr = "";
+
+		String lastEventTime = "";
+		if (this.lastEventTime != null) {
+			lastEventTime = this.lastEventTime.toString();
+			deviceObj.put("lastEventTime", lastEventTime);
+		}
+
 		if (this.config != null) {
-			configStr += this.config.toString();
+			deviceObj.put("config", this.config.toJSONObject());
 		}
-		deviceObj.put("config", configStr);
-		String stateStr = "";
+
 		if (this.state != null) {
-			stateStr += this.state.toString();
+			deviceObj.put("state", this.state.toJSONObject());
 		}
-		deviceObj.put("state", stateStr);
+
 		bodyStr = deviceObj.toString();
 		return bodyStr;
 	}

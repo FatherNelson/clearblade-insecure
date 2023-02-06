@@ -14,6 +14,7 @@ import com.clearblade.cloud.iot.v1.devicestateslist.ListDeviceStatesRequest;
 import com.clearblade.cloud.iot.v1.devicestateslist.ListDeviceStatesResponse;
 import com.clearblade.cloud.iot.v1.devicetypes.Device;
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceConfig;
+import com.clearblade.cloud.iot.v1.exception.ApplicationException;
 import com.clearblade.cloud.iot.v1.getdevice.GetDeviceRequest;
 import com.clearblade.cloud.iot.v1.getdeviceregistry.GetDeviceRegistryRequest;
 import com.clearblade.cloud.iot.v1.listdeviceconfigversions.ListDeviceConfigVersionsRequest;
@@ -51,14 +52,9 @@ public class DeviceManagerAsyncClient {
 	 * @param request
 	 * @return Device object
 	 */
-	public Device createDevice(CreateDeviceRequest request) {
+	public Device createDevice(CreateDeviceRequest request) throws ApplicationException {
 		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
-		return cbManager.asyncCreateDevice(request, null);
-	}
-
-	public Device createDevice(CreateDeviceRequest request, ResponseCallback callback) {
-		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
-		return cbManager.asyncCreateDevice(request, callback);
+		return cbManager.asyncCreateDevice(request);
 	}
 
 	/**
@@ -66,7 +62,7 @@ public class DeviceManagerAsyncClient {
 	 * 
 	 * @param request
 	 */
-	public void deleteDevice(DeleteDeviceRequest request) {
+	public void deleteDevice(DeleteDeviceRequest request) throws ApplicationException {
 		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
 		cbManager.asyncDeleteDevice(request);
 	}
@@ -77,7 +73,7 @@ public class DeviceManagerAsyncClient {
 	 * @param request
 	 * @return Device object
 	 */
-	public Device updateDevice(UpdateDeviceRequest request) {
+	public Device updateDevice(UpdateDeviceRequest request) throws ApplicationException {
 		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
 		return cbManager.asyncUpdateDevice(request);
 	}
@@ -88,7 +84,8 @@ public class DeviceManagerAsyncClient {
 	 * @param request
 	 * @return
 	 */
-	public BindDeviceToGatewayResponse bindDeviceToGateway(BindDeviceToGatewayRequest request) {
+	public BindDeviceToGatewayResponse bindDeviceToGateway(BindDeviceToGatewayRequest request)
+			throws ApplicationException {
 		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
 		return cbManager.asyncBindDeviceToGateway(request);
 	}
@@ -99,33 +96,37 @@ public class DeviceManagerAsyncClient {
 	 * @param request
 	 * @return
 	 */
-	public UnbindDeviceFromGatewayResponse unbindDeviceFromGateway(UnbindDeviceFromGatewayRequest request) {
+	public UnbindDeviceFromGatewayResponse unbindDeviceFromGateway(UnbindDeviceFromGatewayRequest request)
+			throws ApplicationException {
 		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
 		return cbManager.asyncUnbindDeviceFromGateway(request);
 	}
 
-	public SendCommandToDeviceResponse sendCommandToDevice(SendCommandToDeviceRequest request) {
+	public SendCommandToDeviceResponse sendCommandToDevice(SendCommandToDeviceRequest request)
+			throws ApplicationException {
 		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
 		return cbManager.asyncSendCommandToDevice(request);
 
 	}
 
-	public DeviceConfig modifyCloudToDeviceConfig(ModifyCloudToDeviceConfigRequest request) {
+	public DeviceConfig modifyCloudToDeviceConfig(ModifyCloudToDeviceConfigRequest request)
+			throws ApplicationException {
 		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
 		return cbManager.asyncModifyCloudToDeviceConfig(request);
 	}
 
-	public DevicesListResponse listDevices(DevicesListRequest request) {
+	public DevicesListResponse listDevices(DevicesListRequest request) throws ApplicationException {
 		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
 		return cbManager.asyncListDevices(request);
 	}
 
-	public ListDeviceStatesResponse listDeviceStates(ListDeviceStatesRequest request) {
+	public ListDeviceStatesResponse listDeviceStates(ListDeviceStatesRequest request) throws ApplicationException {
 		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
 		return cbManager.asyncListDeviceStates(request);
 	}
 
-	public ListDeviceConfigVersionsResponse listDeviceConfigVersions(ListDeviceConfigVersionsRequest request) {
+	public ListDeviceConfigVersionsResponse listDeviceConfigVersions(ListDeviceConfigVersionsRequest request)
+			throws ApplicationException {
 		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
 		return cbManager.asyncListDeviceConfigVersions(request);
 	}
@@ -138,27 +139,28 @@ public class DeviceManagerAsyncClient {
 	 * @return Device object
 	 */
 
-	public DeviceRegistry getDeviceRegistry(GetDeviceRegistryRequest request) {
+	public DeviceRegistry getDeviceRegistry(GetDeviceRegistryRequest request) throws ApplicationException {
 		ClearBladeRegistryManager cbManager = new ClearBladeRegistryManager();
 		return cbManager.asyncGetDeviceRegistry(request);
 	}
 
-	public DeviceRegistry createDeviceRegistry(CreateDeviceRegistryRequest request) {
+	public DeviceRegistry createDeviceRegistry(CreateDeviceRegistryRequest request) throws ApplicationException {
 		ClearBladeRegistryManager cbManager = new ClearBladeRegistryManager();
 		return cbManager.asyncCreateDeviceRegistry(request);
 	}
 
-	public DeviceRegistry updateDeviceRegistry(UpdateDeviceRegistryRequest request) {
+	public DeviceRegistry updateDeviceRegistry(UpdateDeviceRegistryRequest request) throws ApplicationException {
 		ClearBladeRegistryManager cbManager = new ClearBladeRegistryManager();
 		return cbManager.asyncUpdateDeviceRegistry(request);
 	}
 
-	public void deleteDeviceRegistry(DeleteDeviceRegistryRequest request) {
+	public void deleteDeviceRegistry(DeleteDeviceRegistryRequest request) throws ApplicationException {
 		ClearBladeRegistryManager cbManager = new ClearBladeRegistryManager();
 		cbManager.asyncDeleteDeviceRegistry(request);
 	}
 
-	public ListDeviceRegistriesResponse listDeviceRegistries(ListDeviceRegistriesRequest request) {
+	public ListDeviceRegistriesResponse listDeviceRegistries(ListDeviceRegistriesRequest request)
+			throws ApplicationException {
 		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
 		return cbManager.asyncListDeviceRegistries(request);
 	}

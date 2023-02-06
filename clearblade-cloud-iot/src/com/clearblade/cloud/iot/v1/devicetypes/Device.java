@@ -400,7 +400,7 @@ public class Device {
 			while (itr.hasNext()) {
 				String key = (String) itr.next();
 				String value = this.metadata.get(key).toString();
-				jsonObject.put(key, value);				
+				jsonObject.put(key, value);
 			}
 			deviceObj.put("metadata", jsonObject);
 		}

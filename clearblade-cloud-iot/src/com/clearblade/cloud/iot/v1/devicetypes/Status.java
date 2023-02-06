@@ -97,22 +97,6 @@ public class Status {
 		}
 	}
 
-	@Override
-	public String toString() {
-		String statuStr = "";
-		if (this.getCode() != 0) {
-			statuStr += "{\"code\":\"" + this.getCode() + "\",";
-		} else {
-			statuStr += "{\"code\":\"0\",";
-		}
-		if (this.getMessage() != null) {
-			statuStr += "\"message\":\"" + this.getMessage() + "\"}";
-		} else {
-			statuStr += "\"message\":\"\"}";
-		}
-		return statuStr;
-	}
-
 	public JSONObject toJSONObject() {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("code", this.getCode());

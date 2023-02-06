@@ -121,32 +121,6 @@ public class DeviceConfig {
 		}
 	}
 
-	@Override
-	public String toString() {
-		String configStr = "";
-		if (this.getVersion() != null) {
-			configStr += "{\"version\":\"" + this.getBinaryData() + "\",";
-		} else {
-			configStr += "{\"version\":\"\",";
-		}
-		if (this.getCloudUpdateTime() != null) {
-			configStr += "\"cloudUpdateTime\":\"" + this.getCloudUpdateTime() + "\",";
-		} else {
-			configStr += "\"cloudUpdateTime\":\"\",";
-		}
-		if (this.getDeviceAckTime() != null) {
-			configStr += "\"deviceAckTime\":\"" + this.getDeviceAckTime() + "\",";
-		} else {
-			configStr += "\"deviceAckTime\":\"\",";
-		}
-		if (this.getBinaryData() != null) {
-			configStr += "\"binaryData\":\"" + this.getBinaryData() + "\"}";
-		} else {
-			configStr += "\"binaryData\":\"\"}";
-		}
-		return configStr;
-	}
-
 	public void loadFromString(String jsonString) {
 		try {
 			JSONParser jsonParser = new JSONParser();

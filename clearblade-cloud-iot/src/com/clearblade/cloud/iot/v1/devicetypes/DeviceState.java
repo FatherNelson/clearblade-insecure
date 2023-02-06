@@ -74,22 +74,6 @@ public class DeviceState {
 		}
 	}
 
-	@Override
-	public String toString() {
-		String stateStr = "";
-		if (this.getUpdateTime() != null) {
-			stateStr += "{\"updateTime\":\"" + this.getUpdateTime() + "\",";
-		} else {
-			stateStr += "{\"updateTime\":\"\",";
-		}
-		if (this.getBinaryData() != null) {
-			stateStr += "\"binaryData\":\"" + this.getBinaryData() + "\"}";
-		} else {
-			stateStr += "\"binaryData\":\"\"}";
-		}
-		return stateStr;
-	}
-
 	public JSONObject toJSONObject() {
 		JSONObject jsonObject = new JSONObject();
 		if (this.getUpdateTime() != null) {

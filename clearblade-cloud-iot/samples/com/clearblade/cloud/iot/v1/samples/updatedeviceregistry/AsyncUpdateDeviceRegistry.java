@@ -8,21 +8,21 @@ import com.clearblade.cloud.iot.v1.utils.ConfigParameters;
 import com.clearblade.cloud.iot.v1.utils.LogLevel;
 
 public class AsyncUpdateDeviceRegistry {
-	public static String  PROJECT = "";
-	public static String  LOCATION = "";
-	public static String  REGISTRY = "";
-	public static String  LOGLEVEL = "";
+	public static String PROJECT = "";
+	public static String LOCATION = "";
+	public static String REGISTRY = "";
+	public static String LOGLEVEL = "";
 	static ConfigParameters configParameters = ConfigParameters.getInstance();
 
-	public static void main(String[] args) throws Exception{		
-		PROJECT = System.getProperty("projectName");
-		LOCATION = System.getProperty("location");
-		REGISTRY = System.getProperty("registryName");
-		LOGLEVEL = System.getProperty("logLevel");
-		if(REGISTRY != null) {
+	public static void main(String[] args) throws Exception {
+        PROJECT = System.getProperty("projectName");
+        LOCATION = System.getProperty("location");
+        REGISTRY = System.getProperty("registryName");
+        LOGLEVEL = System.getProperty("logLevel");
+		if (REGISTRY != null) {
 			configParameters.setRegistry(REGISTRY);
-		} 
-		if(LOCATION != null) {
+		}
+		if (LOCATION != null) {
 			configParameters.setRegion(LOCATION);
 		}
 		asyncUpdateDeviceRegistry();
@@ -32,17 +32,18 @@ public class AsyncUpdateDeviceRegistry {
 		DeviceManagerAsyncClient deviceManagerClient = new DeviceManagerAsyncClient();
 		RegistryName name = RegistryName.of(PROJECT, LOCATION, REGISTRY);
 		UpdateDeviceRegistryRequest request = UpdateDeviceRegistryRequest.Builder.newBuilder()
-				.setDeviceRegistry(DeviceRegistry.newBuilder().setId(REGISTRY)
-						.setName(name.getRegistryFullName())
-						.setLogLevel(LogLevel.valueOf(LOGLEVEL))
-						.build())
+				.setDeviceRegistry(DeviceRegistry.newBuilder().setId(REGISTRY).setName(name.getRegistryFullName())
+						.setLogLevel(LogLevel.valueOf(LOGLEVEL)).build())
 				.setName(name.getRegistryFullName()).setUpdateMask("logLevel").build();
-
-		DeviceRegistry response = deviceManagerClient.updateDeviceRegistry(request);
-		if(response != null) {
-			System.out.println("UpdateDeviceRegistry execution successful");
-		}else {
-			System.out.println("UpdateDeviceRegistry execution failed");
+		try {
+			DeviceRegistry response = deviceManagerClient.updateDeviceRegistry(request);
+			if (response != null) {
+				System.out.println(response);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e.getMessage());
+			//e.printStackTrace();
 		}
 	}
 

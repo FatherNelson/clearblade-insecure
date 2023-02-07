@@ -393,25 +393,16 @@ public class Device {
 		if (this.lastErrorTime != null)
 			deviceObj.put("lastErrorTime", this.lastErrorTime);
 
-		String metaStr = "";
 		if (this.metadata != null && this.metadata.size() > 0) {
 			Set metaSet = this.metadata.keySet();
 			Iterator itr = metaSet.iterator();
-			int setSize = metaSet.size();
-			int i = 0;
+			JSONObject jsonObject = new JSONObject();
 			while (itr.hasNext()) {
 				String key = (String) itr.next();
 				String value = this.metadata.get(key).toString();
-				if (i >= 0 && i < setSize) {
-					metaStr += "{\"" + key + "\":" + "\"" + value + "\",";
-				} else if (i == setSize) {
-					metaStr += "{\"" + key + "\":" + "\"" + value + "\"}";
-				} else {
-					metaStr += "{\"" + key + "\":" + "\"" + value + "\"";
-				}
-				i++;
+				jsonObject.put(key, value);
 			}
-			deviceObj.put("metadata", metaStr);
+			deviceObj.put("metadata", jsonObject);
 		}
 
 		if (this.lastErrorStatus != null && this.lastErrorStatus.getCode() != 0) {

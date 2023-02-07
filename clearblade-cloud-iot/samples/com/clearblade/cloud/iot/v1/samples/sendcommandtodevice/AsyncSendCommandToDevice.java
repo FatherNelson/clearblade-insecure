@@ -16,18 +16,18 @@ public class AsyncSendCommandToDevice {
 	public static String BINARYDATA = "";
 	public static String SUBFOLDER = "";
 	static ConfigParameters configParameters = ConfigParameters.getInstance();
-	
-	public static void main(String[] args) {		
+
+	public static void main(String[] args) {
 		PROJECT = System.getProperty("projectName");
 		LOCATION = System.getProperty("location");
 		REGISTRY = System.getProperty("registryName");
 		DEVICE = System.getProperty("deviceName");
 		BINARYDATA = System.getProperty("binaryData");
 		SUBFOLDER = System.getProperty("subFolder");
-		if(REGISTRY != null) {
+		if (REGISTRY != null) {
 			configParameters.setRegistry(REGISTRY);
-		} 
-		if(LOCATION != null) {
+		}
+		if (LOCATION != null) {
 			configParameters.setRegion(LOCATION);
 		}
 		asyncSendCommandToDevice();
@@ -38,11 +38,15 @@ public class AsyncSendCommandToDevice {
 		SendCommandToDeviceRequest request = SendCommandToDeviceRequest.Builder.newBuilder()
 				.setName(DeviceName.of(PROJECT, LOCATION, REGISTRY, DEVICE).toString())
 				.setBinaryData(new ByteString(BINARYDATA)).setSubfolder(SUBFOLDER).build();
-		SendCommandToDeviceResponse response = deviceManagerAsyncClient.sendCommandToDevice(request);
-		if(response != null) {
-			System.out.println("SendCommandToDevice execution successful");
-		}else {
-			System.out.println("SendCommandToDevice execution failed");
+		try {
+			SendCommandToDeviceResponse response = deviceManagerAsyncClient.sendCommandToDevice(request);
+			if (response != null) {
+				System.out.println("SendCommandToDevice execution successful");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
 		}
+
 	}
 }

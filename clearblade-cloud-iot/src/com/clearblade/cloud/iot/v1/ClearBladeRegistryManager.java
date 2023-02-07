@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import com.clearblade.cloud.iot.v1.createdeviceregistry.CreateDeviceRegistryRequest;
 import com.clearblade.cloud.iot.v1.deletedeviceregistry.DeleteDeviceRegistryRequest;
+import com.clearblade.cloud.iot.v1.exception.ApplicationException;
 import com.clearblade.cloud.iot.v1.getdeviceregistry.GetDeviceRegistryRequest;
 import com.clearblade.cloud.iot.v1.registrytypes.DeviceRegistry;
 import com.clearblade.cloud.iot.v1.updatedeviceregistry.UpdateDeviceRegistryRequest;
@@ -14,7 +15,7 @@ public class ClearBladeRegistryManager {
 	static Logger log = Logger.getLogger(ClearBladeRegistryManager.class.getName());
 	ConfigParameters configParameters = ConfigParameters.getInstance();
 
-	public DeviceRegistry getRegistry(GetDeviceRegistryRequest request) {
+	public DeviceRegistry getRegistry(GetDeviceRegistryRequest request) throws ApplicationException {
 		SyncClient syncClient = new SyncClient();
 		String[] responseArray = syncClient.get(configParameters.getCloudiotURLExtension(), request.toString(), false);
 		if (responseArray[0] != null) {
@@ -23,31 +24,34 @@ public class ClearBladeRegistryManager {
 				DeviceRegistry deviceRegistry = DeviceRegistry.newBuilder().build();
 				deviceRegistry.loadFromString(responseArray[2]);
 				return deviceRegistry;
+			} else {
+				throw new ApplicationException(responseArray[2]);
 			}
 		}
 		return null;
 	}
 
-	public DeviceRegistry asyncGetDeviceRegistry(GetDeviceRegistryRequest request) {
+	public DeviceRegistry asyncGetDeviceRegistry(GetDeviceRegistryRequest request) throws ApplicationException {
 		try {
 			AsyncClient asyncClient = new AsyncClient();
-			String[] responseArray = asyncClient.get(configParameters.getCloudiotURLExtension(),
-					request.toString());
+			String[] responseArray = asyncClient.get(configParameters.getCloudiotURLExtension(), request.toString());
 			if (responseArray[0] != null) {
 				int responseCode = Integer.parseInt(responseArray[0]);
 				if (responseCode == 200) {
 					DeviceRegistry deviceRegistry = DeviceRegistry.newBuilder().build();
 					deviceRegistry.loadFromString(responseArray[2]);
 					return deviceRegistry;
+				} else {
+					throw new ApplicationException(responseArray[2]);
 				}
 			}
 		} catch (Exception e) {
-			log.log(Level.SEVERE, e.getMessage());
+			throw new ApplicationException(e.getMessage(), e);
 		}
 		return null;
 	}
 
-	public DeviceRegistry createDeviceRegistry(CreateDeviceRegistryRequest request) {
+	public DeviceRegistry createDeviceRegistry(CreateDeviceRegistryRequest request) throws ApplicationException {
 		SyncClient syncClient = new SyncClient();
 		String[] bodyParams = request.getBodyAndParams();
 
@@ -59,38 +63,41 @@ public class ClearBladeRegistryManager {
 				DeviceRegistry deviceRegistry = DeviceRegistry.newBuilder().build();
 				deviceRegistry.loadFromString(responseArray[2]);
 				return deviceRegistry;
+			} else {
+				throw new ApplicationException(responseArray[2]);
 			}
 		}
 		return null;
 	}
 
-	public DeviceRegistry asyncCreateDeviceRegistry(CreateDeviceRegistryRequest request) {
+	public DeviceRegistry asyncCreateDeviceRegistry(CreateDeviceRegistryRequest request) throws ApplicationException {
 		try {
 			AsyncClient asyncClient = new AsyncClient();
 			String[] bodyParams = request.getBodyAndParams();
 
 			String[] responseArray = asyncClient.asyncCreateDeviceRegistry(configParameters.getCloudiotURLExtension(),
-					bodyParams[0],
-					bodyParams[1], true);
+					bodyParams[0], bodyParams[1], true);
 			if (responseArray[0] != null) {
 				int responseCode = Integer.parseInt(responseArray[0]);
 				if (responseCode == 200) {
 					DeviceRegistry deviceRegistry = DeviceRegistry.newBuilder().build();
 					deviceRegistry.loadFromString(responseArray[2]);
 					return deviceRegistry;
+				} else {
+					throw new ApplicationException(responseArray[2]);
 				}
 			}
 		} catch (Exception e) {
-			log.log(Level.SEVERE, e.getMessage());
+			throw new ApplicationException(e.getMessage(), e);
 		}
 		return null;
 	}
 
-	public DeviceRegistry updateDeviceRegistry(UpdateDeviceRegistryRequest request) {
+	public DeviceRegistry updateDeviceRegistry(UpdateDeviceRegistryRequest request) throws ApplicationException {
 		try {
-		SyncClient syncClient = new SyncClient();
+			SyncClient syncClient = new SyncClient();
 			String[] bodyParams = request.getBodyAndParams();
-	
+
 			String[] responseArray = syncClient.update(configParameters.getCloudiotURLExtension(), bodyParams[0],
 					bodyParams[1]);
 			if (responseArray[0] != null) {
@@ -99,22 +106,23 @@ public class ClearBladeRegistryManager {
 					DeviceRegistry deviceRegistry = DeviceRegistry.newBuilder().build();
 					deviceRegistry.loadFromString(responseArray[2]);
 					return deviceRegistry;
+				} else {
+					throw new ApplicationException(responseArray[2]);
 				}
 			}
-		}catch(InterruptedException e) {
-			log.log(Level.SEVERE, e.getMessage());
+		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
+			throw new ApplicationException(e.getMessage(), e);
 		}
 		return null;
 	}
 
-	public DeviceRegistry asyncUpdateDeviceRegistry(UpdateDeviceRegistryRequest request) {
+	public DeviceRegistry asyncUpdateDeviceRegistry(UpdateDeviceRegistryRequest request) throws ApplicationException {
 		try {
 			AsyncClient asyncClient = new AsyncClient();
 			String[] bodyParams = request.getBodyAndParams();
 
-			String[] responseArray = asyncClient.update(configParameters.getCloudiotURLExtension(),
-					bodyParams[0],
+			String[] responseArray = asyncClient.update(configParameters.getCloudiotURLExtension(), bodyParams[0],
 					bodyParams[1]);
 			if (responseArray[0] != null) {
 				int responseCode = Integer.parseInt(responseArray[0]);
@@ -122,40 +130,52 @@ public class ClearBladeRegistryManager {
 					DeviceRegistry deviceRegistry = DeviceRegistry.newBuilder().build();
 					deviceRegistry.loadFromString(responseArray[2]);
 					return deviceRegistry;
+				} else {
+					throw new ApplicationException(responseArray[2]);
 				}
 			}
 		} catch (Exception e) {
-			log.log(Level.SEVERE, e.getMessage());
+			throw new ApplicationException(e.getMessage(), e);
 		}
 		return null;
 	}
 
-	public void deleteDeviceRegistry(DeleteDeviceRegistryRequest request) {
+	public void deleteDeviceRegistry(DeleteDeviceRegistryRequest request) throws ApplicationException {
 		SyncClient syncClient = new SyncClient();
 		String bodyParams = request.getParams();
 
 		String[] responseArray = syncClient.delete(configParameters.getCloudiotURLExtension(), bodyParams, true);
 		if (responseArray[0] != null) {
-			log.log(Level.INFO, ()->"Response code " + responseArray[0] + " received with message" + responseArray[2]);
+			int responseCode = Integer.parseInt(responseArray[0]);
+			if (responseCode == 200) {
+				log.log(Level.INFO,
+						() -> "Response code " + responseArray[0] + " received with message" + responseArray[2]);
+			} else {
+				throw new ApplicationException(responseArray[2]);
+			}
 		}
 
 	}
 
-	public void asyncDeleteDeviceRegistry(DeleteDeviceRegistryRequest request) {
+	public void asyncDeleteDeviceRegistry(DeleteDeviceRegistryRequest request) throws ApplicationException {
 		try {
 			AsyncClient asyncClient = new AsyncClient();
 			String bodyParams = request.getParams();
 
-			String[] responseArray = asyncClient.asyncDeleteDeviceRegistry(configParameters.getCloudiotURLExtension(), bodyParams, true);
+			String[] responseArray = asyncClient.asyncDeleteDeviceRegistry(configParameters.getCloudiotURLExtension(),
+					bodyParams, true);
 			if (responseArray[0] != null) {
-				System.out.println("DeleteDeviceRegistry execution successful");
-				log.log(Level.INFO, ()->"Response code " + responseArray[0] + " received with message" + responseArray[2]);
-			}else {
+				int responseCode = Integer.parseInt(responseArray[0]);
+				if (responseCode == 200) {
+					System.out.println("DeleteDeviceRegistry execution successful");					
+				} else {
+					throw new ApplicationException(responseArray[2]);
+				}
+			} else {
 				System.out.println("DeleteDeviceRegistry execution failed");
 			}
-
 		} catch (Exception e) {
-			log.log(Level.SEVERE, e.getMessage());
+			throw new ApplicationException(e.getMessage(), e);
 		}
 	}
 }

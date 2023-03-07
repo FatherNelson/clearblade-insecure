@@ -196,7 +196,7 @@ public class ClearBladeRegistryManager {
 					bodyParams, true);
 			if (responseArray[0] != null) {
 				int responseCode = Integer.parseInt(responseArray[0]);
-				if (responseCode == 200) {
+				if (responseCode == 200 || responseCode == 204) {
 					System.out.println("DeleteDeviceRegistry execution successful");					
 				} else {
 					throw new ApplicationException(responseArray[2]);

@@ -30,11 +30,17 @@
 
 package com.clearblade.cloud.iot.v1.devicetypes;
 
+import java.time.Instant;
+
 import org.json.simple.JSONObject;
 
+import com.clearblade.cloud.iot.v1.utils.ByteString;
+import com.clearblade.cloud.iot.v1.utils.Timestamp;
+import com.clearblade.cloud.iot.v1.utils.Utils;
+
 public class DeviceState {
-	private String updateTime;
-	private String binaryData;
+	private Object updateTime;
+	private Object binaryData;
 
 	public DeviceState(Builder builder) {
 		updateTime = builder.updateTime;
@@ -45,19 +51,26 @@ public class DeviceState {
 
 	}
 
-	public String getBinaryData() {
-		return binaryData;
+	public Object getBinaryData() {
+		if (Utils.isBinary())
+			return ByteString.copyFromUtf8(binaryData.toString());
+		else
+			return binaryData.toString();
 	}
 
-	public String getUpdateTime() {
-		return updateTime;
+	public Object getUpdateTime() {
+		if (Utils.isBinary() && !Utils.isEmpty(updateTime.toString())) {
+			Instant timeStamp = Instant.parse(updateTime.toString());
+			return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
+		} else
+			return updateTime.toString();
 	}
 
-	public void setUpdateTime(String updateTime) {
+	public void setUpdateTime(Object updateTime) {
 		this.updateTime = updateTime;
 	}
 
-	public void setBinaryData(String binaryData) {
+	public void setBinaryData(Object binaryData) {
 		this.binaryData = binaryData;
 	}
 
@@ -70,27 +83,38 @@ public class DeviceState {
 	}
 
 	public static class Builder {
-		private String binaryData;
-		private String updateTime;
+		private Object binaryData;
+		private Object updateTime;
 
 		protected Builder() {
 		}
 
-		public String getUpdateTime() {
-			return updateTime;
+		public Object getUpdateTime() {
+			if (Utils.isBinary() && !Utils.isEmpty(updateTime.toString())) {
+				Instant timeStamp = Instant.parse(updateTime.toString());
+				return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
+			} else
+				return updateTime.toString();
 		}
 
 		public Builder setUpdateTime(String updateTime) {
-			this.updateTime = updateTime;
+			this.updateTime = updateTime.toString();
 			return this;
 		}
 
-		public String getBinaryData() {
+		public Object getBinaryDataByte() {
 			return binaryData;
 		}
 
+		public Object getBinaryData() {
+			if (Utils.isBinary())
+				return ByteString.copyFromUtf8(binaryData.toString());
+			else
+				return binaryData.toString();
+		}
+
 		public Builder setBinaryData(String binaryData) {
-			this.binaryData = binaryData;
+			this.binaryData = binaryData.toString();
 			return this;
 		}
 
@@ -104,15 +128,16 @@ public class DeviceState {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public JSONObject toJSONObject() {
 		JSONObject jsonObject = new JSONObject();
 		if (this.getUpdateTime() != null) {
-			jsonObject.put("updateTime", this.getUpdateTime());
+			jsonObject.put("updateTime", this.updateTime.toString());
 		} else {
 			jsonObject.put("updateTime", "");
 		}
 		if (this.getBinaryData() != null) {
-			jsonObject.put("binaryData", this.getBinaryData());
+			jsonObject.put("binaryData", this.binaryData.toString());
 		} else {
 			jsonObject.put("binaryData", "");
 		}

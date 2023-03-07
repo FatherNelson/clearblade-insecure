@@ -30,18 +30,23 @@
 
 package com.clearblade.cloud.iot.v1.devicetypes;
 
+import java.time.Instant;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import com.clearblade.cloud.iot.v1.utils.ByteString;
+import com.clearblade.cloud.iot.v1.utils.Timestamp;
+import com.clearblade.cloud.iot.v1.utils.Utils;
+
 public class DeviceConfig {
 	static Logger log = Logger.getLogger(DeviceConfig.class.getName());
 	private String version;
-	private String cloudUpdateTime;
-	private String deviceAckTime;
-	private String binaryData;
+	private Object cloudUpdateTime;
+	private Object deviceAckTime;
+	private Object binaryData;
 
 	public DeviceConfig() {
 	}
@@ -73,16 +78,27 @@ public class DeviceConfig {
 		return version;
 	}
 
-	public String getCloudUpdateTime() {
-		return cloudUpdateTime;
+	public Object getCloudUpdateTime() {
+		if (Utils.isBinary() && !Utils.isEmpty(cloudUpdateTime.toString())) {
+			Instant timeStamp = Instant.parse(cloudUpdateTime.toString());
+			return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
+		} else
+			return cloudUpdateTime.toString();
 	}
 
-	public String getDeviceAckTime() {
-		return deviceAckTime;
+	public Object getDeviceAckTime() {
+		if (Utils.isBinary() && !Utils.isEmpty(deviceAckTime.toString())) {
+			Instant timeStamp = Instant.parse(deviceAckTime.toString());
+			return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
+		} else
+			return deviceAckTime.toString();
 	}
 
-	public String getBinaryData() {
-		return binaryData;
+	public Object getBinaryData() {
+		if (Utils.isBinary())
+			return ByteString.copyFromUtf8(binaryData.toString());
+		else
+			return binaryData.toString();
 	}
 
 	public static Builder newBuilder() {
@@ -95,9 +111,9 @@ public class DeviceConfig {
 
 	public static class Builder {
 		private String version;
-		private String cloudUpdateTime;
-		private String deviceAckTime;
-		private String binaryData;
+		private Object cloudUpdateTime;
+		private Object deviceAckTime;
+		private Object binaryData;
 
 		protected Builder() {
 
@@ -112,8 +128,12 @@ public class DeviceConfig {
 			return this;
 		}
 
-		public String getCloudUpdateTime() {
-			return cloudUpdateTime;
+		public Object getCloudUpdateTime() {
+			if (Utils.isBinary()) {
+				Instant timeStamp = Instant.parse(cloudUpdateTime.toString());
+				return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
+			} else
+				return cloudUpdateTime.toString();
 		}
 
 		public Builder setCloudUpdateTime(String cloudUpdateTime) {
@@ -121,8 +141,12 @@ public class DeviceConfig {
 			return this;
 		}
 
-		public String getDeviceAckTime() {
-			return deviceAckTime;
+		public Object getDeviceAckTime() {
+			if (Utils.isBinary()) {
+				Instant timeStamp = Instant.parse(deviceAckTime.toString());
+				return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
+			} else
+				return deviceAckTime.toString();
 		}
 
 		public Builder setDeviceAckTime(String deviceAckTime) {
@@ -130,8 +154,11 @@ public class DeviceConfig {
 			return this;
 		}
 
-		public String getBinaryData() {
-			return binaryData;
+		public Object getBinaryData() {
+			if (Utils.isBinary())
+				return ByteString.copyFromUtf8(binaryData.toString());
+			else
+				return binaryData.toString();
 		}
 
 		public Builder setBinaryData(String binaryData) {
@@ -164,12 +191,21 @@ public class DeviceConfig {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public JSONObject toJSONObject() {
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("version", this.getVersion());
-		jsonObject.put("cloudUpdateTime", this.getCloudUpdateTime());
-		jsonObject.put("deviceAckTime", this.getDeviceAckTime());
-		jsonObject.put("binaryData", this.getBinaryData());
+		if (this.getVersion() != null) {
+			jsonObject.put("version", this.getVersion());
+		}
+		if (this.cloudUpdateTime != null) {
+			jsonObject.put("cloudUpdateTime", this.cloudUpdateTime.toString());
+		}
+		if (this.deviceAckTime != null) {
+			jsonObject.put("deviceAckTime", this.deviceAckTime.toString());
+		}
+		if (this.binaryData != null) {
+			jsonObject.put("binaryData", this.binaryData.toString());
+		}
 		return jsonObject;
 	}
 }

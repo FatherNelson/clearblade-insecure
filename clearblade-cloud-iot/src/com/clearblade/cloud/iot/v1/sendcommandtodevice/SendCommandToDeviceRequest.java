@@ -120,7 +120,7 @@ public class SendCommandToDeviceRequest {
 			dName = this.deviceName;
 		}
 		if (this.binaryData != null) {
-			bData = new String(this.binaryData.getBinaryDataArray());
+			bData = new String(this.binaryData.toByteArray());
 		} else if (this.binaryDataByte != null) {
 			if (this.binaryDataByte.length == 0) {
 				bData = "EMPTY";
@@ -143,7 +143,7 @@ public class SendCommandToDeviceRequest {
 		String params = "name=" + this.deviceName + "&method=sendCommandToDevice";
 		String bData = null;
 		if (this.binaryData != null) {
-			bData = new String(this.binaryData.getBinaryDataArray());
+			bData = new String(this.binaryData.toByteArray());
 		} else if (this.binaryDataByte != null) {
 			if (this.binaryDataByte.length == 0) {
 				bData = "EMPTY";

@@ -70,7 +70,7 @@ public class ConfigParameters {
 		this.setDevicesURLExtension(Constants.DEVICES_URL_EXTENSION);
 		this.setCloudiotdevicesURLExtension(Constants.CLOUDIOT_DEVICES_URL_EXTENSION);
 		this.setDevicesStatesURLExtension(Constants.DEVICES_STATES_URL_EXTENSION);
-		this.setCloudiotdevicesURLExtension(Constants.CLOUDIOT_DEVICE_CONFIG_URL_EXTENSION);
+		this.setCloudiotConfigURLExtension(Constants.CLOUDIOT_DEVICE_CONFIG_URL_EXTENSION);
 		this.setGetSystemCredentialsExtension(Constants.GET_SYSTEM_CREDENTIALS_EXTENSION);
 		this.setEndpointPort(Constants.ENDPOINTPORT);
 	}

@@ -105,7 +105,7 @@ public class ModifyCloudToDeviceConfigRequest {
 		String params = "name=" + this.deviceName + "&method=modifyCloudToDeviceConfig";
 		String bData = "EMPTY";
 		if (this.binaryData != null) {
-			bData = new String(this.binaryData.getBinaryDataArray());
+			bData = new String(this.binaryData.toByteArray());
 		} else if (this.binaryDataByte != null) {
 			if (this.binaryDataByte.length == 0) {
 				bData = "EMPTY";

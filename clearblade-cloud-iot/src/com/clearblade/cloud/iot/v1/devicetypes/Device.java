@@ -383,7 +383,9 @@ public class Device {
 		JSONObject deviceObj = new JSONObject();
 		deviceObj.put("id", this.id);
 		deviceObj.put("name", this.name);
-		deviceObj.put("numId", this.numId);
+		if (this.numId != null) {
+			deviceObj.put("numId", this.numId);
+		}		
 		JSONArray jsonArray = new JSONArray();
 		if (this.credentials.size() > 0) {
 

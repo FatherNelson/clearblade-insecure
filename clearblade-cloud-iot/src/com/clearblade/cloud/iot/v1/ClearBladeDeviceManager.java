@@ -318,7 +318,7 @@ public class ClearBladeDeviceManager {
 		SendCommandToDeviceResponse response = SendCommandToDeviceResponse.Builder.newBuilder().build();
 		if (responseArray[0] != null) {
 			int responseCode = Integer.parseInt(responseArray[0]);
-			if (responseCode == 200) {
+			if (responseCode == 200  || responseCode == 204) {
 				response.setHttpStatusCode(Integer.parseInt(responseArray[0]));
 				response.setHttpStatusResponse(responseArray[1]);
 			} else {
@@ -338,7 +338,7 @@ public class ClearBladeDeviceManager {
 			SendCommandToDeviceResponse response = SendCommandToDeviceResponse.Builder.newBuilder().build();
 			if (responseArray[0] != null) {
 				int responseCode = Integer.parseInt(responseArray[0]);
-				if (responseCode == 200) {
+				if (responseCode == 200  || responseCode == 204) {
 					response.setHttpStatusCode(Integer.parseInt(responseArray[0]));
 					response.setHttpStatusResponse(responseArray[1]);
 				} else {

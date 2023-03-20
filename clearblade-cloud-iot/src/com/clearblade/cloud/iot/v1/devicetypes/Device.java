@@ -420,7 +420,7 @@ public class Device {
 			deviceObj.put("lastConfigSendTime", this.lastConfigSendTime);
 		}
 
-		deviceObj.put("blocked", false);
+		deviceObj.put("blocked", this.blocked);
 
 		if (this.lastErrorTime != null)
 			deviceObj.put("lastErrorTime", this.lastErrorTime);

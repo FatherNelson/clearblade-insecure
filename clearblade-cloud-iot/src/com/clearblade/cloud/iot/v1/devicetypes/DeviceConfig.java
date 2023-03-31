@@ -79,26 +79,26 @@ public class DeviceConfig {
 	}
 
 	public Object getCloudUpdateTime() {
-		if (Utils.isBinary() && !Utils.isEmpty(cloudUpdateTime.toString())) {
+		if (Utils.isBinary() && !Utils.isEmpty(cloudUpdateTime)) {
 			Instant timeStamp = Instant.parse(cloudUpdateTime.toString());
 			return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
 		} else
-			return cloudUpdateTime.toString();
+			return (cloudUpdateTime != null ? cloudUpdateTime.toString() : "");
 	}
 
 	public Object getDeviceAckTime() {
-		if (Utils.isBinary() && !Utils.isEmpty(deviceAckTime.toString())) {
+		if (Utils.isBinary() && !Utils.isEmpty(deviceAckTime)) {
 			Instant timeStamp = Instant.parse(deviceAckTime.toString());
 			return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
 		} else
-			return deviceAckTime.toString();
+			return (deviceAckTime != null ? deviceAckTime.toString() : "");
 	}
 
 	public Object getBinaryData() {
-		if (Utils.isBinary())
+		if (Utils.isBinary() && !Utils.isEmpty(binaryData))
 			return ByteString.copyFromUtf8(binaryData.toString());
 		else
-			return binaryData.toString();
+			return (binaryData != null ? binaryData.toString() : "");
 	}
 
 	public static Builder newBuilder() {
@@ -129,11 +129,11 @@ public class DeviceConfig {
 		}
 
 		public Object getCloudUpdateTime() {
-			if (Utils.isBinary()) {
+			if (Utils.isBinary() && !Utils.isEmpty(cloudUpdateTime)) {
 				Instant timeStamp = Instant.parse(cloudUpdateTime.toString());
 				return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
 			} else
-				return cloudUpdateTime.toString();
+				return (cloudUpdateTime != null ? cloudUpdateTime.toString() : "");
 		}
 
 		public Builder setCloudUpdateTime(String cloudUpdateTime) {
@@ -142,11 +142,11 @@ public class DeviceConfig {
 		}
 
 		public Object getDeviceAckTime() {
-			if (Utils.isBinary()) {
+			if (Utils.isBinary() && !Utils.isEmpty(deviceAckTime)) {
 				Instant timeStamp = Instant.parse(deviceAckTime.toString());
 				return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
 			} else
-				return deviceAckTime.toString();
+				return (deviceAckTime != null ? deviceAckTime.toString() : "");
 		}
 
 		public Builder setDeviceAckTime(String deviceAckTime) {
@@ -155,10 +155,10 @@ public class DeviceConfig {
 		}
 
 		public Object getBinaryData() {
-			if (Utils.isBinary())
+			if (Utils.isBinary() && !Utils.isEmpty(binaryData))
 				return ByteString.copyFromUtf8(binaryData.toString());
 			else
-				return binaryData.toString();
+				return (binaryData != null ? binaryData.toString() : "");
 		}
 
 		public Builder setBinaryData(String binaryData) {

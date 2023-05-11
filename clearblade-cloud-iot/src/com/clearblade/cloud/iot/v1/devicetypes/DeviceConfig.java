@@ -79,24 +79,32 @@ public class DeviceConfig {
 	}
 
 	public Object getCloudUpdateTime() {
-		if (Utils.isBinary() && !Utils.isEmpty(cloudUpdateTime)) {
-			Instant timeStamp = Instant.parse(cloudUpdateTime.toString());
-			return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
+		if (Utils.isBinary()) {
+			if (!Utils.isEmpty(cloudUpdateTime)) {
+				Instant timeStamp = Instant.parse(cloudUpdateTime.toString());
+				return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
+			} else {
+				return new Timestamp(0, 0);
+			}
 		} else
 			return (cloudUpdateTime != null ? cloudUpdateTime.toString() : "");
 	}
 
 	public Object getDeviceAckTime() {
-		if (Utils.isBinary() && !Utils.isEmpty(deviceAckTime)) {
-			Instant timeStamp = Instant.parse(deviceAckTime.toString());
-			return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
+		if (Utils.isBinary()) {
+			if (!Utils.isEmpty(deviceAckTime)) {
+				Instant timeStamp = Instant.parse(deviceAckTime.toString());
+				return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
+			} else {
+				return new Timestamp(0, 0);
+			}
 		} else
 			return (deviceAckTime != null ? deviceAckTime.toString() : "");
 	}
 
 	public Object getBinaryData() {
-		if (Utils.isBinary() && !Utils.isEmpty(binaryData))
-			return ByteString.copyFromUtf8(binaryData.toString());
+		if (Utils.isBinary())
+			return ByteString.copyFromUtf8(!Utils.isEmpty(binaryData) ? binaryData.toString() : "");
 		else
 			return (binaryData != null ? binaryData.toString() : "");
 	}
@@ -129,9 +137,13 @@ public class DeviceConfig {
 		}
 
 		public Object getCloudUpdateTime() {
-			if (Utils.isBinary() && !Utils.isEmpty(cloudUpdateTime)) {
-				Instant timeStamp = Instant.parse(cloudUpdateTime.toString());
-				return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
+			if (Utils.isBinary()) {
+				if (!Utils.isEmpty(cloudUpdateTime)) {
+					Instant timeStamp = Instant.parse(cloudUpdateTime.toString());
+					return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
+				} else {
+					return new Timestamp(0, 0);
+				}
 			} else
 				return (cloudUpdateTime != null ? cloudUpdateTime.toString() : "");
 		}
@@ -142,9 +154,13 @@ public class DeviceConfig {
 		}
 
 		public Object getDeviceAckTime() {
-			if (Utils.isBinary() && !Utils.isEmpty(deviceAckTime)) {
-				Instant timeStamp = Instant.parse(deviceAckTime.toString());
-				return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
+			if (Utils.isBinary()) {
+				if (!Utils.isEmpty(deviceAckTime)) {
+					Instant timeStamp = Instant.parse(deviceAckTime.toString());
+					return new Timestamp(timeStamp.getEpochSecond(), timeStamp.getNano());
+				} else {
+					return new Timestamp(0, 0);
+				}
 			} else
 				return (deviceAckTime != null ? deviceAckTime.toString() : "");
 		}
@@ -155,8 +171,8 @@ public class DeviceConfig {
 		}
 
 		public Object getBinaryData() {
-			if (Utils.isBinary() && !Utils.isEmpty(binaryData))
-				return ByteString.copyFromUtf8(binaryData.toString());
+			if (Utils.isBinary())
+				return ByteString.copyFromUtf8(!Utils.isEmpty(binaryData) ? binaryData.toString() : "");
 			else
 				return (binaryData != null ? binaryData.toString() : "");
 		}

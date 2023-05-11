@@ -21,7 +21,7 @@ If you are using Maven artifact, simply add the following dependency to your pom
 <dependency>
   <groupId>io.github.clearblade</groupId>
   <artifactId>clearblade-cloud-iot</artifactId>
-  <version>0.1.4</version>
+  <version>0.1.5</version>
 </dependency>
 ```
 
@@ -54,7 +54,7 @@ Maven:
    ```
     export CLEARBLADE_REGISTRY=[your-registry]
     export CLEARBLADE_REGION=[your-region]
-	export BINARYDATA_AND_TIME_GOOGLE_FORMAT=true
+   export BINARYDATA_AND_TIME_GOOGLE_FORMAT=true
    ```
 
 4. Use the HTTP or MQTT samples in the [samples](./clearblade-cloud-iot/samples) folder.
@@ -67,11 +67,11 @@ Note that before you can run the sample, you must configure your development env
 and terminal as described in the Quickstart above or the [samples](./clearblade-cloud-iot/samples) folder.
 
 Before running the samples, you must set the `CLEARBLADE_CONFIGURATION`. Optionally set the `CLEARBLADE_REGISTRY` and
-`CLEARBLADE_REGION` environment variables to avoid changing them in the the sample app every time you run it. 
+`CLEARBLADE_REGION` environment variables to avoid changing them in the the sample app every time you run it.
 
 If you set `BINARYDATA_AND_TIME_GOOGLE_FORMAT` environment variable then it will give binaryData object's response in binary
-form and time in Timestamp format which will have seconds and nanos in it which is following google's structure. Basically 
-it's applicable on get device state list, modify config, device config versions methods. To get the data in proper format 
+form and time in Timestamp format which will have seconds and nanos in it which is following google's structure. Basically
+it's applicable on get device state list, modify config, device config versions methods. To get the data in proper format
 it should be cast in proper format.
 
 ```
@@ -81,11 +81,10 @@ it should be cast in proper format.
 			System.out.println(((ByteString)element.getBinaryData()).toByteArray());
 			System.out.println(((ByteString)element.getBinaryData()).toStringUtf8());
 			System.out.println(((Timestamp)element.getUpdateTime()).getSeconds());
-			System.out.println(((Timestamp)element.getUpdateTime()).getNanos());	
+			System.out.println(((Timestamp)element.getUpdateTime()).getNanos());
 		}
 	}
 ```
-
 
 When switching to use new registries and/or regions, either:
 

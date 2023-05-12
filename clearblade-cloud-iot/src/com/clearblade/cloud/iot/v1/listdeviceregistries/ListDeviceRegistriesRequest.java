@@ -30,72 +30,81 @@
 
 package com.clearblade.cloud.iot.v1.listdeviceregistries;
 
+import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
+import com.clearblade.cloud.iot.v1.registrytypes.LocationName;
+
+import java.util.Locale;
+
 public class ListDeviceRegistriesRequest {
-	
-	private String parent;
-	private int pageSize = -1;
-	private String pageToken;
 
-	private ListDeviceRegistriesRequest(Builder builder) {
+    private String parent;
+    private int pageSize = -1;
+    private String pageToken;
 
-		this.parent = builder.parent;
-		this.pageSize = builder.pageSize;
-		this.pageToken = builder.pageToken;
-	}
+    private ListDeviceRegistriesRequest(Builder builder) {
 
-	// Static class Builder
-	public static class Builder {
+        this.parent = builder.parent;
+        this.pageSize = builder.pageSize;
+        this.pageToken = builder.pageToken;
+    }
 
-		/// instance fields
-		private String parent;
-		private int pageSize;
-		private String pageToken;
+    // Static class Builder
+    public static class Builder {
 
-		public static Builder newBuilder() {
-			return new Builder();
-		}
+        /// instance fields
+        private String parent;
+        private int pageSize;
+        private String pageToken;
 
-		private Builder() {
-		}
+        public static Builder newBuilder() {
+            return new Builder();
+        }
 
-		// Setter methods
-		public Builder setParent(String parent) {
-			this.parent = parent;
-			return this;
-		}
+        private Builder() {
+        }
 
-		public Builder setPageSize(int pageSize) {
-			this.pageSize = pageSize;
-			return this;
-		}
+        // Setter methods
+        public Builder setParent(String parent) {
+            this.parent = parent;
+            return this;
+        }
 
-		public Builder setPageToken(String pageToken) {
-			this.pageToken = pageToken;
-			return this;
-		}
+        public Builder setPageSize(int pageSize) {
+            this.pageSize = pageSize;
+            return this;
+        }
 
-		// build method to deal with outer class
-		// to return outer instance
-		public ListDeviceRegistriesRequest build() {
-			return new ListDeviceRegistriesRequest(this);
-		}
+        public Builder setPageToken(String pageToken) {
+            this.pageToken = pageToken;
+            return this;
+        }
 
-	}
+        // build method to deal with outer class
+        // to return outer instance
+        public ListDeviceRegistriesRequest build() {
+            return new ListDeviceRegistriesRequest(this);
+        }
 
-	@Override
-	public String toString() {
-		return this.parent.toString();
-	}
+    }
 
-	public String getParamsForList() {
-		String params = "";
-		params = "parent=" + this.parent;
-		if (this.pageSize > 0)
-			params += "&pageSize=" + String.valueOf(this.pageSize);
-		if (this.pageToken != null)
-			params += "&pageToken=" + this.pageToken;
-		return params;
-	}
+    public LocationName getParent() {
+        return LocationName.parse(this.parent);
+    }
+
+    @Override
+    public String toString() {
+        return this.parent.toString();
+    }
+
+    public String getParamsForList() {
+        String params = "";
+        params = "parent=" + this.parent;
+        if (this.pageSize > 0)
+            params += "&pageSize=" + String.valueOf(this.pageSize);
+        if (this.pageToken != null)
+            params += "&pageToken=" + this.pageToken;
+        return params;
+    }
 
 
 }

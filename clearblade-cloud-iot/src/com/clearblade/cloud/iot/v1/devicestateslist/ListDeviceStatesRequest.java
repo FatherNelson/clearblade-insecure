@@ -30,75 +30,81 @@
 
 package com.clearblade.cloud.iot.v1.devicestateslist;
 
+import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
+import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
 import org.json.simple.JSONObject;
 
 public class ListDeviceStatesRequest {
 
-	private final String name;
-	private final String numStates;
-	JSONObject requestParams;
+    private final String name;
+    private final String numStates;
+    JSONObject requestParams;
 
-	private ListDeviceStatesRequest(Builder builder) {
-		this.name = builder.name;
-		this.numStates = builder.numStates;
-	}
+    private ListDeviceStatesRequest(Builder builder) {
+        this.name = builder.name;
+        this.numStates = builder.numStates;
+    }
 
-	// Static class Builder
-	public static class Builder {
+    // Static class Builder
+    public static class Builder {
 
-		/// instance fields
-		private String name;
-		private String numStates;
+        /// instance fields
+        private String name;
+        private String numStates;
 
-		public static Builder newBuilder() {
-			return new Builder();
-		}
+        public static Builder newBuilder() {
+            return new Builder();
+        }
 
-		private Builder() {
-		}
+        private Builder() {
+        }
 
-		// Setter methods
-		public Builder setName(String name) {
-			this.name = name;
-			return this;
-		}
+        // Setter methods
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
 
-		public Builder setNumStates(int numStates) {
-			this.numStates = String.valueOf(numStates);
-			return this;
-		}
+        public Builder setNumStates(int numStates) {
+            this.numStates = String.valueOf(numStates);
+            return this;
+        }
 
-		// build method to deal with outer class
-		// to return outer instance
-		public ListDeviceStatesRequest build() {
-			return new ListDeviceStatesRequest(this);
-		}
+        // build method to deal with outer class
+        // to return outer instance
+        public ListDeviceStatesRequest build() {
+            return new ListDeviceStatesRequest(this);
+        }
 
-	}
+    }
 
-	public JSONObject getRequestParams() {
-		return requestParams;
-	}
+    public JSONObject getRequestParams() {
+        return requestParams;
+    }
 
-	public void setRequestParams(JSONObject requestParams) {
-		this.requestParams = requestParams;
-	}
+    public void setRequestParams(JSONObject requestParams) {
+        this.requestParams = requestParams;
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public String toString() {
-		requestParams = new JSONObject();
-		requestParams.put("name", this.name);
-		requestParams.put("numStates", this.numStates);
-		this.setRequestParams(requestParams);
-		return "name=" + this.name + ",numStates=" + this.numStates;
-	}
+    public DeviceName getName() {
+        return DeviceName.parse(this.name);
+    }
 
-	public String getParamsForList() {
-		String params = "";
-		params = "name=" + this.name;
-		params += "&numStates=" + this.numStates;
+    @SuppressWarnings("unchecked")
+    @Override
+    public String toString() {
+        requestParams = new JSONObject();
+        requestParams.put("name", this.name);
+        requestParams.put("numStates", this.numStates);
+        this.setRequestParams(requestParams);
+        return "name=" + this.name + ",numStates=" + this.numStates;
+    }
 
-		return params;
-	}
+    public String getParamsForList() {
+        String params = "";
+        params = "name=" + this.name;
+        params += "&numStates=" + this.numStates;
+
+        return params;
+    }
 }

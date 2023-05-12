@@ -30,6 +30,7 @@
 
 package com.clearblade.cloud.iot.v1;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,465 +57,426 @@ import com.clearblade.cloud.iot.v1.unbinddevicefromgateway.UnbindDeviceFromGatew
 import com.clearblade.cloud.iot.v1.unbinddevicefromgateway.UnbindDeviceFromGatewayResponse;
 import com.clearblade.cloud.iot.v1.updatedevice.UpdateDeviceRequest;
 import com.clearblade.cloud.iot.v1.utils.ConfigParameters;
+import org.json.simple.parser.ParseException;
 
 public class ClearBladeDeviceManager {
-	static Logger log = Logger.getLogger(ClearBladeDeviceManager.class.getName());
-	ConfigParameters configParameters = ConfigParameters.getInstance();
+    static Logger log = Logger.getLogger(ClearBladeDeviceManager.class.getName());
+    ConfigParameters configParameters = ConfigParameters.getInstance();
 
-	public Device getDevice(GetDeviceRequest request) throws ApplicationException {
-		SyncClient syncClient = new SyncClient();
-		String[] responseArray = syncClient.get(configParameters.getDevicesURLExtension(), request.toString(), false);
-		if (responseArray[0] != null) {
-			int responseCode = Integer.parseInt(responseArray[0]);
-			if (responseCode == 200) {
-				Device device = Device.newBuilder().build();
-				device.loadFromString(responseArray[2]);
-				return device;
-			} else {
-				throw new ApplicationException(responseArray[2]);
-			}
-		}
-		return null;
-	}
+    public Device getDevice(GetDeviceRequest request) throws ApplicationException {
+        SyncClient syncClient = new SyncClient();
+        String[] responseArray = syncClient.get(configParameters.getDevicesURLExtension(), request);
+        if (responseArray[0] != null) {
+            int responseCode = Integer.parseInt(responseArray[0]);
+            if (responseCode == 200) {
+                Device device = Device.newBuilder().build();
+                device.loadFromString(responseArray[2]);
+                return device;
+            } else {
+                throw new ApplicationException(responseArray[2]);
+            }
+        }
+        return null;
+    }
 
-	public Device asyncGetDevice(GetDeviceRequest request) throws ApplicationException {
-		try {
-			AsyncClient asyncClient = new AsyncClient();
-			String[] responseArray = asyncClient.get(configParameters.getDevicesURLExtension(), request.toString());
-			if (responseArray[0] != null) {
-				int responseCode = Integer.parseInt(responseArray[0]);
-				if (responseCode == 200) {
-					Device device = Device.newBuilder().build();
-					device.loadFromString(responseArray[2]);
-					return device;
-				} else {
-					throw new ApplicationException(responseArray[2]);
-				}
-			}
-		} catch (Exception e) {
-			throw new ApplicationException(e.getMessage(), e);
-		}
-		return null;
-	}
+    public Device asyncGetDevice(GetDeviceRequest request) throws ApplicationException {
+        try {
+            AsyncClient asyncClient = new AsyncClient();
+            String[] responseArray = asyncClient.get(configParameters.getDevicesURLExtension(), request);
+            if (responseArray[0] != null) {
+                int responseCode = Integer.parseInt(responseArray[0]);
+                if (responseCode == 200) {
+                    Device device = Device.newBuilder().build();
+                    device.loadFromString(responseArray[2]);
+                    return device;
+                } else {
+                    throw new ApplicationException(responseArray[2]);
+                }
+            }
+        } catch (Exception e) {
+            throw new ApplicationException(e.getMessage(), e);
+        }
+        return null;
+    }
 
-	public Device createDevice(CreateDeviceRequest request) throws ApplicationException {
-		SyncClient syncClient = new SyncClient();
-		String[] params = request.getParams();
-		String reqParams = params[0];
-		String body = params[1];
-		String[] responseArray = syncClient.post(configParameters.getDevicesURLExtension(), reqParams, body, false);
-		if (responseArray[0] != null) {
-			int responseCode = Integer.parseInt(responseArray[0]);
-			if (responseCode == 200) {
-				Device deviceObj = Device.newBuilder().build();
-				deviceObj.loadFromString(responseArray[2]);
-				return deviceObj;
-			} else {
-				throw new ApplicationException(responseArray[2]);
-			}
-		} else {
-			throw new ApplicationException("");
-		}
-	}
+    public Device createDevice(CreateDeviceRequest request) throws ApplicationException {
+        SyncClient syncClient = new SyncClient();
+        String[] params = request.getParams();
+        String reqParams = params[0];
+        String body = params[1];
+        String[] responseArray = syncClient.post(configParameters.getDevicesURLExtension(), reqParams, body, request);
+        if (responseArray[0] != null) {
+            int responseCode = Integer.parseInt(responseArray[0]);
+            if (responseCode == 200) {
+                Device deviceObj = Device.newBuilder().build();
+                deviceObj.loadFromString(responseArray[2]);
+                return deviceObj;
+            } else {
+                throw new ApplicationException(responseArray[2]);
+            }
+        } else {
+            throw new ApplicationException("");
+        }
+    }
 
-	public Device asyncCreateDevice(CreateDeviceRequest request) throws ApplicationException {
-		try {
-			AsyncClient asyncClient = new AsyncClient();
-			String[] params = request.getParams();
-			String reqParams = params[0];
-			String body = params[1];
-			String[] responseArray = asyncClient.post(configParameters.getDevicesURLExtension(), reqParams, body);
-			if (responseArray[0] != null) {
-				int responseCode = Integer.parseInt(responseArray[0]);
-				if (responseCode == 200) {
-					Device deviceObj = Device.newBuilder().build();
-					deviceObj.loadFromString(responseArray[2]);
-					return deviceObj;
-				} else {
-					throw new ApplicationException(responseArray[2]);
-				}
-			}
-			return null;
-		} catch (Exception e) {
-			// TODO: handle exception
-			throw new ApplicationException(e.getMessage(), e);
-		}
-	}
+    public Device asyncCreateDevice(CreateDeviceRequest request) throws ApplicationException {
+        try {
+            AsyncClient asyncClient = new AsyncClient();
+            String[] params = request.getParams();
+            String reqParams = params[0];
+            String body = params[1];
+            String[] responseArray = asyncClient.post(configParameters.getDevicesURLExtension(), reqParams, body, request);
+            if (responseArray[0] != null) {
+                int responseCode = Integer.parseInt(responseArray[0]);
+                if (responseCode == 200) {
+                    Device deviceObj = Device.newBuilder().build();
+                    deviceObj.loadFromString(responseArray[2]);
+                    return deviceObj;
+                } else {
+                    throw new ApplicationException(responseArray[2]);
+                }
+            }
+            return null;
+        } catch (Exception e) {
+            // TODO: handle exception
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
 
-	public void deleteDevice(DeleteDeviceRequest request) throws ApplicationException {
-		SyncClient syncClient = new SyncClient();
-		String[] responseArray = syncClient.delete(configParameters.getDevicesURLExtension(), request.toString(),
-				false);
-		if (responseArray[0] != null) {
-			int responseCode = Integer.parseInt(responseArray[0]);
-			if (responseCode != 200) {
-				throw new ApplicationException(responseArray[2]);
-			}
-		} else {
-			throw new ApplicationException("");
-		}
-	}
+    public void deleteDevice(DeleteDeviceRequest request) throws ApplicationException {
+        SyncClient syncClient = new SyncClient();
+        String[] responseArray = syncClient.delete(configParameters.getDevicesURLExtension(), request.toString(), false, request);
+        if (responseArray[0] != null) {
+            int responseCode = Integer.parseInt(responseArray[0]);
+            if (responseCode != 200) {
+                throw new ApplicationException(responseArray[2]);
+            }
+        } else {
+            throw new ApplicationException("");
+        }
+    }
 
-	public void asyncDeleteDevice(DeleteDeviceRequest request) throws ApplicationException {
-		try {
-			AsyncClient asyncClient = new AsyncClient();
-			String[] responseArray = asyncClient.delete(configParameters.getDevicesURLExtension(), request.toString());
-			if (responseArray[0] != null) {
-				int responseCode = Integer.parseInt(responseArray[0]);
-				if (responseCode != 200) {
-					throw new ApplicationException(responseArray[2]);
-				}
-			} else {
-				throw new ApplicationException("");
-			}
-		} catch (Exception e) {
-			log.log(Level.SEVERE, e.getMessage());
-			throw new ApplicationException(e.getMessage(), e);
-		}
-	}
+    public void asyncDeleteDevice(DeleteDeviceRequest request) throws ApplicationException {
+        try {
+            AsyncClient asyncClient = new AsyncClient();
+            String[] responseArray = asyncClient.delete(configParameters.getDevicesURLExtension(), request.toString(), request);
+            if (responseArray[0] != null) {
+                int responseCode = Integer.parseInt(responseArray[0]);
+                if (responseCode != 200) {
+                    throw new ApplicationException(responseArray[2]);
+                }
+            } else {
+                throw new ApplicationException("");
+            }
+        } catch (Exception e) {
+            log.log(Level.SEVERE, e.getMessage());
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
 
-	public Device updateDevice(UpdateDeviceRequest request) throws ApplicationException {
-		try {
-			SyncClient syncClient = new SyncClient();
-			String[] params = request.getBodyAndParams();
-			String reqParams = params[0];
-			String body = params[1];
-			String[] responseArray;
-			responseArray = syncClient.update(configParameters.getDevicesURLExtension(), reqParams, body);
-			if (responseArray[0] != null) {
-				int responseCode = Integer.parseInt(responseArray[0]);
-				if (responseCode == 200) {
-					Device deviceObj = Device.newBuilder().build();
-					deviceObj.loadFromString(responseArray[2]);
-					return deviceObj;
-				} else {
-					throw new ApplicationException(responseArray[2]);
-				}
-			} else {
-				throw new ApplicationException();
-			}
-		} catch (InterruptedException e) {
-			log.log(Level.SEVERE, e.getMessage());
-			Thread.currentThread().interrupt();
-			throw new ApplicationException(e.getMessage(), e);
-		}
-	}
+    public Device updateDevice(UpdateDeviceRequest request) throws ApplicationException {
+        try {
+            SyncClient syncClient = new SyncClient();
+            String[] params = request.getBodyAndParams();
+            String reqParams = params[0];
+            String body = params[1];
+            String[] responseArray;
+            responseArray = syncClient.update(configParameters.getDevicesURLExtension(), reqParams, body, request);
+            if (responseArray[0] != null) {
+                int responseCode = Integer.parseInt(responseArray[0]);
+                if (responseCode == 200) {
+                    Device deviceObj = Device.newBuilder().build();
+                    deviceObj.loadFromString(responseArray[2]);
+                    return deviceObj;
+                } else {
+                    throw new ApplicationException(responseArray[2]);
+                }
+            } else {
+                throw new ApplicationException();
+            }
+        } catch (Exception e) {
+            log.log(Level.SEVERE, e.getMessage());
+            Thread.currentThread().interrupt();
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
 
-	public Device asyncUpdateDevice(UpdateDeviceRequest request) throws ApplicationException {
-		try {
-			AsyncClient asyncClient = new AsyncClient();
-			String[] params = request.getBodyAndParams();
-			String reqParams = params[0];
-			String body = params[1];
-			String[] responseArray = asyncClient.update(configParameters.getDevicesURLExtension(), reqParams, body);
-			if (responseArray[0] != null) {
-				int responseCode = Integer.parseInt(responseArray[0]);
-				if (responseCode == 200) {
-					Device deviceObj = Device.newBuilder().build();
-					deviceObj.loadFromString(responseArray[2]);
-					return deviceObj;
-				} else {
-					throw new ApplicationException(responseArray[2]);
-				}
-			} else {
-				throw new ApplicationException(responseArray[2]);
-			}
-		} catch (Exception e) {
-			throw new ApplicationException(e.getMessage(), e);
-		}
-	}
+    public Device asyncUpdateDevice(UpdateDeviceRequest request) throws ApplicationException {
+        try {
+            AsyncClient asyncClient = new AsyncClient();
+            String[] params = request.getBodyAndParams();
+            String reqParams = params[0];
+            String body = params[1];
+            String[] responseArray = asyncClient.update(configParameters.getDevicesURLExtension(), reqParams, body, request);
+            if (responseArray[0] != null) {
+                int responseCode = Integer.parseInt(responseArray[0]);
+                if (responseCode == 200) {
+                    Device deviceObj = Device.newBuilder().build();
+                    deviceObj.loadFromString(responseArray[2]);
+                    return deviceObj;
+                } else {
+                    throw new ApplicationException(responseArray[2]);
+                }
+            } else {
+                throw new ApplicationException(responseArray[2]);
+            }
+        } catch (Exception e) {
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
 
-	public BindDeviceToGatewayResponse bindDeviceToGateway(BindDeviceToGatewayRequest request)
-			throws ApplicationException {
-		SyncClient syncClient = new SyncClient();
-		String[] paramBody = request.getBodyAndParams();
-		String[] responseArray = syncClient.post(configParameters.getCloudiotURLExtension(), paramBody[0], paramBody[1],
-				false);
-		BindDeviceToGatewayResponse response = BindDeviceToGatewayResponse.Builder.newBuilder().build();
-		if (responseArray[0] != null) {
-			int responseCode = Integer.parseInt(responseArray[0]);
-			if (responseCode == 200) {
-				response.setHttpStatusCode(Integer.parseInt(responseArray[0]));
-				response.setHttpStatusResponse(responseArray[1]);
-			} else {
-				throw new ApplicationException(responseArray[2]);
-			}
-		}
-		return response;
-	}
+    public BindDeviceToGatewayResponse bindDeviceToGateway(BindDeviceToGatewayRequest request) throws ApplicationException {
+        SyncClient syncClient = new SyncClient();
+        String[] paramBody = request.getBodyAndParams();
+        String[] responseArray = syncClient.post(configParameters.getCloudiotURLExtension(), paramBody[0], paramBody[1], request);
+        BindDeviceToGatewayResponse response = BindDeviceToGatewayResponse.Builder.newBuilder().build();
+        if (responseArray[0] != null) {
+            int responseCode = Integer.parseInt(responseArray[0]);
+            if (responseCode == 200) {
+                response.setHttpStatusCode(Integer.parseInt(responseArray[0]));
+                response.setHttpStatusResponse(responseArray[1]);
+            } else {
+                throw new ApplicationException(responseArray[2]);
+            }
+        }
+        return response;
+    }
 
-	public BindDeviceToGatewayResponse asyncBindDeviceToGateway(BindDeviceToGatewayRequest request)
-			throws ApplicationException {
-		try {
-			AsyncClient asyncClient = new AsyncClient();
-			String[] paramBody = request.getBodyAndParams();
-			String[] responseArray = asyncClient.post(configParameters.getCloudiotURLExtension(), paramBody[0],
-					paramBody[1]);
-			BindDeviceToGatewayResponse response = BindDeviceToGatewayResponse.Builder.newBuilder().build();
-			if (responseArray[0] != null) {
-				int responseCode = Integer.parseInt(responseArray[0]);
-				if (responseCode == 200) {
-					response.setHttpStatusCode(Integer.parseInt(responseArray[0]));
-					response.setHttpStatusResponse(responseArray[1]);
-				} else {
-					throw new ApplicationException(responseArray[2]);
-				}
-			}
-			return response;
-		} catch (Exception e) {
-			log.log(Level.SEVERE, e.getMessage());
-		}
-		return null;
-	}
+    public BindDeviceToGatewayResponse asyncBindDeviceToGateway(BindDeviceToGatewayRequest request) throws ApplicationException {
+        try {
+            AsyncClient asyncClient = new AsyncClient();
+            String[] paramBody = request.getBodyAndParams();
+            String[] responseArray = asyncClient.post(configParameters.getCloudiotURLExtension(), paramBody[0], paramBody[1], request);
+            BindDeviceToGatewayResponse response = BindDeviceToGatewayResponse.Builder.newBuilder().build();
+            if (responseArray[0] != null) {
+                int responseCode = Integer.parseInt(responseArray[0]);
+                if (responseCode == 200) {
+                    response.setHttpStatusCode(Integer.parseInt(responseArray[0]));
+                    response.setHttpStatusResponse(responseArray[1]);
+                } else {
+                    throw new ApplicationException(responseArray[2]);
+                }
+            }
+            return response;
+        } catch (Exception e) {
+            log.log(Level.SEVERE, e.getMessage());
+        }
+        return null;
+    }
 
-	public UnbindDeviceFromGatewayResponse unbindDeviceFromGateway(UnbindDeviceFromGatewayRequest request)
-			throws ApplicationException {
-		SyncClient syncClinet = new SyncClient();
-		String[] paramBody = request.getBodyAndParams();
-		String[] responseArray = syncClinet.post(configParameters.getCloudiotURLExtension(), paramBody[0], paramBody[1],
-				false);
-		UnbindDeviceFromGatewayResponse response = UnbindDeviceFromGatewayResponse.Builder.newBuilder().build();
-		if (responseArray[0] != null) {
-			int responseCode = Integer.parseInt(responseArray[0]);
-			if (responseCode == 200) {
-				response.setHttpStatusCode(Integer.parseInt(responseArray[0]));
-				response.setHttpStatusResponse(responseArray[1]);
-			} else {
-				throw new ApplicationException(responseArray[2]);
-			}
-		}
-		return response;
-	}
+    public UnbindDeviceFromGatewayResponse unbindDeviceFromGateway(UnbindDeviceFromGatewayRequest request) throws ApplicationException {
+        SyncClient syncClinet = new SyncClient();
+        String[] paramBody = request.getBodyAndParams();
+        String[] responseArray = syncClinet.post(configParameters.getCloudiotURLExtension(), paramBody[0], paramBody[1], request);
+        UnbindDeviceFromGatewayResponse response = UnbindDeviceFromGatewayResponse.Builder.newBuilder().build();
+        if (responseArray[0] != null) {
+            int responseCode = Integer.parseInt(responseArray[0]);
+            if (responseCode == 200) {
+                response.setHttpStatusCode(Integer.parseInt(responseArray[0]));
+                response.setHttpStatusResponse(responseArray[1]);
+            } else {
+                throw new ApplicationException(responseArray[2]);
+            }
+        }
+        return response;
+    }
 
-	public UnbindDeviceFromGatewayResponse asyncUnbindDeviceFromGateway(UnbindDeviceFromGatewayRequest request)
-			throws ApplicationException {
-		try {
-			AsyncClient asyncClinet = new AsyncClient();
-			String[] paramBody = request.getBodyAndParams();
-			String[] responseArray = asyncClinet.post(configParameters.getCloudiotURLExtension(), paramBody[0],
-					paramBody[1]);
-			UnbindDeviceFromGatewayResponse response = UnbindDeviceFromGatewayResponse.Builder.newBuilder().build();
-			if (responseArray[0] != null) {
-				int responseCode = Integer.parseInt(responseArray[0]);
-				if (responseCode == 200) {
-					response.setHttpStatusCode(Integer.parseInt(responseArray[0]));
-					response.setHttpStatusResponse(responseArray[1]);
-				} else {
-					throw new ApplicationException(responseArray[2]);
-				}
-			}
-			return response;
-		} catch (Exception e) {
-			throw new ApplicationException(e.getMessage(), e);
-		}
-	}
+    public UnbindDeviceFromGatewayResponse asyncUnbindDeviceFromGateway(UnbindDeviceFromGatewayRequest request) throws ApplicationException {
+        try {
+            AsyncClient asyncClinet = new AsyncClient();
+            String[] paramBody = request.getBodyAndParams();
+            String[] responseArray = asyncClinet.post(configParameters.getCloudiotURLExtension(), paramBody[0], paramBody[1], request);
+            UnbindDeviceFromGatewayResponse response = UnbindDeviceFromGatewayResponse.Builder.newBuilder().build();
+            if (responseArray[0] != null) {
+                int responseCode = Integer.parseInt(responseArray[0]);
+                if (responseCode == 200) {
+                    response.setHttpStatusCode(Integer.parseInt(responseArray[0]));
+                    response.setHttpStatusResponse(responseArray[1]);
+                } else {
+                    throw new ApplicationException(responseArray[2]);
+                }
+            }
+            return response;
+        } catch (Exception e) {
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
 
-	public SendCommandToDeviceResponse sendCommandToDevice(SendCommandToDeviceRequest request)
-			throws ApplicationException {
-		SyncClient syncClient = new SyncClient();
-		String[] paramBody = request.getBodyAndParams();
-		String[] responseArray = syncClient.post(configParameters.getDevicesURLExtension(), paramBody[0], paramBody[1],
-				false);
-		SendCommandToDeviceResponse response = SendCommandToDeviceResponse.Builder.newBuilder().build();
-		if (responseArray[0] != null) {
-			int responseCode = Integer.parseInt(responseArray[0]);
-			if (responseCode == 200  || responseCode == 204) {
-				response.setHttpStatusCode(Integer.parseInt(responseArray[0]));
-				response.setHttpStatusResponse(responseArray[1]);
-			} else {
-				throw new ApplicationException(responseArray[2]);
-			}
-		}
-		return response;
-	}
+    public SendCommandToDeviceResponse sendCommandToDevice(SendCommandToDeviceRequest request) throws ApplicationException {
+        SyncClient syncClient = new SyncClient();
+        String[] paramBody = request.getBodyAndParams();
+        String[] responseArray = syncClient.post(configParameters.getDevicesURLExtension(), paramBody[0], paramBody[1], request);
+        SendCommandToDeviceResponse response = SendCommandToDeviceResponse.Builder.newBuilder().build();
+        if (responseArray[0] != null) {
+            int responseCode = Integer.parseInt(responseArray[0]);
+            if (responseCode == 200 || responseCode == 204) {
+                response.setHttpStatusCode(Integer.parseInt(responseArray[0]));
+                response.setHttpStatusResponse(responseArray[1]);
+            } else {
+                throw new ApplicationException(responseArray[2]);
+            }
+        }
+        return response;
+    }
 
-	public SendCommandToDeviceResponse asyncSendCommandToDevice(SendCommandToDeviceRequest request)
-			throws ApplicationException {
-		try {
-			AsyncClient asyncClient = new AsyncClient();
-			String[] paramBody = request.getBodyAndParams();
-			String[] responseArray = asyncClient.post(configParameters.getDevicesURLExtension(), paramBody[0],
-					paramBody[1]);
-			SendCommandToDeviceResponse response = SendCommandToDeviceResponse.Builder.newBuilder().build();
-			if (responseArray[0] != null) {
-				int responseCode = Integer.parseInt(responseArray[0]);
-				if (responseCode == 200  || responseCode == 204) {
-					response.setHttpStatusCode(Integer.parseInt(responseArray[0]));
-					response.setHttpStatusResponse(responseArray[1]);
-				} else {
-					throw new ApplicationException(responseArray[2]);
-				}
-			}
-			return response;
-		} catch (Exception e) {
-			throw new ApplicationException(e.getMessage(), e);
-		}
-	}
+    public SendCommandToDeviceResponse asyncSendCommandToDevice(SendCommandToDeviceRequest request) throws ApplicationException {
+        try {
+            AsyncClient asyncClient = new AsyncClient();
+            String[] paramBody = request.getBodyAndParams();
+            String[] responseArray = asyncClient.post(configParameters.getDevicesURLExtension(), paramBody[0], paramBody[1], request);
+            SendCommandToDeviceResponse response = SendCommandToDeviceResponse.Builder.newBuilder().build();
+            if (responseArray[0] != null) {
+                int responseCode = Integer.parseInt(responseArray[0]);
+                if (responseCode == 200 || responseCode == 204) {
+                    response.setHttpStatusCode(Integer.parseInt(responseArray[0]));
+                    response.setHttpStatusResponse(responseArray[1]);
+                } else {
+                    throw new ApplicationException(responseArray[2]);
+                }
+            }
+            return response;
+        } catch (Exception e) {
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
 
-	public DevicesListResponse listDevices(DevicesListRequest request) throws ApplicationException {
-		SyncClient syncClient = new SyncClient();
-		String[] responseArray = syncClient.get(configParameters.getDevicesURLExtension(), request.getParamsForList(),
-				false);
-		if (responseArray[0] != null) {
-			int responseCode = Integer.parseInt(responseArray[0]);
-			if (responseCode == 200) {
-				return DevicesListResponse.Builder.newBuilder().buildResponse(responseArray[2]).build();
-			} else {
-				throw new ApplicationException(responseArray[2]);
-			}
-		}
-		return null;
-	}
+    public DevicesListResponse listDevices(DevicesListRequest request) throws ApplicationException {
+        SyncClient syncClient = new SyncClient();
+        String[] responseArray = syncClient.get(configParameters.getDevicesURLExtension(), request.getParamsForList(), request);
+        if (responseArray[0] != null) {
+            int responseCode = Integer.parseInt(responseArray[0]);
+            if (responseCode == 200) {
+                return DevicesListResponse.Builder.newBuilder().buildResponse(responseArray[2]).build();
+            } else {
+                throw new ApplicationException(responseArray[2]);
+            }
+        }
+        return null;
+    }
 
-	public DevicesListResponse asyncListDevices(DevicesListRequest request) throws ApplicationException {
-		try {
-			AsyncClient asyncClient = new AsyncClient();
-			String[] responseArray = asyncClient.get(configParameters.getDevicesURLExtension(),
-					request.getParamsForList());
-			if (responseArray[0] != null) {
-				int responseCode = Integer.parseInt(responseArray[0]);
-				if (responseCode == 200) {
-					return DevicesListResponse.Builder.newBuilder().buildResponse(responseArray[2]).build();
-				} else {
-					throw new ApplicationException(responseArray[2]);
-				}
-			}
-		} catch (Exception e) {
-			throw new ApplicationException(e.getMessage(), e);
-		}
-		return null;
-	}
+    public DevicesListResponse asyncListDevices(DevicesListRequest request) throws ApplicationException {
+        try {
+            AsyncClient asyncClient = new AsyncClient();
+            String[] responseArray = asyncClient.get(configParameters.getDevicesURLExtension(), request.getParamsForList(), request);
+            if (responseArray[0] != null) {
+                int responseCode = Integer.parseInt(responseArray[0]);
+                if (responseCode == 200) {
+                    return DevicesListResponse.Builder.newBuilder().buildResponse(responseArray[2]).build();
+                } else {
+                    throw new ApplicationException(responseArray[2]);
+                }
+            }
+        } catch (Exception e) {
+            throw new ApplicationException(e.getMessage(), e);
+        }
+        return null;
+    }
 
-	public DeviceConfig modifyCloudToDeviceConfig(ModifyCloudToDeviceConfigRequest request)
-			throws ApplicationException {
-		SyncClient syncClient = new SyncClient();
-		String[] paramBody = request.getBodyAndParams();
-		String[] responseArray = syncClient.post(configParameters.getDevicesURLExtension(), paramBody[0], paramBody[1],
-				false);
-		DeviceConfig deviceConfig = DeviceConfig.newBuilder().build();
-		if (responseArray[0] != null) {
-			if (Integer.parseInt(responseArray[0]) == 200)
-				deviceConfig.loadFromString(responseArray[2]);
-			else
-				throw new ApplicationException(responseArray[2]);
-		}
-		return deviceConfig;
-	}
+    public DeviceConfig modifyCloudToDeviceConfig(ModifyCloudToDeviceConfigRequest request) throws ApplicationException {
+        SyncClient syncClient = new SyncClient();
+        String[] paramBody = request.getBodyAndParams();
+        String[] responseArray = syncClient.post(configParameters.getDevicesURLExtension(), paramBody[0], paramBody[1], request);
+        DeviceConfig deviceConfig = DeviceConfig.newBuilder().build();
+        if (responseArray[0] != null) {
+            if (Integer.parseInt(responseArray[0]) == 200) deviceConfig.loadFromString(responseArray[2]);
+            else throw new ApplicationException(responseArray[2]);
+        }
+        return deviceConfig;
+    }
 
-	public DeviceConfig asyncModifyCloudToDeviceConfig(ModifyCloudToDeviceConfigRequest request)
-			throws ApplicationException {
-		try {
-			AsyncClient asyncClient = new AsyncClient();
-			String[] paramBody = request.getBodyAndParams();
-			String[] responseArray = asyncClient.post(configParameters.getDevicesURLExtension(), paramBody[0],
-					paramBody[1]);
-			DeviceConfig deviceConfig = DeviceConfig.newBuilder().build();
-			if (responseArray[0] != null) {
-				if (Integer.parseInt(responseArray[0]) == 200)
-					deviceConfig.loadFromString(responseArray[2]);
-				else
-					throw new ApplicationException(responseArray[2]);
-			}
-			return deviceConfig;
-		} catch (Exception e) {
-			throw new ApplicationException(e.getMessage(), e);
-		}
-	}
+    public DeviceConfig asyncModifyCloudToDeviceConfig(ModifyCloudToDeviceConfigRequest request) throws ApplicationException {
+        try {
+            AsyncClient asyncClient = new AsyncClient();
+            String[] paramBody = request.getBodyAndParams();
+            String[] responseArray = asyncClient.post(configParameters.getDevicesURLExtension(), paramBody[0], paramBody[1], request);
+            DeviceConfig deviceConfig = DeviceConfig.newBuilder().build();
+            if (responseArray[0] != null) {
+                if (Integer.parseInt(responseArray[0]) == 200) deviceConfig.loadFromString(responseArray[2]);
+                else throw new ApplicationException(responseArray[2]);
+            }
+            return deviceConfig;
+        } catch (Exception e) {
+            throw new ApplicationException(e.getMessage(), e);
+        }
+    }
 
-	public ListDeviceStatesResponse listDeviceStates(ListDeviceStatesRequest request) throws ApplicationException {
-		SyncClient syncClient = new SyncClient();
-		String[] responseArray = syncClient.get(configParameters.getDevicesStatesURLExtension(),
-				request.getParamsForList(), false);
-		if (responseArray[0] != null) {
-			int responseCode = Integer.parseInt(responseArray[0]);
-			if (responseCode == 200) {
-				return ListDeviceStatesResponse.Builder.newBuilder().buildResponse(responseArray[2]).build();
-			} else
-				throw new ApplicationException(responseArray[2]);
-		}
-		return null;
-	}
+    public ListDeviceStatesResponse listDeviceStates(ListDeviceStatesRequest request) throws ApplicationException {
+        SyncClient syncClient = new SyncClient();
+        String[] responseArray = syncClient.get(configParameters.getDevicesStatesURLExtension(), request.getParamsForList(), request);
+        if (responseArray[0] != null) {
+            int responseCode = Integer.parseInt(responseArray[0]);
+            if (responseCode == 200) {
+                return ListDeviceStatesResponse.Builder.newBuilder().buildResponse(responseArray[2]).build();
+            } else throw new ApplicationException(responseArray[2]);
+        }
+        return null;
+    }
 
-	public ListDeviceStatesResponse asyncListDeviceStates(ListDeviceStatesRequest request) throws ApplicationException {
-		try {
-			AsyncClient asyncClient = new AsyncClient();
-			String[] responseArray = asyncClient.get(configParameters.getDevicesStatesURLExtension(),
-					request.getParamsForList());
-			if (responseArray[0] != null) {
-				int responseCode = Integer.parseInt(responseArray[0]);
-				if (responseCode == 200) {
-					return ListDeviceStatesResponse.Builder.newBuilder().buildResponse(responseArray[2]).build();
-				} else
-					throw new ApplicationException(responseArray[2]);
-			}
-		} catch (Exception e) {
-			throw new ApplicationException(e.getMessage(), e);
-		}
-		return null;
-	}
+    public ListDeviceStatesResponse asyncListDeviceStates(ListDeviceStatesRequest request) throws ApplicationException {
+        try {
+            AsyncClient asyncClient = new AsyncClient();
+            String[] responseArray = asyncClient.get(configParameters.getDevicesStatesURLExtension(), request.getParamsForList(), request);
+            if (responseArray[0] != null) {
+                int responseCode = Integer.parseInt(responseArray[0]);
+                if (responseCode == 200) {
+                    return ListDeviceStatesResponse.Builder.newBuilder().buildResponse(responseArray[2]).build();
+                } else throw new ApplicationException(responseArray[2]);
+            }
+        } catch (Exception e) {
+            throw new ApplicationException(e.getMessage(), e);
+        }
+        return null;
+    }
 
-	public ListDeviceConfigVersionsResponse listDeviceConfigVersions(ListDeviceConfigVersionsRequest request)
-			throws ApplicationException {
-		SyncClient syncClient = new SyncClient();
-		String[] responseArray = syncClient.get(configParameters.getCloudiotConfigURLExtension(),
-				request.getParamsForList(), false);
-		if (responseArray[0] != null) {
-			int responseCode = Integer.parseInt(responseArray[0]);
-			if (responseCode == 200) {
-				return ListDeviceConfigVersionsResponse.Builder.newBuilder().buildResponse(responseArray[2]).build();
-			} else
-				throw new ApplicationException(responseArray[2]);
-		}
-		return null;
-	}
+    public ListDeviceConfigVersionsResponse listDeviceConfigVersions(ListDeviceConfigVersionsRequest request) throws ApplicationException {
+        SyncClient syncClient = new SyncClient();
+        String[] responseArray = syncClient.get(configParameters.getCloudiotConfigURLExtension(), request.getParamsForList(), request);
+        if (responseArray[0] != null) {
+            int responseCode = Integer.parseInt(responseArray[0]);
+            if (responseCode == 200) {
+                return ListDeviceConfigVersionsResponse.Builder.newBuilder().buildResponse(responseArray[2]).build();
+            } else throw new ApplicationException(responseArray[2]);
+        }
+        return null;
+    }
 
-	public ListDeviceConfigVersionsResponse asyncListDeviceConfigVersions(ListDeviceConfigVersionsRequest request)
-			throws ApplicationException {
-		try {
-			AsyncClient asyncClient = new AsyncClient();
-			String[] responseArray = asyncClient.get(configParameters.getCloudiotConfigURLExtension(),
-					request.getParamsForList());
-			if (responseArray[0] != null) {
-				int responseCode = Integer.parseInt(responseArray[0]);
-				if (responseCode == 200) {
-					return ListDeviceConfigVersionsResponse.Builder.newBuilder().buildResponse(responseArray[2])
-							.build();
-				} else
-					throw new ApplicationException(responseArray[2]);
-			}
-		} catch (Exception e) {
-			throw new ApplicationException(e.getMessage(), e);
-		}
-		return null;
-	}
+    public ListDeviceConfigVersionsResponse asyncListDeviceConfigVersions(ListDeviceConfigVersionsRequest request) throws ApplicationException {
+        try {
+            AsyncClient asyncClient = new AsyncClient();
+            String[] responseArray = asyncClient.get(configParameters.getCloudiotConfigURLExtension(), request.getParamsForList(), request);
+            if (responseArray[0] != null) {
+                int responseCode = Integer.parseInt(responseArray[0]);
+                if (responseCode == 200) {
+                    return ListDeviceConfigVersionsResponse.Builder.newBuilder().buildResponse(responseArray[2]).build();
+                } else throw new ApplicationException(responseArray[2]);
+            }
+        } catch (Exception e) {
+            throw new ApplicationException(e.getMessage(), e);
+        }
+        return null;
+    }
 
-	public ListDeviceRegistriesResponse listDeviceRegistries(ListDeviceRegistriesRequest request)
-			throws ApplicationException {
-		SyncClient syncClient = new SyncClient();
-		String[] responseArray = syncClient.get(configParameters.getCloudiotURLExtension(), request.getParamsForList(),
-				true);
-		if (responseArray[0] != null) {
-			int responseCode = Integer.parseInt(responseArray[0]);
-			if (responseCode == 200) {
-				return ListDeviceRegistriesResponse.Builder.newBuilder().buildResponse(responseArray[2]).build();
-			} else
-				throw new ApplicationException(responseArray[2]);
-		}
-		return null;
-	}
+    public ListDeviceRegistriesResponse listDeviceRegistries(ListDeviceRegistriesRequest request) throws ApplicationException {
+        SyncClient syncClient = new SyncClient();
+        String[] responseArray = syncClient.get(configParameters.getCloudiotURLExtension(), request.getParamsForList(), true);
+        if (responseArray[0] != null) {
+            int responseCode = Integer.parseInt(responseArray[0]);
+            if (responseCode == 200) {
+                return ListDeviceRegistriesResponse.Builder.newBuilder().buildResponse(responseArray[2]).build();
+            } else throw new ApplicationException(responseArray[2]);
+        }
+        return null;
+    }
 
-	public ListDeviceRegistriesResponse asyncListDeviceRegistries(ListDeviceRegistriesRequest request)
-			throws ApplicationException {
-		AsyncClient asyncClient = new AsyncClient();
-		String[] responseArray = asyncClient.asyncListDeviceRegistries(configParameters.getCloudiotURLExtension(),
-				request.getParamsForList(), true);
-		if (responseArray[0] != null) {
-			int responseCode = Integer.parseInt(responseArray[0]);
-			if (responseCode == 200) {
-				return ListDeviceRegistriesResponse.Builder.newBuilder().buildResponse(responseArray[2]).build();
-			} else
-				throw new ApplicationException(responseArray[2]);
-		}
-		return null;
-	}
+    public ListDeviceRegistriesResponse asyncListDeviceRegistries(ListDeviceRegistriesRequest request) throws ApplicationException, IOException {
+        AsyncClient asyncClient = new AsyncClient();
+        String[] responseArray = asyncClient.asyncListDeviceRegistries(configParameters.getCloudiotURLExtension(), request.getParamsForList(), true);
+        if (responseArray[0] != null) {
+            int responseCode = Integer.parseInt(responseArray[0]);
+            if (responseCode == 200) {
+                return ListDeviceRegistriesResponse.Builder.newBuilder().buildResponse(responseArray[2]).build();
+            } else throw new ApplicationException(responseArray[2]);
+        }
+        return null;
+    }
 }

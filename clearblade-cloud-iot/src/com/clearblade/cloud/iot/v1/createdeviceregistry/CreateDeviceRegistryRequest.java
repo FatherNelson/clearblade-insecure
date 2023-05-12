@@ -31,6 +31,8 @@
 package com.clearblade.cloud.iot.v1.createdeviceregistry;
 
 import com.clearblade.cloud.iot.v1.registrytypes.DeviceRegistry;
+import com.clearblade.cloud.iot.v1.registrytypes.LocationName;
+import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
 
 public class CreateDeviceRegistryRequest {
     private String parent;
@@ -71,6 +73,10 @@ public class CreateDeviceRegistryRequest {
         public CreateDeviceRegistryRequest build() {
             return new CreateDeviceRegistryRequest(this);
         }
+    }
+
+    public LocationName getParent() {
+        return LocationName.parse(this.parent);
     }
 
     public String[] getBodyAndParams() {

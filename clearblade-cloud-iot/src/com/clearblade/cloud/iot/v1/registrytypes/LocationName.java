@@ -30,91 +30,107 @@
 
 package com.clearblade.cloud.iot.v1.registrytypes;
 
+import com.clearblade.cloud.iot.v1.utils.PathTemplate;
+
+import java.util.Map;
+
 public class LocationName {
 
-	private final String project;
-	private final String location;
+    private static final PathTemplate PROJECT_LOCATION = PathTemplate.createWithoutUrlEncoding("projects/{project}/locations/{location}");
 
-	protected LocationName() {
-		project = null;
-		location = null;
-	}
+    private final String project;
+    private final String location;
 
-	private LocationName(Builder builder) {
-		project = builder.getProject();
-		location = builder.getLocation();
-	}
+    protected LocationName() {
+        project = null;
+        location = null;
+    }
 
-	public String getProject() {
-		return project;
-	}
+    private LocationName(Builder builder) {
+        project = builder.getProject();
+        location = builder.getLocation();
+    }
 
-	public String getLocation() {
-		return location;
-	}
+    public String getProject() {
+        return project;
+    }
 
-	public static Builder newBuilder() {
-		return new Builder();
-	}
+    public String getLocation() {
+        return location;
+    }
 
-	public Builder toBuilder() {
-		return new Builder(this);
-	}
+    public static Builder newBuilder() {
+        return new Builder();
+    }
 
-	public static LocationName of(String project, String location) {
-		return newBuilder().setProject(project).setLocation(location).build();
-	}
+    public Builder toBuilder() {
+        return new Builder(this);
+    }
 
-	public static String format(String project, String location) {
-		return newBuilder().setProject(project).setLocation(location).build()
-				.toString();
-	}
+    public static LocationName of(String project, String location) {
+        return newBuilder().setProject(project).setLocation(location).build();
+    }
 
-	/**
-	 * Builder for
-	 * projects/{project}/locations/{location}/registries/{registry}.
-	 */
-	public static class Builder {
-		private String project;
-		private String location;
+    public static String format(String project, String location) {
+        return newBuilder().setProject(project).setLocation(location).build()
+                .toString();
+    }
 
-		protected Builder() {
-		}
+    public static LocationName parse(String formattedString) {
+        if (formattedString.isEmpty()) {
+            return null;
+        } else {
+            Map<String, String> matchMap = PROJECT_LOCATION.validatedMatch(formattedString, "LocationName.parse: formattedString not in valid format");
+            return of((String) matchMap.get("project"), (String) matchMap.get("location"));
+        }
+    }
 
-		public String getProject() {
-			return project;
-		}
 
-		public String getLocation() {
-			return location;
-		}
+    /**
+     * Builder for
+     * projects/{project}/locations/{location}/registries/{registry}.
+     */
+    public static class Builder {
+        private String project;
+        private String location;
 
-		public Builder setProject(String project) {
-			this.project = project;
-			return this;
-		}
+        protected Builder() {
+        }
 
-		public Builder setLocation(String location) {
-			this.location = location;
-			return this;
-		}
+        public String getProject() {
+            return project;
+        }
 
-		private Builder(LocationName locationName) {
-			this.project = locationName.project;
-			this.location = locationName.location;
-		}
+        public String getLocation() {
+            return location;
+        }
 
-		public LocationName build() {
-			return new LocationName(this);
-		}
-	}
+        public Builder setProject(String project) {
+            this.project = project;
+            return this;
+        }
 
-	@Override
-	public String toString() {
-		return "projects/" + this.getProject() + "/locations/" + this.getLocation();
-	}
+        public Builder setLocation(String location) {
+            this.location = location;
+            return this;
+        }
 
-	public String getLocationFullName() {
-		return "projects/" + this.getProject() + "/locations/" + this.getLocation();
-	}
+        private Builder(LocationName locationName) {
+            this.project = locationName.project;
+            this.location = locationName.location;
+        }
+
+        public LocationName build() {
+            return new LocationName(this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return PROJECT_LOCATION.instantiate(new String[]{"project", this.project, "location", this.location});
+    }
+
+    public String getLocationFullName() {
+        return PROJECT_LOCATION.instantiate(new String[]{"project", this.project, "location", this.location});
+    }
 }

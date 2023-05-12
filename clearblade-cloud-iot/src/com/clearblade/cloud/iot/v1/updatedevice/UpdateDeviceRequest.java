@@ -33,6 +33,7 @@ package com.clearblade.cloud.iot.v1.updatedevice;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
 import org.json.simple.JSONArray;
@@ -126,7 +127,7 @@ public class UpdateDeviceRequest {
     public DeviceName getDeviceName() {
         return DeviceName.parse(this.name);
     }
-
+  
     @SuppressWarnings("unchecked")
     public String[] getBodyAndParams() {
         String[] output = new String[2];
@@ -140,7 +141,7 @@ public class UpdateDeviceRequest {
             bodyParams.put("logLevel", this.device.toBuilder().getLogLevel().toString());
         }
         bodyParams.put("blocked", this.device.toBuilder().isBlocked());
-        if (this.device.toBuilder().getCredentials().size() > 0) {
+        if (this.device.toBuilder().getCredentials() != null && this.device.toBuilder().getCredentials().size() > 0) {
             JSONArray jsonArray = new JSONArray();
             for (int i = 0; i < this.device.toBuilder().getCredentials().size(); i++) {
                 if (!this.device.toBuilder().getCredentials().get(i).isEmpty()) {
@@ -149,6 +150,17 @@ public class UpdateDeviceRequest {
                 }
             }
             bodyParams.put("credentials", jsonArray);
+        }
+        if (this.device.toBuilder().getMetadata() != null && this.device.toBuilder().getMetadata().size() > 0) {
+            Set metaSet = this.device.toBuilder().getMetadata().keySet();
+            Iterator itr = metaSet.iterator();
+            JSONObject jsonObject = new JSONObject();
+            while (itr.hasNext()) {
+                String key = (String) itr.next();
+                String value = this.device.toBuilder().getMetadata().get(key).toString();
+                jsonObject.put(key, value);
+            }
+            bodyParams.put("metadata", jsonObject);
         }
 
         output[0] = params;

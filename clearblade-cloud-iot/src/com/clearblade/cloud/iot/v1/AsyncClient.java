@@ -121,7 +121,7 @@ public class AsyncClient {
         return get(finalURL, token);
     }
 
-    public String[] get(String apiName, String params, GetDeviceRegistryRequest request) throws IOException, ParseException {
+    public String[] get(String apiName, String params, GetDeviceRegistryRequest request) {
         authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
@@ -277,7 +277,7 @@ public class AsyncClient {
         authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
-        return post(finalURL, body, token);
+        return update(finalURL, body, token);
     }
 
     public String[] update(String apiName, String params, String body, UpdateDeviceRequest request) throws IOException, ParseException {

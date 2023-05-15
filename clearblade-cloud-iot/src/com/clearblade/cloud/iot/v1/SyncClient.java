@@ -313,11 +313,11 @@ public class SyncClient {
         return update(finalURL, body, token);
     }
 
-    public String[] update(String apiName, String params, String body, UpdateDeviceRegistryRequest request) {
+    public String[] update(String apiName, String params, String body, UpdateDeviceRegistryRequest request) throws InterruptedException {
         authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
-        return post(finalURL, body, token);
+        return update(finalURL, body, token);
     }
 
     /**

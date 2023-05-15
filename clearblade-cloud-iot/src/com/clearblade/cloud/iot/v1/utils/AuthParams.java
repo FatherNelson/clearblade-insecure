@@ -189,12 +189,11 @@ public class AuthParams {
                 }
             } else {
                 log.log(Level.INFO, () -> "Response code " + responseCode + " received with message::" + responseMessage);
+                throw new ApplicationException(responseMessage);
             }
-        } catch (ApplicationException e) {
-            log.log(Level.SEVERE, e.getMessage());
-            Thread.currentThread().interrupt();
         } catch (Exception ec) {
             log.log(Level.SEVERE, ec.getMessage());
+            throw new ApplicationException(ec.getMessage());
         }
     }
 }

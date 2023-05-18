@@ -101,35 +101,55 @@ public class AsyncClient {
      * @throws ApplicationException
      */
     public String[] get(String apiName, GetDeviceRequest request) throws IOException, ParseException {
-        authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, request.toString());
         String token = authParams.getUserToken();
         return get(finalURL, token);
     }
 
     public String[] get(String apiName, String params, DevicesListRequest request) throws IOException, ParseException {
-        authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return get(finalURL, token);
     }
 
     public String[] get(String apiName, String params, ListDeviceStatesRequest request) throws IOException, ParseException {
-        authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return get(finalURL, token);
     }
 
     public String[] get(String apiName, String params, GetDeviceRegistryRequest request) {
-        authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return get(finalURL, token);
     }
 
     public String[] get(String apiName, String params, ListDeviceConfigVersionsRequest request) throws IOException, ParseException {
-        authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return get(finalURL, token);
@@ -148,47 +168,68 @@ public class AsyncClient {
 
         } catch (ApplicationException e) {
             log.log(Level.SEVERE, e.getMessage());
+            throw new ApplicationException(e);
         } catch (InterruptedException ex) {
             log.log(Level.SEVERE, ex.getMessage());
             Thread.currentThread().interrupt();
+            throw new ApplicationException(ex);
         } catch (Exception ec) {
             log.log(Level.SEVERE, ec.getMessage());
+            throw new ApplicationException(ec);
         }
         return responseArray;
     }
 
     public String[] post(String apiName, String params, String body, CreateDeviceRequest request) throws IOException, ParseException {
-        authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return post(finalURL, body, token);
     }
 
     public String[] post(String apiName, String params, String body, SendCommandToDeviceRequest request) throws IOException, ParseException {
-        String finalURL = "";
-        String token = "";
-        authParams.setRegistryCredentials(request.getDeviceName().getProject(), request.getDeviceName().getRegistry(), request.getDeviceName().getLocation());
-        finalURL = generateURL(authParams, apiName, params);
-        token = authParams.getUserToken();
+        try {
+            authParams.setRegistryCredentials(request.getDeviceName().getProject(), request.getDeviceName().getRegistry(), request.getDeviceName().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
+        String finalURL = generateURL(authParams, apiName, params);
+        String token = authParams.getUserToken();
         return post(finalURL, body, token);
     }
 
     public String[] post(String apiName, String params, String body, BindDeviceToGatewayRequest request) throws IOException, ParseException {
-        authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return post(finalURL, body, token);
     }
 
     public String[] post(String apiName, String params, String body, ModifyCloudToDeviceConfigRequest request) throws IOException, ParseException {
-        authParams.setRegistryCredentials(request.getDeviceName().getProject(), request.getDeviceName().getRegistry(), request.getDeviceName().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getDeviceName().getProject(), request.getDeviceName().getRegistry(), request.getDeviceName().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return post(finalURL, body, token);
     }
 
     public String[] post(String apiName, String params, String body, UnbindDeviceFromGatewayRequest request) throws IOException, ParseException {
-        authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return post(finalURL, body, token);
@@ -216,26 +257,36 @@ public class AsyncClient {
 
         } catch (ApplicationException e) {
             log.log(Level.SEVERE, e.getMessage());
+            throw new ApplicationException(e);
         } catch (InterruptedException ex) {
             log.log(Level.SEVERE, ex.getMessage());
             Thread.currentThread().interrupt();
+            throw new ApplicationException(ex);
         } catch (Exception ec) {
             log.log(Level.SEVERE, ec.getMessage());
+            throw new ApplicationException(ec);
         }
-
         return responseArray;
 
     }
 
-    public String[] delete(String apiName, String params, DeleteDeviceRequest request) throws IOException, ParseException {
+    public String[] delete(String apiName, String params, DeleteDeviceRequest request) throws IOException {
         String finalURL = "";
         String token = "";
         if (isAdmin) {
-            authParams.setAdminCredentials();
+            try {
+                authParams.setAdminCredentials();
+            } catch (Exception e) {
+                throw new ApplicationException(e);
+            }
             finalURL = generateAdminURL(authParams, apiName, params);
             token = authParams.getAdminToken();
         } else {
-            authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+            try {
+                authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+            } catch (Exception e) {
+                throw new ApplicationException(e);
+            }
             finalURL = generateURL(authParams, apiName, params);
             token = authParams.getUserToken();
         }
@@ -262,30 +313,38 @@ public class AsyncClient {
 
         } catch (ApplicationException e) {
             log.log(Level.SEVERE, e.getMessage());
+            throw new ApplicationException(e);
         } catch (InterruptedException ex) {
             log.log(Level.SEVERE, ex.getMessage());
             Thread.currentThread().interrupt();
+            throw new ApplicationException(ex);
         } catch (Exception ec) {
             log.log(Level.SEVERE, ec.getMessage());
+            throw new ApplicationException(ec);
         }
-
         return responseArray;
 
     }
 
     public String[] update(String apiName, String params, String body, UpdateDeviceRegistryRequest request) throws IOException, ParseException {
-        authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return update(finalURL, body, token);
     }
 
     public String[] update(String apiName, String params, String body, UpdateDeviceRequest request) throws IOException, ParseException {
-        String finalURL = "";
-        String token = "";
-        authParams.setRegistryCredentials(request.getDeviceName().getProject(), request.getDeviceName().getRegistry(), request.getDeviceName().getLocation());
-        finalURL = generateURL(authParams, apiName, params);
-        token = authParams.getUserToken();
+        try {
+            authParams.setRegistryCredentials(request.getDeviceName().getProject(), request.getDeviceName().getRegistry(), request.getDeviceName().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
+        String finalURL = generateURL(authParams, apiName, params);
+        String token = authParams.getUserToken();
         return update(finalURL, body, token);
     }
 
@@ -310,11 +369,14 @@ public class AsyncClient {
 
         } catch (ApplicationException e) {
             log.log(Level.SEVERE, e.getMessage());
+            throw new ApplicationException(e);
         } catch (InterruptedException ex) {
             log.log(Level.SEVERE, ex.getMessage());
             Thread.currentThread().interrupt();
+            throw new ApplicationException(ex);
         } catch (Exception ec) {
             log.log(Level.SEVERE, ec.getMessage());
+            throw new ApplicationException(ec);
         }
 
         return responseArray;
@@ -326,7 +388,11 @@ public class AsyncClient {
         String finalURL = "";
         String token = "";
         if (isAdmin) {
-            authParams.setAdminCredentials();
+            try {
+                authParams.setAdminCredentials();
+            } catch (Exception e) {
+                throw new ApplicationException(e);
+            }
             finalURL = generateAdminURL(authParams, apiName, params);
             token = authParams.getAdminToken();
         }
@@ -335,7 +401,11 @@ public class AsyncClient {
 
 
     public String[] asyncDeleteDeviceRegistry(String apiName, String params, boolean isAdmin) throws IOException {
-        authParams.setAdminCredentials();
+        try {
+            authParams.setAdminCredentials();
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateAdminURL(authParams, apiName, params);
         String token = authParams.getAdminToken();
         return this.delete(finalURL, token);
@@ -346,7 +416,11 @@ public class AsyncClient {
         String finalURL = "";
         String token = "";
         if (isAdmin) {
-            authParams.setAdminCredentials();
+            try {
+                authParams.setAdminCredentials();
+            } catch (Exception e) {
+                throw new ApplicationException(e);
+            }
             finalURL = generateAdminURL(authParams, apiName, params);
             token = authParams.getAdminToken();
         }

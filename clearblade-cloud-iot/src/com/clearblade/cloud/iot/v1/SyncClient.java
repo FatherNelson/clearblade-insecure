@@ -89,40 +89,59 @@ public class SyncClient {
      * @return URL formed and to be used
      */
     private String generateAdminURL(AuthParams authParams, String apiName, String params) {
-
         return authParams.getBaseURL().concat(configParameters.getWebhook()).concat(authParams.getAdminSystemKey()).concat(apiName).concat("?" + params);
     }
 
     public String[] get(String apiName, GetDeviceRequest request) {
-        authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, request.toString());
         String token = authParams.getUserToken();
         return get(finalURL, token);
     }
 
     public String[] get(String apiName, String params, DevicesListRequest request) {
-        authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return get(finalURL, token);
     }
 
     public String[] get(String apiName, String params, ListDeviceStatesRequest request) {
-        authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return get(finalURL, token);
     }
 
     public String[] get(String apiName, String params, GetDeviceRegistryRequest request) {
-        authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return get(finalURL, token);
     }
 
     public String[] get(String apiName, String params, ListDeviceConfigVersionsRequest request) {
-        authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return get(finalURL, token);
@@ -146,8 +165,6 @@ public class SyncClient {
     /**
      * Method used to Calls HTTP Get request
      *
-     * @param apiName
-     * @param params
      * @return String[] containing responseCode, responseMessage and response object
      * @throws IOException
      * @throws ApplicationException
@@ -162,50 +179,67 @@ public class SyncClient {
             responseArray[0] = String.valueOf(response.statusCode());
             responseArray[1] = "";
             responseArray[2] = response.body();
-
-
         } catch (InterruptedException e) {
             log.log(Level.SEVERE, e.getMessage());
             Thread.currentThread().interrupt();
+            throw new ApplicationException(e);
         } catch (Exception ex) {
             log.log(Level.SEVERE, ex.getMessage());
+            throw new ApplicationException(ex);
         }
-
         return responseArray;
     }
 
     public String[] post(String apiName, String params, String body, CreateDeviceRequest request) {
-        authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return post(finalURL, body, token);
     }
 
     public String[] post(String apiName, String params, String body, SendCommandToDeviceRequest request) {
-        String finalURL = "";
-        String token = "";
-        authParams.setRegistryCredentials(request.getDeviceName().getProject(), request.getDeviceName().getRegistry(), request.getDeviceName().getLocation());
-        finalURL = generateURL(authParams, apiName, params);
-        token = authParams.getUserToken();
+        try {
+            authParams.setRegistryCredentials(request.getDeviceName().getProject(), request.getDeviceName().getRegistry(), request.getDeviceName().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
+        String finalURL = generateURL(authParams, apiName, params);
+        String token = authParams.getUserToken();
         return post(finalURL, body, token);
     }
 
     public String[] post(String apiName, String params, String body, BindDeviceToGatewayRequest request) {
-        authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return post(finalURL, body, token);
     }
 
     public String[] post(String apiName, String params, String body, ModifyCloudToDeviceConfigRequest request) {
-        authParams.setRegistryCredentials(request.getDeviceName().getProject(), request.getDeviceName().getRegistry(), request.getDeviceName().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getDeviceName().getProject(), request.getDeviceName().getRegistry(), request.getDeviceName().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return post(finalURL, body, token);
     }
 
     public String[] post(String apiName, String params, String body, UnbindDeviceFromGatewayRequest request) {
-        authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return post(finalURL, body, token);
@@ -229,8 +263,6 @@ public class SyncClient {
     /**
      * Method used to call HTTP Post request
      *
-     * @param apiName
-     * @param params
      * @param body
      * @return String[] containing responseCode, responseMessage and response object
      * @throws IOException
@@ -247,18 +279,23 @@ public class SyncClient {
             responseArray[0] = String.valueOf(response.statusCode());
             responseArray[1] = "";
             responseArray[2] = response.body();
-
         } catch (ApplicationException e) {
             log.log(Level.SEVERE, e.getMessage());
             Thread.currentThread().interrupt();
+            throw new ApplicationException(e);
         } catch (Exception ec) {
             log.log(Level.SEVERE, ec.getMessage());
+            throw new ApplicationException(ec);
         }
         return responseArray;
     }
 
     public String[] delete(String apiName, String params, boolean isAdmin, DeleteDeviceRequest request) {
-        authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getName().getProject(), request.getName().getRegistry(), request.getName().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return this.delete(finalURL, token);
@@ -267,7 +304,7 @@ public class SyncClient {
     public String[] delete(String apiName, String params, boolean isAdmin) {
         try {
             authParams.setAdminCredentials();
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new ApplicationException(e);
         }
         String finalURL = generateAdminURL(authParams, apiName, params);
@@ -292,42 +329,41 @@ public class SyncClient {
             responseArray[0] = String.valueOf(response.statusCode());
             responseArray[1] = "";
             responseArray[2] = response.body();
-
-
         } catch (InterruptedException e) {
             log.log(Level.SEVERE, e.getMessage());
             Thread.currentThread().interrupt();
+            throw new ApplicationException(e);
         } catch (Exception ex) {
             log.log(Level.SEVERE, ex.getMessage());
+            throw new ApplicationException(ex);
         }
 
         return responseArray;
     }
 
     public String[] update(String apiName, String params, String body, UpdateDeviceRequest request) throws InterruptedException {
-        String finalURL = "";
-        String token = "";
-        authParams.setRegistryCredentials(request.getDeviceName().getProject(), request.getDeviceName().getRegistry(), request.getDeviceName().getLocation());
-        finalURL = generateURL(authParams, apiName, params);
-        token = authParams.getUserToken();
-        return update(finalURL, body, token);
-    }
-
-    public String[] update(String apiName, String params, String body, UpdateDeviceRegistryRequest request) throws InterruptedException {
-        authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        try {
+            authParams.setRegistryCredentials(request.getDeviceName().getProject(), request.getDeviceName().getRegistry(), request.getDeviceName().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String finalURL = generateURL(authParams, apiName, params);
         String token = authParams.getUserToken();
         return update(finalURL, body, token);
     }
 
-    /**
-     * Method used to call HTTP Patch request
-     *
-     * @param apiName
-     * @param params
-     * @param body
-     * @return String[] containing responseCode, responseMessage and response object
-     */
+    public String[] update(String apiName, String params, String body, UpdateDeviceRegistryRequest request) throws InterruptedException {
+        try {
+            authParams.setRegistryCredentials(request.getParent().getProject(), request.getParent().getRegistry(), request.getParent().getLocation());
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
+        String finalURL = generateURL(authParams, apiName, params);
+        String token = authParams.getUserToken();
+        return update(finalURL, body, token);
+    }
+
+
     public String[] update(String finalURL, String body, String token) throws InterruptedException {
         String[] responseArray = new String[3];
         try {
@@ -342,6 +378,7 @@ public class SyncClient {
 
         } catch (Exception ex) {
             log.log(Level.SEVERE, ex.getMessage());
+            throw new ApplicationException(ex);
         }
         return responseArray;
     }

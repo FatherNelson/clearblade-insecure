@@ -150,8 +150,7 @@ public class DeviceManagerClientTest {
     public void testCreateDeviceSuccess() {
         RegistryName parent = RegistryName.of(project, location, registryId);
         Device expectedResponse = testResponse.getResponseTest7(deviceId, numDeviceId);
-        GatewayConfig gatewayCfg = new GatewayConfig();
-        gatewayCfg.setGatewayType(GatewayType.NON_GATEWAY);
+        GatewayConfig gatewayCfg = GatewayConfig.newBuilder().setGatewayType(GatewayType.NON_GATEWAY).build();
         Device device = Device.newBuilder()
                 .setId(deviceId)
                 .setName(deviceId)
@@ -164,7 +163,7 @@ public class DeviceManagerClientTest {
                 .setConfig(new DeviceConfig())
                 .setMetadata(new HashMap<>())
                 .build();
-        CreateDeviceRequest request = CreateDeviceRequest.Builder.newBuilder().setParent(parent).setDevice(device)
+        CreateDeviceRequest request = CreateDeviceRequest.Builder.newBuilder().setParent(parent.toString()).setDevice(device)
                 .build();
         Device actualResponse = client.createDevice(request);
         testResponse.assertEqual(expectedResponse, actualResponse);
@@ -176,8 +175,7 @@ public class DeviceManagerClientTest {
     public void testCreateDeviceAsAGatewaySuccess() {
         RegistryName parent = RegistryName.of(project, location, registryId);
         Device expectedResponse = testResponse.getResponseTest8(gatewayId, numGatewayId);
-        GatewayConfig gatewayCfg = new GatewayConfig();
-        gatewayCfg.setGatewayType(GatewayType.GATEWAY);
+        GatewayConfig gatewayCfg = GatewayConfig.newBuilder().setGatewayType(GatewayType.GATEWAY).build();
         Device device = Device.newBuilder()
                 .setId(gatewayId)
                 .setName(gatewayId)
@@ -190,7 +188,7 @@ public class DeviceManagerClientTest {
                 .setConfig(new DeviceConfig())
                 .setMetadata(new HashMap<>())
                 .build();
-        CreateDeviceRequest request = CreateDeviceRequest.Builder.newBuilder().setParent(parent).setDevice(device)
+        CreateDeviceRequest request = CreateDeviceRequest.Builder.newBuilder().setParent(parent.toString()).setDevice(device)
                 .build();
         Device actualResponse = client.createDevice(request);
         testResponse.assertEqual(expectedResponse, actualResponse);

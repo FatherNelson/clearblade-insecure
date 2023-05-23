@@ -34,7 +34,7 @@ import com.clearblade.cloud.iot.v1.devicetypes.Device;
 import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
 
 public class CreateDeviceRequest {
-    private final RegistryName parent;
+    private final String parent;
     private final Device device;
 
     private CreateDeviceRequest(Builder builder) {
@@ -46,7 +46,7 @@ public class CreateDeviceRequest {
     public static class Builder {
 
         /// instance fields
-        private RegistryName parent;
+        private String parent;
         private Device device;
 
         public static Builder newBuilder() {
@@ -57,7 +57,7 @@ public class CreateDeviceRequest {
         }
 
         // Setter methods
-        public Builder setParent(RegistryName parent) {
+        public Builder setParent(String parent) {
             this.parent = parent;
             return this;
         }
@@ -75,12 +75,12 @@ public class CreateDeviceRequest {
     }
 
     public RegistryName getParent() {
-        return parent;
+        return RegistryName.parse(this.parent);
     }
 
     public String[] getParams() {
         String[] params = new String[2];
-        params[0] = "parent=" + this.parent.getRegistryFullName();
+        params[0] = "parent=" + getParent().getRegistryFullName();
         params[1] = this.device.createDeviceJSONObject();
         return params;
     }

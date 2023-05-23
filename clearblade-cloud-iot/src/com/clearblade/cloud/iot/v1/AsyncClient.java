@@ -166,9 +166,6 @@ public class AsyncClient {
             responseArray[1] = "";
             responseArray[2] = httpResponse.body();
 
-        } catch (ApplicationException e) {
-            log.log(Level.SEVERE, e.getMessage());
-            throw new ApplicationException(e);
         } catch (InterruptedException ex) {
             log.log(Level.SEVERE, ex.getMessage());
             Thread.currentThread().interrupt();
@@ -255,9 +252,6 @@ public class AsyncClient {
             responseArray[1] = "";
             responseArray[2] = httpResponse.body();
 
-        } catch (ApplicationException e) {
-            log.log(Level.SEVERE, e.getMessage());
-            throw new ApplicationException(e);
         } catch (InterruptedException ex) {
             log.log(Level.SEVERE, ex.getMessage());
             Thread.currentThread().interrupt();
@@ -311,9 +305,6 @@ public class AsyncClient {
             responseArray[1] = "";
             responseArray[2] = httpResponse.body();
 
-        } catch (ApplicationException e) {
-            log.log(Level.SEVERE, e.getMessage());
-            throw new ApplicationException(e);
         } catch (InterruptedException ex) {
             log.log(Level.SEVERE, ex.getMessage());
             Thread.currentThread().interrupt();
@@ -367,9 +358,6 @@ public class AsyncClient {
             responseArray[1] = "";
             responseArray[2] = httpResponse.body();
 
-        } catch (ApplicationException e) {
-            log.log(Level.SEVERE, e.getMessage());
-            throw new ApplicationException(e);
         } catch (InterruptedException ex) {
             log.log(Level.SEVERE, ex.getMessage());
             Thread.currentThread().interrupt();

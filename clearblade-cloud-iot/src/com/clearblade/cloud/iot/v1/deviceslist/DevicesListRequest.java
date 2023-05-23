@@ -141,16 +141,16 @@ public class DevicesListRequest {
         if (this.gatewayListOptions != null) {
             if (this.gatewayListOptions.getGatewayType() != null) {
                 params += "&gatewayListOptions.gatewayType=" + this.gatewayListOptions.getGatewayType().name();
-            } else if (this.gatewayListOptions.getAssociationsDeviceId() != null) {
+            }
+            if (this.gatewayListOptions.getAssociationsDeviceId() != null) {
                 params += "&gatewayListOptions.associationsDeviceId="
                         + this.gatewayListOptions.getAssociationsDeviceId();
-            } else if (this.gatewayListOptions.getAssociationsGatewayId() != null) {
+            }
+            if (this.gatewayListOptions.getAssociationsGatewayId() != null) {
                 params += "&gatewayListOptions.associationsGatewayId="
                         + this.gatewayListOptions.getAssociationsGatewayId();
             }
-
         }
-
         return params;
     }
 

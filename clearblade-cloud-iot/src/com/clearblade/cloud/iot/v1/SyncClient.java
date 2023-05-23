@@ -279,7 +279,7 @@ public class SyncClient {
             responseArray[0] = String.valueOf(response.statusCode());
             responseArray[1] = "";
             responseArray[2] = response.body();
-        } catch (ApplicationException e) {
+        } catch (InterruptedException e) {
             log.log(Level.SEVERE, e.getMessage());
             Thread.currentThread().interrupt();
             throw new ApplicationException(e);

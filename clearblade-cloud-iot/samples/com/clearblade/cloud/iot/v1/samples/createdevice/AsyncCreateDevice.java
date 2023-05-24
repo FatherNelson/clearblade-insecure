@@ -112,7 +112,7 @@ public class AsyncCreateDevice {
 				.setLogLevel(LogLevel.ERROR).setCredentials(List.of(devCredential)).setConfig(deviceConfig)
 				.setMetadata(metadata).build();
 
-		CreateDeviceRequest request = CreateDeviceRequest.Builder.newBuilder().setParent(parent).setDevice(device)
+		CreateDeviceRequest request = CreateDeviceRequest.Builder.newBuilder().setParent(parent.toString()).setDevice(device)
 				.build();
 		Device response = null;
 		try {

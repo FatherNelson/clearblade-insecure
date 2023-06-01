@@ -30,105 +30,111 @@
 
 package com.clearblade.cloud.iot.v1.binddevicetogateway;
 
+import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
+import com.clearblade.cloud.iot.v1.utils.PathTemplate;
 import org.json.simple.JSONObject;
 
 public class BindDeviceToGatewayRequest {
-	private final String parent;
-	private final String gateway;
-	private final String device;
-	JSONObject requestParams;
-	JSONObject bodyParams;
+    private final String parent;
+    private final String gateway;
+    private final String device;
+    JSONObject requestParams;
+    JSONObject bodyParams;
 
-	private BindDeviceToGatewayRequest(Builder builder) {
-		this.parent = builder.parent;
-		this.gateway = builder.gateway;
-		this.device = builder.device;
-	}
+    private BindDeviceToGatewayRequest(Builder builder) {
+        this.parent = builder.parent;
+        this.gateway = builder.gateway;
+        this.device = builder.device;
+    }
 
-	// Static class Builder
-	public static class Builder {
+    // Static class Builder
+    public static class Builder {
 
-		/// instance fields
-		private String parent;
-		private String gateway;
-		private String device;
+        /// instance fields
+        private String parent;
+        private String gateway;
+        private String device;
 
-		public static Builder newBuilder() {
-			return new Builder();
-		}
+        public static Builder newBuilder() {
+            return new Builder();
+        }
 
-		private Builder() {
-		}
+        private Builder() {
+        }
 
-		// Setter methods
-		public Builder setParent(String parent) {
-			this.parent = parent;
-			return this;
-		}
+        // Setter methods
+        public Builder setParent(String parent) {
+            this.parent = parent;
+            return this;
+        }
 
-		public Builder setGateway(String gateway) {
-			this.gateway = gateway;
-			return this;
-		}
+        public Builder setGateway(String gateway) {
+            this.gateway = gateway;
+            return this;
+        }
 
-		public Builder setDevice(String device) {
-			this.device = device;
-			return this;
-		}
+        public Builder setDevice(String device) {
+            this.device = device;
+            return this;
+        }
 
-		// build method to deal with outer class
-		// to return outer instance
-		public BindDeviceToGatewayRequest build() {
-			return new BindDeviceToGatewayRequest(this);
-		}
-	}
+        // build method to deal with outer class
+        // to return outer instance
+        public BindDeviceToGatewayRequest build() {
+            return new BindDeviceToGatewayRequest(this);
+        }
+    }
 
-	public JSONObject getRequestParams() {
-		return requestParams;
-	}
+    public JSONObject getRequestParams() {
+        return requestParams;
+    }
 
-	public void setRequestParams(JSONObject requestParams) {
-		this.requestParams = requestParams;
-	}
+    public void setRequestParams(JSONObject requestParams) {
+        this.requestParams = requestParams;
+    }
 
-	public JSONObject getBodyParams() {
-		return bodyParams;
-	}
+    public JSONObject getBodyParams() {
+        return bodyParams;
+    }
 
-	public void setBodyParams(JSONObject bodyParams) {
-		this.bodyParams = bodyParams;
-	}
+    public void setBodyParams(JSONObject bodyParams) {
+        this.bodyParams = bodyParams;
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public String toString() {
-		requestParams = new JSONObject();
-		bodyParams = new JSONObject();
+    public RegistryName getParent() {
+        return RegistryName.parse(this.parent);
+    }
 
-		String method = "bindDeviceToGateway";
-		requestParams.put("method", method);
-		requestParams.put("parent", this.parent);
+    @SuppressWarnings("unchecked")
+    @Override
+    public String toString() {
+        requestParams = new JSONObject();
+        bodyParams = new JSONObject();
 
-		bodyParams.put("gatewayId", this.gateway);
-		bodyParams.put("deviceId", this.device);
+        String method = "bindDeviceToGateway";
+        requestParams.put("method", method);
+        requestParams.put("parent", this.parent);
 
-		this.setRequestParams(requestParams);
-		this.setBodyParams(bodyParams);
+        bodyParams.put("gatewayId", this.gateway);
+        bodyParams.put("deviceId", this.device);
 
-		return "parent=" + this.parent + ",gateway=" + this.gateway + ", device= " + this.device;
-	}
+        this.setRequestParams(requestParams);
+        this.setBodyParams(bodyParams);
 
-	@SuppressWarnings("unchecked")
-	public String[] getBodyAndParams() {
-		String[] output = new String[2];
-		String params = "parent=" + this.parent + "&method=" + "bindDeviceToGateway";
-		bodyParams = new JSONObject();
-		bodyParams.put("gatewayId", this.gateway);
-		bodyParams.put("deviceId", this.device);
+        return "parent=" + this.parent + ",gateway=" + this.gateway + ", device= " + this.device;
+    }
 
-		output[0] = params;
-		output[1] = bodyParams.toJSONString();
-		return output;
-	}
+    @SuppressWarnings("unchecked")
+    public String[] getBodyAndParams() {
+        String[] output = new String[2];
+        String params = "parent=" + this.parent + "&method=" + "bindDeviceToGateway";
+        bodyParams = new JSONObject();
+        bodyParams.put("gatewayId", this.gateway);
+        bodyParams.put("deviceId", this.device);
+
+        output[0] = params;
+        output[1] = bodyParams.toJSONString();
+        return output;
+    }
 
 }

@@ -35,6 +35,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
@@ -114,15 +115,19 @@ public class UpdateDeviceRequest {
         requestParams.put("name", this.name);
         requestParams.put("updateMask", this.updateMask);
 
-		bodyParams.put("id", this.device.toBuilder().getId());
-		bodyParams.put("name", this.device.toBuilder().getName());
-		bodyParams.put("logLevel", this.device.toBuilder().getLogLevel());
-		bodyParams.put("blocked", this.device.toBuilder().isBlocked());
+        bodyParams.put("id", this.device.toBuilder().getId());
+        bodyParams.put("name", this.device.toBuilder().getName());
+        bodyParams.put("logLevel", this.device.toBuilder().getLogLevel());
+        bodyParams.put("blocked", this.device.toBuilder().isBlocked());
 
         return "name=" + this.name + ",updateMask=" + this.updateMask + ", logLevel= "
                 + this.device.toBuilder().getLogLevel();
     }
 
+    public DeviceName getDeviceName() {
+        return DeviceName.parse(this.name);
+    }
+  
     @SuppressWarnings("unchecked")
     public String[] getBodyAndParams() {
         String[] output = new String[2];

@@ -34,97 +34,124 @@ import org.json.simple.JSONObject;
 
 public class GatewayConfig {
 
-	private GatewayType gatewayType;
-	private GatewayAuthMethod gatewayAuthMethod;
-	private String lastAccessedGatewayId;
-	private String lastAccessedGatewayTime;
+    private GatewayType gatewayType;
+    private GatewayAuthMethod gatewayAuthMethod;
+    private String lastAccessedGatewayId;
+    private String lastAccessedGatewayTime;
 
-	public GatewayConfig() {
-	}
+    private static final GatewayConfig DEFAULT_INSTANCE = new GatewayConfig();
 
-	public GatewayType getGatewayType() {
-		return gatewayType;
-	}
+    public GatewayConfig() {
+    }
 
-	public GatewayAuthMethod getGatewayAuthMethod() {
-		return gatewayAuthMethod;
-	}
+    public GatewayType getGatewayType() {
+        return gatewayType;
+    }
 
-	public String getLastAccessedGatewayId() {
-		return lastAccessedGatewayId;
-	}
+    public GatewayAuthMethod getGatewayAuthMethod() {
+        return gatewayAuthMethod;
+    }
 
-	public String getLastAccessedGatewayTime() {
-		return lastAccessedGatewayTime;
-	}
+    public String getLastAccessedGatewayId() {
+        return lastAccessedGatewayId;
+    }
 
-	public void setGatewayType(GatewayType gatewayType) {
-		this.gatewayType = gatewayType;
-	}
+    public String getLastAccessedGatewayTime() {
+        return lastAccessedGatewayTime;
+    }
 
-	public void setGatewayAuthMethod(GatewayAuthMethod gatewayAuthMethod) {
-		this.gatewayAuthMethod = gatewayAuthMethod;
-	}
+    public void setGatewayType(GatewayType gatewayType) {
+        this.gatewayType = gatewayType;
+    }
 
-	public void setLastAccessedGatewayId(String lastAccessedGatewayId) {
-		this.lastAccessedGatewayId = lastAccessedGatewayId;
-	}
+    public void setGatewayAuthMethod(GatewayAuthMethod gatewayAuthMethod) {
+        this.gatewayAuthMethod = gatewayAuthMethod;
+    }
 
-	public void setLastAccessedGatewayTime(String lastAccessedGatewayTime) {
-		this.lastAccessedGatewayTime = lastAccessedGatewayTime;
-	}
+    public void setLastAccessedGatewayId(String lastAccessedGatewayId) {
+        this.lastAccessedGatewayId = lastAccessedGatewayId;
+    }
 
-	private GatewayConfig(Builder builder) {
-		gatewayType = builder.gatewayType;
-		gatewayAuthMethod = builder.gatewayAuthMethod;
-		lastAccessedGatewayId = builder.lastAccessedGatewayId;
-		lastAccessedGatewayTime = builder.lastAccessedGatewayTime;
-	}
+    public void setLastAccessedGatewayTime(String lastAccessedGatewayTime) {
+        this.lastAccessedGatewayTime = lastAccessedGatewayTime;
+    }
 
-	public static Builder newBuilder() {
-		return new Builder();
-	}
+    private GatewayConfig(Builder builder) {
+        gatewayType = builder.gatewayType;
+        gatewayAuthMethod = builder.gatewayAuthMethod;
+        lastAccessedGatewayId = builder.lastAccessedGatewayId;
+        lastAccessedGatewayTime = builder.lastAccessedGatewayTime;
+    }
 
-	public Builder toBuilder() {
-		return new Builder(this);
-	}
+    public static Builder newBuilder() {
+        return new GatewayConfig.Builder();
+    }
 
-	public static class Builder {
-		private GatewayType gatewayType;
-		private GatewayAuthMethod gatewayAuthMethod;
-		private String lastAccessedGatewayId;
-		private String lastAccessedGatewayTime;
+    public Builder toBuilder() {
+		return new GatewayConfig.Builder();
+    }
 
-		protected Builder() {
-		}
+    public static GatewayConfig getDefaultInstance() {
+        return DEFAULT_INSTANCE;
+    }
 
-		private Builder(GatewayConfig gatewayConfig) {
-			this.gatewayType = gatewayConfig.gatewayType;
-			this.gatewayAuthMethod = gatewayConfig.gatewayAuthMethod;
-			this.lastAccessedGatewayId = gatewayConfig.lastAccessedGatewayId;
-			this.lastAccessedGatewayTime = gatewayConfig.lastAccessedGatewayTime;
-		}
+    public static class Builder {
+        private GatewayType gatewayType;
+        private GatewayAuthMethod gatewayAuthMethod;
+        private String lastAccessedGatewayId;
+        private String lastAccessedGatewayTime;
 
-		public GatewayConfig build() {
-			return new GatewayConfig(this);
-		}
-	}
+        protected Builder() {
+        }
 
-	public JSONObject toJSONObject() {
-		final JSONObject jsonObject = new JSONObject();
-		if (this.getGatewayAuthMethod() != null) {
-			jsonObject.put("gatewayAuthMethod", this.getGatewayAuthMethod().name());
-		}
-		if (this.getGatewayType() != null) {
-			jsonObject.put("gatewayType", this.getGatewayType().name());
-		}
-		if (this.getLastAccessedGatewayId() != null) {
-			jsonObject.put("gatewayAuthMethod", this.getLastAccessedGatewayId());
-		}
-		if (this.getLastAccessedGatewayTime() != null) {
-			jsonObject.put("lastAccessedGatewayTime", this.getLastAccessedGatewayTime());
-		}
-		return jsonObject;
-	}
+        private Builder(GatewayConfig gatewayConfig) {
+            this.gatewayType = gatewayConfig.gatewayType;
+            this.gatewayAuthMethod = gatewayConfig.gatewayAuthMethod;
+            this.lastAccessedGatewayId = gatewayConfig.lastAccessedGatewayId;
+            this.lastAccessedGatewayTime = gatewayConfig.lastAccessedGatewayTime;
+        }
+
+        public Builder setGatewayType(GatewayType gatewayType) {
+            this.gatewayType = gatewayType;
+            return this;
+        }
+
+        public Builder setGatewayAuthMethod(GatewayAuthMethod gatewayAuthMethod) {
+            this.gatewayAuthMethod = gatewayAuthMethod;
+            return this;
+        }
+
+        public Builder setLastAccessedGatewayId(String lastAccessedGatewayId) {
+            this.lastAccessedGatewayId = lastAccessedGatewayId;
+            return this;
+        }
+
+
+        public Builder setLastAccessedGatewayTime(String lastAccessedGatewayTime) {
+            this.lastAccessedGatewayTime = lastAccessedGatewayTime;
+            return this;
+        }
+
+        public GatewayConfig build() {
+            return new GatewayConfig(this);
+        }
+    }
+
+    public JSONObject toJSONObject() {
+        final JSONObject jsonObject = new JSONObject();
+        if (this.getGatewayAuthMethod() != null) {
+            jsonObject.put("gatewayAuthMethod", this.getGatewayAuthMethod().name());
+        }
+        if (this.getGatewayType() != null) {
+            jsonObject.put("gatewayType", this.getGatewayType().name());
+        }
+        if (this.getLastAccessedGatewayId() != null) {
+            jsonObject.put("gatewayAuthMethod", this.getLastAccessedGatewayId());
+        }
+        if (this.getLastAccessedGatewayTime() != null) {
+            jsonObject.put("lastAccessedGatewayTime", this.getLastAccessedGatewayTime());
+        }
+        return jsonObject;
+    }
 
 }

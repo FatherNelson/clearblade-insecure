@@ -30,6 +30,7 @@
 
 package com.clearblade.cloud.iot.v1;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import com.clearblade.cloud.iot.v1.binddevicetogateway.BindDeviceToGatewayRequest;
@@ -62,137 +63,138 @@ import com.clearblade.cloud.iot.v1.updatedeviceregistry.UpdateDeviceRegistryRequ
 
 public class DeviceManagerAsyncClient {
 
-	static Logger log = Logger.getLogger(DeviceManagerAsyncClient.class.getName());
+    static Logger log = Logger.getLogger(DeviceManagerAsyncClient.class.getName());
 
-	/**
-	 * Calling getDevice api
-	 * 
-	 * @param request
-	 * @return Device object
-	 */
+    /**
+     * Calling getDevice api
+     *
+     * @param request
+     * @return Device object
+     */
 
-	public Device getDevice(GetDeviceRequest request) {
-		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
-		return cbManager.asyncGetDevice(request);
-	}
+    public Device getDevice(GetDeviceRequest request) {
+        ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
+        return cbManager.asyncGetDevice(request);
+    }
 
-	/**
-	 * Calling createDevice api
-	 * 
-	 * @param request
-	 * @return Device object
-	 */
-	public Device createDevice(CreateDeviceRequest request) throws ApplicationException {
-		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
-		return cbManager.asyncCreateDevice(request);
-	}
+    /**
+     * Calling createDevice api
+     *
+     * @param request
+     * @return Device object
+     */
+    public Device createDevice(CreateDeviceRequest request) throws ApplicationException {
+        ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
+        return cbManager.asyncCreateDevice(request);
+    }
 
-	/**
-	 * Calling deleteDevice api
-	 * 
-	 * @param request
-	 */
-	public void deleteDevice(DeleteDeviceRequest request) throws ApplicationException {
-		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
-		cbManager.asyncDeleteDevice(request);
-	}
+    /**
+     * Calling deleteDevice api
+     *
+     * @param request
+     */
+    public void deleteDevice(DeleteDeviceRequest request) throws ApplicationException {
+        ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
+        cbManager.asyncDeleteDevice(request);
+    }
 
-	/**
-	 * Calling updateDevice api
-	 * 
-	 * @param request
-	 * @return Device object
-	 */
-	public Device updateDevice(UpdateDeviceRequest request) throws ApplicationException {
-		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
-		return cbManager.asyncUpdateDevice(request);
-	}
+    /**
+     * Calling updateDevice api
+     *
+     * @param request
+     * @return Device object
+     */
+    public Device updateDevice(UpdateDeviceRequest request) throws ApplicationException {
+        ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
+        return cbManager.asyncUpdateDevice(request);
+    }
 
-	/**
-	 * Calling bindDeviceToGateway api
-	 * 
-	 * @param request
-	 * @return
-	 */
-	public BindDeviceToGatewayResponse bindDeviceToGateway(BindDeviceToGatewayRequest request)
-			throws ApplicationException {
-		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
-		return cbManager.asyncBindDeviceToGateway(request);
-	}
+    /**
+     * Calling bindDeviceToGateway api
+     *
+     * @param request
+     * @return
+     */
+    public BindDeviceToGatewayResponse bindDeviceToGateway(BindDeviceToGatewayRequest request)
+            throws ApplicationException {
+        ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
+        return cbManager.asyncBindDeviceToGateway(request);
+    }
 
-	/**
-	 * Calling unbindDeviceFromGateway api
-	 * 
-	 * @param request
-	 * @return
-	 */
-	public UnbindDeviceFromGatewayResponse unbindDeviceFromGateway(UnbindDeviceFromGatewayRequest request)
-			throws ApplicationException {
-		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
-		return cbManager.asyncUnbindDeviceFromGateway(request);
-	}
+    /**
+     * Calling unbindDeviceFromGateway api
+     *
+     * @param request
+     * @return
+     */
+    public UnbindDeviceFromGatewayResponse unbindDeviceFromGateway(UnbindDeviceFromGatewayRequest request)
+            throws ApplicationException {
+        ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
+        return cbManager.asyncUnbindDeviceFromGateway(request);
+    }
 
-	public SendCommandToDeviceResponse sendCommandToDevice(SendCommandToDeviceRequest request)
-			throws ApplicationException {
-		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
-		return cbManager.asyncSendCommandToDevice(request);
+    public SendCommandToDeviceResponse sendCommandToDevice(SendCommandToDeviceRequest request)
+            throws ApplicationException {
+        ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
+        return cbManager.asyncSendCommandToDevice(request);
 
-	}
+    }
 
-	public DeviceConfig modifyCloudToDeviceConfig(ModifyCloudToDeviceConfigRequest request)
-			throws ApplicationException {
-		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
-		return cbManager.asyncModifyCloudToDeviceConfig(request);
-	}
+    public DeviceConfig modifyCloudToDeviceConfig(ModifyCloudToDeviceConfigRequest request)
+            throws ApplicationException {
+        ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
+        return cbManager.asyncModifyCloudToDeviceConfig(request);
+    }
 
-	public DevicesListResponse listDevices(DevicesListRequest request) throws ApplicationException {
-		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
-		return cbManager.asyncListDevices(request);
-	}
+    public DevicesListResponse listDevices(DevicesListRequest request) throws ApplicationException {
+        ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
+        return cbManager.asyncListDevices(request);
+    }
 
-	public ListDeviceStatesResponse listDeviceStates(ListDeviceStatesRequest request) throws ApplicationException {
-		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
-		return cbManager.asyncListDeviceStates(request);
-	}
+    public ListDeviceStatesResponse listDeviceStates(ListDeviceStatesRequest request) throws ApplicationException {
+        ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
+        return cbManager.asyncListDeviceStates(request);
+    }
 
-	public ListDeviceConfigVersionsResponse listDeviceConfigVersions(ListDeviceConfigVersionsRequest request)
-			throws ApplicationException {
-		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
-		return cbManager.asyncListDeviceConfigVersions(request);
-	}
+    public ListDeviceConfigVersionsResponse listDeviceConfigVersions(ListDeviceConfigVersionsRequest request)
+            throws ApplicationException {
+        ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
+        return cbManager.asyncListDeviceConfigVersions(request);
+    }
 
-	// Registry Apis
-	/**
-	 * Calling getDevice api
-	 * 
-	 * @param request
-	 * @return Device object
-	 */
+    // Registry Apis
 
-	public DeviceRegistry getDeviceRegistry(GetDeviceRegistryRequest request) throws ApplicationException {
-		ClearBladeRegistryManager cbManager = new ClearBladeRegistryManager();
-		return cbManager.asyncGetDeviceRegistry(request);
-	}
+    /**
+     * Calling getDevice api
+     *
+     * @param request
+     * @return Device object
+     */
 
-	public DeviceRegistry createDeviceRegistry(CreateDeviceRegistryRequest request) throws ApplicationException {
-		ClearBladeRegistryManager cbManager = new ClearBladeRegistryManager();
-		return cbManager.asyncCreateDeviceRegistry(request);
-	}
+    public DeviceRegistry getDeviceRegistry(GetDeviceRegistryRequest request) throws ApplicationException {
+        ClearBladeRegistryManager cbManager = new ClearBladeRegistryManager();
+        return cbManager.asyncGetDeviceRegistry(request);
+    }
 
-	public DeviceRegistry updateDeviceRegistry(UpdateDeviceRegistryRequest request) throws ApplicationException {
-		ClearBladeRegistryManager cbManager = new ClearBladeRegistryManager();
-		return cbManager.asyncUpdateDeviceRegistry(request);
-	}
+    public DeviceRegistry createDeviceRegistry(CreateDeviceRegistryRequest request) throws ApplicationException {
+        ClearBladeRegistryManager cbManager = new ClearBladeRegistryManager();
+        return cbManager.asyncCreateDeviceRegistry(request);
+    }
 
-	public void deleteDeviceRegistry(DeleteDeviceRegistryRequest request) throws ApplicationException {
-		ClearBladeRegistryManager cbManager = new ClearBladeRegistryManager();
-		cbManager.asyncDeleteDeviceRegistry(request);
-	}
+    public DeviceRegistry updateDeviceRegistry(UpdateDeviceRegistryRequest request) throws ApplicationException {
+        ClearBladeRegistryManager cbManager = new ClearBladeRegistryManager();
+        return cbManager.asyncUpdateDeviceRegistry(request);
+    }
 
-	public ListDeviceRegistriesResponse listDeviceRegistries(ListDeviceRegistriesRequest request)
-			throws ApplicationException {
-		ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
-		return cbManager.asyncListDeviceRegistries(request);
-	}
+    public void deleteDeviceRegistry(DeleteDeviceRegistryRequest request) throws ApplicationException {
+        ClearBladeRegistryManager cbManager = new ClearBladeRegistryManager();
+        cbManager.asyncDeleteDeviceRegistry(request);
+    }
+
+    public ListDeviceRegistriesResponse listDeviceRegistries(ListDeviceRegistriesRequest request)
+            throws ApplicationException, IOException {
+        ClearBladeDeviceManager cbManager = new ClearBladeDeviceManager();
+        return cbManager.asyncListDeviceRegistries(request);
+    }
 
 }

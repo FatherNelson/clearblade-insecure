@@ -30,125 +30,137 @@
 
 package com.clearblade.cloud.iot.v1.devicetypes;
 
+import com.clearblade.cloud.iot.v1.utils.PathTemplate;
+
+import java.util.Map;
+
 public class DeviceName {
 
-	private final String project;
-	private final String location;
-	private final String registry;
-	private final String device;
+    private static final PathTemplate PROJECT_LOCATION_REGISTRY_DEVICE = PathTemplate.createWithoutUrlEncoding("projects/{project}/locations/{location}/registries/{registry}/devices/{device}");
+    private final String project;
+    private final String location;
+    private final String registry;
+    private final String device;
 
-	protected DeviceName() {
-		project = null;
-		location = null;
-		registry = null;
-		device = null;
-	}
+    protected DeviceName() {
+        project = null;
+        location = null;
+        registry = null;
+        device = null;
+    }
 
-	private DeviceName(Builder builder) {
-		project = builder.getProject();
-		location = builder.getLocation();
-		registry = builder.getRegistry();
-		device = builder.getDevice();
-	}
+    private DeviceName(Builder builder) {
+        project = builder.getProject();
+        location = builder.getLocation();
+        registry = builder.getRegistry();
+        device = builder.getDevice();
+    }
 
-	public String getProject() {
-		return project;
-	}
+    public String getProject() {
+        return project;
+    }
 
-	public String getLocation() {
-		return location;
-	}
+    public String getLocation() {
+        return location;
+    }
 
-	public String getRegistry() {
-		return registry;
-	}
+    public String getRegistry() {
+        return registry;
+    }
 
-	public String getDevice() {
-		return device;
-	}
+    public String getDevice() {
+        return device;
+    }
 
-	public static Builder newBuilder() {
-		return new Builder();
-	}
+    public static Builder newBuilder() {
+        return new Builder();
+    }
 
-	public Builder toBuilder() {
-		return new Builder(this);
-	}
+    public Builder toBuilder() {
+        return new Builder(this);
+    }
 
-	public static DeviceName of(String project, String location, String registry, String device) {
-		return newBuilder().setProject(project).setLocation(location).setRegistry(registry).setDevice(device).build();
-	}
+    public static DeviceName of(String project, String location, String registry, String device) {
+        return newBuilder().setProject(project).setLocation(location).setRegistry(registry).setDevice(device).build();
+    }
 
-	public static String format(String project, String location, String registry, String device) {
-		return newBuilder().setProject(project).setLocation(location).setRegistry(registry).setDevice(device).build()
-				.toString();
-	}
+    public static String format(String project, String location, String registry, String device) {
+        return newBuilder().setProject(project).setLocation(location).setRegistry(registry).setDevice(device).build()
+                .toString();
+    }
 
-	/**
-	 * Builder for
-	 * projects/{project}/locations/{location}/registries/{registry}/devices/{device}.
-	 */
-	public static class Builder {
-		private String project;
-		private String location;
-		private String registry;
-		private String device;
+    public static DeviceName parse(String formattedString) {
+        if (formattedString.isEmpty()) {
+            return null;
+        } else {
+            Map<String, String> matchMap = PROJECT_LOCATION_REGISTRY_DEVICE.validatedMatch(formattedString, "DeviceName.parse: formattedString not in valid format");
+            return of((String) matchMap.get("project"), (String) matchMap.get("location"), (String) matchMap.get("registry"), (String) matchMap.get("device"));
+        }
+    }
 
-		protected Builder() {
-		}
+    /**
+     * Builder for
+     * projects/{project}/locations/{location}/registries/{registry}/devices/{device}.
+     */
+    public static class Builder {
+        private String project;
+        private String location;
+        private String registry;
+        private String device;
 
-		public String getProject() {
-			return project;
-		}
+        protected Builder() {
+        }
 
-		public String getLocation() {
-			return location;
-		}
+        public String getProject() {
+            return project;
+        }
 
-		public String getRegistry() {
-			return registry;
-		}
+        public String getLocation() {
+            return location;
+        }
 
-		public String getDevice() {
-			return device;
-		}
+        public String getRegistry() {
+            return registry;
+        }
 
-		public Builder setProject(String project) {
-			this.project = project;
-			return this;
-		}
+        public String getDevice() {
+            return device;
+        }
 
-		public Builder setLocation(String location) {
-			this.location = location;
-			return this;
-		}
+        public Builder setProject(String project) {
+            this.project = project;
+            return this;
+        }
 
-		public Builder setRegistry(String registry) {
-			this.registry = registry;
-			return this;
-		}
+        public Builder setLocation(String location) {
+            this.location = location;
+            return this;
+        }
 
-		public Builder setDevice(String device) {
-			this.device = device;
-			return this;
-		}
+        public Builder setRegistry(String registry) {
+            this.registry = registry;
+            return this;
+        }
 
-		private Builder(DeviceName deviceName) {
-			this.project = deviceName.project;
-			this.location = deviceName.location;
-			this.registry = deviceName.registry;
-			this.device = deviceName.device;
-		}
+        public Builder setDevice(String device) {
+            this.device = device;
+            return this;
+        }
 
-		public DeviceName build() {
-			return new DeviceName(this);
-		}
-	}
+        private Builder(DeviceName deviceName) {
+            this.project = deviceName.project;
+            this.location = deviceName.location;
+            this.registry = deviceName.registry;
+            this.device = deviceName.device;
+        }
 
-	@Override
-	public String toString() {
+        public DeviceName build() {
+            return new DeviceName(this);
+        }
+    }
 
-		return this.device;
-
-	}
+    @Override
+    public String toString() {
+        return PROJECT_LOCATION_REGISTRY_DEVICE.instantiate(new String[]{"project", this.project, "location", this.location, "registry", this.registry, "device", this.device});
+    }
 }

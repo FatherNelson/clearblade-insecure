@@ -28,4 +28,4 @@
  * limitations under the License.
  */
 
-package com.clearblade.cloud.iot.v1.test;
+package test.com.clearblade.cloud.iot.v1.test;

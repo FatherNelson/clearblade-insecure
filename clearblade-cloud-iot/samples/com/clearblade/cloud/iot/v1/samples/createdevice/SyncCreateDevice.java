@@ -84,7 +84,7 @@ public class SyncCreateDevice {
 				.setConfig(new DeviceConfig())
 				.setMetadata(new HashMap<>())
 				.build();
-		CreateDeviceRequest request = CreateDeviceRequest.Builder.newBuilder().setParent(parent).setDevice(device)
+		CreateDeviceRequest request = CreateDeviceRequest.Builder.newBuilder().setParent(parent.toString()).setDevice(device)
 				.build();
 		Device response = deviceManagerClient.createDevice(request);
 		if(response != null) {

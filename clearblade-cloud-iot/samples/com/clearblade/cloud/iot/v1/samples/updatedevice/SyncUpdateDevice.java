@@ -38,6 +38,7 @@ import java.util.Map;
 import com.clearblade.cloud.iot.v1.DeviceManagerClient;
 import com.clearblade.cloud.iot.v1.devicetypes.Device;
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceCredential;
+import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
 import com.clearblade.cloud.iot.v1.registrytypes.PublicKeyCredential;
 import com.clearblade.cloud.iot.v1.registrytypes.PublicKeyFormat;
 import com.clearblade.cloud.iot.v1.updatedevice.UpdateDeviceRequest;
@@ -45,7 +46,7 @@ import com.clearblade.cloud.iot.v1.utils.ConfigParameters;
 import com.clearblade.cloud.iot.v1.utils.LogLevel;
 
 public class SyncUpdateDevice {
-	
+	public static String PROJECT = "";
 	public static String LOCATION = "";
 	public static String REGISTRY = "";
 	public static String  DEVICE = "";
@@ -56,7 +57,8 @@ public class SyncUpdateDevice {
 	public static String KEYVAL = "";
 	static ConfigParameters configParameters = ConfigParameters.getInstance();
 
-	public static void main(String[] args) {		
+	public static void main(String[] args) {
+		PROJECT = System.getProperty("projectName");
 		LOCATION = System.getProperty("location");
 		REGISTRY = System.getProperty("registryName");
 		DEVICE = System.getProperty("deviceName");
@@ -106,7 +108,7 @@ public class SyncUpdateDevice {
 			device.toBuilder().setCredentials(listCredentials);
 		}
 
-		UpdateDeviceRequest request = UpdateDeviceRequest.Builder.newBuilder().setName(DEVICE).setDevice(device)
+		UpdateDeviceRequest request = UpdateDeviceRequest.Builder.newBuilder().setName(DeviceName.of(PROJECT,LOCATION,REGISTRY,DEVICE).toString()).setDevice(device)
 				.setUpdateMask(UPDATEMASK).build();
 		Device response = deviceManagerClient.updateDevice(request);
 		if(response != null) {

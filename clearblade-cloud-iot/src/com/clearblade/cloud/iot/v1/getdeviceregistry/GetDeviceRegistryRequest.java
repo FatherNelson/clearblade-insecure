@@ -30,43 +30,49 @@
 
 package com.clearblade.cloud.iot.v1.getdeviceregistry;
 
+import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
+
 public class GetDeviceRegistryRequest {
-	
-	private final String name;
 
-	private GetDeviceRegistryRequest(Builder builder) {
-		this.name = builder.name;
-	}
-	
-	// Static class Builder
-	public static class Builder {
+    private final String name;
 
-		/// instance fields
-		private String name;
+    private GetDeviceRegistryRequest(Builder builder) {
+        this.name = builder.name;
+    }
 
-		public static Builder newBuilder() {
-			return new Builder();
-		}
+    // Static class Builder
+    public static class Builder {
 
-		private Builder() {
-		}
+        /// instance fields
+        private String name;
 
-		// Setter methods
-		public Builder setName(String name) {
-			this.name = name;
-			return this;
-		}
+        public static Builder newBuilder() {
+            return new Builder();
+        }
 
-		// build method to deal with outer class
-		// to return outer instance
-		public GetDeviceRegistryRequest build() {
-			return new GetDeviceRegistryRequest(this);
-		}
-	}
+        private Builder() {
+        }
 
-	@Override
-	public String toString() {
-		return "name="+this.name;
-	}
+        // Setter methods
+        public Builder setName(String name) {
+            this.name = name;
+            return this;
+        }
+
+        // build method to deal with outer class
+        // to return outer instance
+        public GetDeviceRegistryRequest build() {
+            return new GetDeviceRegistryRequest(this);
+        }
+    }
+
+    public RegistryName getName() {
+        return RegistryName.parse(this.name);
+    }
+
+    @Override
+    public String toString() {
+        return "name=" + this.name;
+    }
 
 }

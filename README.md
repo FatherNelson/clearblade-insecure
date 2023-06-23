@@ -1,22 +1,22 @@
-# ClearBlade Internet of Things (IoT) Core Client for Java
+# ClearBlade IoT Core Java Client
 
-Java library and samples for [ClearBlade Internet of Things (IoT) Core][product-docs].
+Java library and samples for [ClearBlade IoT Core][product-docs].
 
 - [Product Documentation][product-docs]
 - [Client Library Documentation][javasdk]
 - [Quickstart for Java][quickstart]
 
-## Supported Java Versions
+## Supported Java versions
 
 Java 11 or above is required for using this client. Java 17 is the best choice for new development.
 
 # Usage
 
-You can either use the Maven artifact or do a local installation and setup of Maven.
+You can use the Maven artifact or do a Maven local installation and setup.
 
 ## Maven artifact
 
-If you are using Maven artifact, simply add the following dependency to your pom.xml file in a newly created/generated Maven App:
+If you are using the Maven artifact, add the following dependency to your pom.xml file in a newly created/generated Maven app:
 
 ```xml
 <dependency>
@@ -26,23 +26,20 @@ If you are using Maven artifact, simply add the following dependency to your pom
 </dependency>
 ```
 
-## Local Installation and setup
+## Local installation and setup
 
-For local installation of Maven:
+For Maven local installation:
 
-In the [clearblade-cloud-iot](./clearblade-cloud-iot) folder, run the following command to install the libraries and build the sample with
-Maven:
+In the [clearblade-cloud-iot](./clearblade-cloud-iot) folder, run the following command to install the libraries and build the Maven sample:
 
     mvn clean install
 
 ## Quickstart
 
 1. From the [ClearBlade Migration from Google IoT Core section](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2202664969/Migration+from+Google+IoT+Core)
-   migrate your existing Google IoT Core registries and/or devices into ClearBlade IoT Core or using the
-   ClearBlade IoT Core Console, [create a device registry and devices](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2202206388/Creating+registries+and+devices).
+   migrate your existing Google IoT Core registries and devices into ClearBlade IoT Core or use the ClearBlade IoT Core Console, [create a device registry and devices](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2202206388/Creating+registries+and+devices).
 
-2. [Add service accounts to a project](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2240675843/Add+service+accounts+to+a+project) and download the json file with your service
-   account’s credentials.
+2. [Add service accounts to a project](https://clearblade.atlassian.net/wiki/spaces/IC/pages/2240675843/Add+service+accounts+to+a+project) and download the JSON file with your service account’s credentials.
 
 3. Use the following to set your environment variables keys in your terminal or IDE environment configurations:
 
@@ -55,25 +52,20 @@ Maven:
    ```
     export CLEARBLADE_REGISTRY=[your-registry]
     export CLEARBLADE_REGION=[your-region]
-   export BINARYDATA_AND_TIME_GOOGLE_FORMAT=true
+    export BINARYDATA_AND_TIME_GOOGLE_FORMAT=true
    ```
 
 4. Use the HTTP or MQTT samples in the [samples](./clearblade-cloud-iot/samples) folder.
 
-## ClearBlade IoT Core Samples Java
+## ClearBlade IoT Core Java samples
 
-The sample apps demonstrates registry and device creation for ClearBlade IoT Core. The [samples](./clearblade-cloud-iot/samples) folder contains all the Java samples that demonstrate an overview of the ClearBlade IoT Core platform.
+The sample apps demonstrate registry and device creation for ClearBlade IoT Core. The [samples](./clearblade-cloud-iot/samples) folder contains all the Java samples demonstrating an overview of the ClearBlade IoT Core Platform.
 
-Note that before you can run the sample, you must configure your development environment
-and terminal as described in the Quickstart above or the [samples](./clearblade-cloud-iot/samples) folder.
+Before running the sample, you must configure your development environment and terminal as described in the Quickstart above or the [samples](./clearblade-cloud-iot/samples) folder.
 
-Before running the samples, you must set the `CLEARBLADE_CONFIGURATION`. Optionally set the `CLEARBLADE_REGISTRY` and
-`CLEARBLADE_REGION` environment variables to avoid changing them in the the sample app every time you run it.
+Before running the samples, you must set the `CLEARBLADE_CONFIGURATION`. Optionally, set the `CLEARBLADE_REGISTRY` and `CLEARBLADE_REGION` environment variables to avoid changing them in the sample app every time you run it.
 
-If you set `BINARYDATA_AND_TIME_GOOGLE_FORMAT` environment variable then it will give binaryData object's response in binary
-form and time in Timestamp format which will have seconds and nanos in it which is following google's structure. Basically
-it's applicable on get device state list, modify config, device config versions methods. To get the data in proper format
-it should be cast in proper format.
+If you set the `BINARYDATA_AND_TIME_GOOGLE_FORMAT` environment variable, then it will give the binaryData object's response in binary form and time in timestamp format, which will have seconds and nanoseconds, following Google's structure. It's applicable on the get device state list and modify and device config version methods. Cast the data in the proper format.
 
 ```
 	ListDeviceStatesResponse response = deviceManagerClient.listDeviceStates(request);
@@ -87,12 +79,12 @@ it should be cast in proper format.
 	}
 ```
 
-When switching to use new registries and/or regions, either:
+When switching to use new registries and regions, either:
 
 1. Update the `CLEARBLADE_REGISTRY` and `CLEARBLADE_REGION` environment variables; or
-2. Change the `REGISTRY` and/or `REGION` variables in the sample code/app.
+2. Change the `REGISTRY` and `REGION` variables in the sample code/app.
 
-## Using the client library within an Example app
+## Using the client library within an example app
 
 ```
 public class App {
@@ -125,11 +117,11 @@ public class App {
 		DevicesListResponse response = deviceManagerAsyncClient.listDevices(request);
 ```
 
-## Running the sample - Command Line
+## Running the sample: command line
 
 The following command summarizes the sample usage:
 
-First compile the sample.
+First, compile the sample.
 
 Run registry example:
 

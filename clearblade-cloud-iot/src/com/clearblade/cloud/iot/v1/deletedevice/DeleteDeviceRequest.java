@@ -31,6 +31,8 @@
 package com.clearblade.cloud.iot.v1.deletedevice;
 
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
+import com.clearblade.cloud.iot.v1.exception.ApplicationException;
+import java.net.URLEncoder;
 
 public class DeleteDeviceRequest {
 	private DeviceName name;
@@ -77,7 +79,11 @@ public class DeleteDeviceRequest {
 	@Override
 	public String toString() {
 		String params = "";
-		params = "name="+this.name.toString();
+		try {
+			params = "name="+ URLEncoder.encode(this.name.toString(),"UTF-8");
+		} catch (Exception e) {
+			throw new ApplicationException(e);
+		}
 		return params;
 	}
 

@@ -30,6 +30,8 @@
 
 package com.clearblade.cloud.iot.v1.updatedevice;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -129,10 +131,10 @@ public class UpdateDeviceRequest {
     }
   
     @SuppressWarnings("unchecked")
-    public String[] getBodyAndParams() {
+    public String[] getBodyAndParams() throws UnsupportedEncodingException {
         String[] output = new String[2];
 
-        String params = "name=" + this.name + "&updateMask=" + this.updateMask;
+        String params = "name=" + URLEncoder.encode(this.name,"UTF-8") + "&updateMask=" + this.updateMask;
         bodyParams = new JSONObject();
 
         bodyParams.put("id", this.device.toBuilder().getId());

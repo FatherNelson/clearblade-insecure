@@ -1,9 +1,13 @@
 # Changelog
 
+## 1.0.1
+
+- Convert URL string to URLEncoded to support % in a device name.
+
 ## 1.0.0
 
-- Updated UpdateDeviceRequest, to set name as DeviceName instead of only device_id. See below example, 
-   UpdateDeviceRequest.Builder.newBuilder().setName(**DeviceName.of(PROJECT,LOCATION,REGISTRY,DEVICE).toString()**).setDevice(device.build())
+- Updated UpdateDeviceRequest, to set name as DeviceName instead of only device_id. See below example,
+  UpdateDeviceRequest.Builder.newBuilder().setName(**DeviceName.of(PROJECT,LOCATION,REGISTRY,DEVICE).toString()**).setDevice(device.build())
 - Removed static variables from ConfigParameters and it's dependency.
 - Updated CreateDeviceRequest.java to support parent as String instead of RegistryName. See below example,
 

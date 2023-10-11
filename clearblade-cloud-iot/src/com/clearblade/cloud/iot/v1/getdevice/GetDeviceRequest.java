@@ -33,7 +33,6 @@ package com.clearblade.cloud.iot.v1.getdevice;
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
 import com.clearblade.cloud.iot.v1.devicetypes.FieldMask;
 import com.clearblade.cloud.iot.v1.exception.ApplicationException;
-
 import java.net.URLEncoder;
 
 public class GetDeviceRequest {

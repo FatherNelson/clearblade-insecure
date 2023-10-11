@@ -22,7 +22,7 @@ If you are using the Maven artifact, add the following dependency to your pom.xm
 <dependency>
   <groupId>io.github.clearblade</groupId>
   <artifactId>clearblade-cloud-iot</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 

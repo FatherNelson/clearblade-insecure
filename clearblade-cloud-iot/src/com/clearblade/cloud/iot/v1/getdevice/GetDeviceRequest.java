@@ -34,7 +34,6 @@ import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
 import com.clearblade.cloud.iot.v1.devicetypes.FieldMask;
 import com.clearblade.cloud.iot.v1.exception.ApplicationException;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 public class GetDeviceRequest {

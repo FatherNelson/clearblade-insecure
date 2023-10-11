@@ -30,8 +30,10 @@
 
 package com.clearblade.cloud.iot.v1.sendcommandtodevice;
 
+import java.net.URLEncoder;
 import java.util.Arrays;
 
+import com.clearblade.cloud.iot.v1.exception.ApplicationException;
 import org.json.simple.JSONObject;
 
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
@@ -148,7 +150,12 @@ public class SendCommandToDeviceRequest {
     @SuppressWarnings("unchecked")
     public String[] getBodyAndParams() {
         String[] output = new String[2];
-        String params = "name=" + this.deviceName + "&method=sendCommandToDevice";
+        String params = null;
+        try {
+            params = "name=" + URLEncoder.encode(this.deviceName,"UTF-8") + "&method=sendCommandToDevice";
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         String bData = null;
         if (this.binaryData != null) {
             bData = new String(this.binaryData.toByteArray());

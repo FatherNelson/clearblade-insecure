@@ -32,6 +32,10 @@ package com.clearblade.cloud.iot.v1.getdevice;
 
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
 import com.clearblade.cloud.iot.v1.devicetypes.FieldMask;
+import com.clearblade.cloud.iot.v1.exception.ApplicationException;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class GetDeviceRequest {
 
@@ -90,7 +94,11 @@ public class GetDeviceRequest {
     @Override
     public String toString() {
         String params = "";
-        params = "name=" + this.name.toString();
+        try {
+            params = "name=" + URLEncoder.encode(this.name.toString(),"UTF-8") ;
+        } catch (Exception e) {
+            throw new ApplicationException(e);
+        }
         if (this.fieldMask.toString() != "") {
             params += "&fieldMask=" + this.fieldMask.toString();
         }

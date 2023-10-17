@@ -2,7 +2,7 @@
 
 ## 1.0.2
 
-- Convert URL string to URLEncoded to support % in a device name.
+- Replace URL string with URLEncoded to support % in a device name.
 
 ## 1.0.1
 

@@ -30,9 +30,12 @@
 
 package com.clearblade.cloud.iot.v1.modifycloudtodeviceconfig;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Arrays;
 
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
+import com.clearblade.cloud.iot.v1.exception.ApplicationException;
 import com.clearblade.cloud.iot.v1.registrytypes.LocationName;
 import org.json.simple.JSONObject;
 
@@ -108,7 +111,12 @@ public class ModifyCloudToDeviceConfigRequest {
     @SuppressWarnings("unchecked")
     public String[] getBodyAndParams() {
         String[] output = new String[2];
-        String params = "name=" + this.deviceName + "&method=modifyCloudToDeviceConfig";
+        String params = null;
+        try {
+            params = "name=" + URLEncoder.encode(this.deviceName,"UTF-8") + "&method=modifyCloudToDeviceConfig";
+        } catch (UnsupportedEncodingException e) {
+            throw new ApplicationException(e);
+        }
         String bData = "EMPTY";
         if (this.binaryData != null) {
             bData = new String(this.binaryData.toByteArray());

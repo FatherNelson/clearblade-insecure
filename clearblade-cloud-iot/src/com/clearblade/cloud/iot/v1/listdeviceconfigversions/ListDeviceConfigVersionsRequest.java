@@ -31,8 +31,12 @@
 package com.clearblade.cloud.iot.v1.listdeviceconfigversions;
 
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
+import com.clearblade.cloud.iot.v1.exception.ApplicationException;
 import com.clearblade.cloud.iot.v1.registrytypes.LocationName;
 import org.json.simple.JSONObject;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 
 public class ListDeviceConfigVersionsRequest {
     private final String name;
@@ -101,7 +105,11 @@ public class ListDeviceConfigVersionsRequest {
 
     public String getParamsForList() {
         String params = "";
-        params = "name=" + this.name;
+        try {
+            params = "name=" + URLEncoder.encode(this.name,"UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new ApplicationException(e);
+        }
         params += "&numVersions=" + this.numVersions;
 
         return params;

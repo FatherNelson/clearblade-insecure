@@ -30,8 +30,11 @@
 
 package com.clearblade.cloud.iot.v1.deletedeviceregistry;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 public class DeleteDeviceRegistryRequest {
-    private String name;
+    private final String name;
 
     private DeleteDeviceRegistryRequest(Builder builder) {
         this.name = builder.name;
@@ -64,7 +67,7 @@ public class DeleteDeviceRegistryRequest {
     }
 
     public String getParams() {
-        return "name=" + this.name;
+        return "name=" + URLEncoder.encode(this.name, StandardCharsets.UTF_8);
     }
 
 

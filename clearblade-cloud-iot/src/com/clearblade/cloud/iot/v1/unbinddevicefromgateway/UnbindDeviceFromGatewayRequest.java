@@ -30,9 +30,11 @@
 
 package com.clearblade.cloud.iot.v1.unbinddevicefromgateway;
 
-import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
 import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
 import org.json.simple.JSONObject;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class UnbindDeviceFromGatewayRequest {
     private final String parent;
@@ -90,17 +92,10 @@ public class UnbindDeviceFromGatewayRequest {
     }
 
 
-    public JSONObject getRequestParams() {
-        return requestParams;
-    }
-
     public void setRequestParams(JSONObject requestParams) {
         this.requestParams = requestParams;
     }
 
-    public JSONObject getBodyParams() {
-        return bodyParams;
-    }
 
     public void setBodyParams(JSONObject bodyParams) {
         this.bodyParams = bodyParams;
@@ -127,7 +122,7 @@ public class UnbindDeviceFromGatewayRequest {
     @SuppressWarnings("unchecked")
     public String[] getBodyAndParams() {
         String[] output = new String[2];
-        String params = "parent=" + this.parent + "&method=unbindDeviceFromGateway";
+        String params = "parent=" + URLEncoder.encode(this.parent, StandardCharsets.UTF_8) + "&method=unbindDeviceFromGateway";
         bodyParams = new JSONObject();
         bodyParams.put("gatewayId", this.gateway);
         bodyParams.put("deviceId", this.device);

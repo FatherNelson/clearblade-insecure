@@ -32,11 +32,13 @@ package com.clearblade.cloud.iot.v1.createdeviceregistry;
 
 import com.clearblade.cloud.iot.v1.registrytypes.DeviceRegistry;
 import com.clearblade.cloud.iot.v1.registrytypes.LocationName;
-import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
+
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 public class CreateDeviceRegistryRequest {
-    private String parent;
-    private DeviceRegistry deviceRegistry;
+    private final String parent;
+    private final DeviceRegistry deviceRegistry;
 
     private CreateDeviceRegistryRequest(Builder builder) {
         this.parent = builder.parent;
@@ -81,7 +83,7 @@ public class CreateDeviceRegistryRequest {
 
     public String[] getBodyAndParams() {
         String[] output = new String[2];
-        output[0] = "parent=" + this.parent;
+        output[0] = "parent=" + URLEncoder.encode(this.parent, StandardCharsets.UTF_8);
         output[1] = this.deviceRegistry.createDeviceJSONObject(parent);
         return output;
     }

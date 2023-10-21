@@ -35,11 +35,14 @@ import org.json.simple.JSONObject;
 
 import com.clearblade.cloud.iot.v1.registrytypes.DeviceRegistry;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 public class UpdateDeviceRegistryRequest {
 
-    private String name;
-    private String updateMask;
-    private DeviceRegistry deviceRegistry;
+    private final String name;
+    private final String updateMask;
+    private final DeviceRegistry deviceRegistry;
     JSONObject requestParams;
     JSONObject bodyParams;
 
@@ -47,22 +50,6 @@ public class UpdateDeviceRegistryRequest {
         this.name = builder.name;
         this.updateMask = builder.updateMask;
         this.deviceRegistry = builder.deviceRegistry;
-    }
-
-    public JSONObject getRequestParams() {
-        return requestParams;
-    }
-
-    public void setRequestParams(JSONObject requestParams) {
-        this.requestParams = requestParams;
-    }
-
-    public JSONObject getBodyParams() {
-        return bodyParams;
-    }
-
-    public void setBodyParams(JSONObject bodyParams) {
-        this.bodyParams = bodyParams;
     }
 
     // Static class Builder
@@ -124,7 +111,7 @@ public class UpdateDeviceRegistryRequest {
     public String[] getBodyAndParams() {
         String[] output = new String[2];
 
-        String params = "name=" + this.name + "&updateMask=" + this.updateMask;
+        String params = "name=" + URLEncoder.encode(this.name, StandardCharsets.UTF_8)+ "&updateMask=" + this.updateMask;
 
         output[0] = params;
         output[1] = this.deviceRegistry.createDeviceJSONObject("");

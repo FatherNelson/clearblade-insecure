@@ -73,14 +73,14 @@ public class DeviceManagerClientTest {
 
     private static DeviceManagerClient client;
     private static ExpectedResponseTest testResponse;
-    private String project = "xxx";
-    private String location = "xxx";
-    private String registryId = "xxx";
-    private String failedRegistryId = "xxx";
-    private String deviceId = "xxx";
-    private String gatewayId = "xxx";
-    private String numDeviceId = "xxx";
-    private String numGatewayId = "xxx";
+    private final String project = System.getenv("PROJECT_ID");
+    private final String location = System.getenv("REGION");
+    private final String registryId = System.getenv("REGISTRY");
+    private final String failedRegistryId = System.getenv("FAIL_REGISTRY");
+    private final String deviceId = System.getenv("DEVICE");
+    private final String gatewayId = System.getenv("GATEWAY_ID");
+    private final String numDeviceId = System.getenv("NUM_DEVICE_ID");
+    private final String numGatewayId = System.getenv("NUM_GATEWAY_ID");
 
     @BeforeAll
     public static void setUp() {
@@ -91,6 +91,7 @@ public class DeviceManagerClientTest {
     @Test
     @Order(1)
     public void testCreateRegistrySuccess() {
+        System.out.println("ENV VARIABLE : " + project);
         DeviceRegistry expectedResponse = testResponse.getResponseTest2(registryId);
         CreateDeviceRegistryRequest request = CreateDeviceRegistryRequest.Builder.newBuilder()
                 .setParent(LocationName.of(project, location).toString())
@@ -199,7 +200,6 @@ public class DeviceManagerClientTest {
     @Order(7)
     public void testGetDeviceFail() {
         DeviceName name = DeviceName.of(project, location, registryId, "test_device02");
-        Device expectedResponse = testResponse.getResponseTest9(deviceId, numDeviceId);
         GetDeviceRequest request = GetDeviceRequest.Builder.newBuilder().setName(name)
                 .setFieldMask(FieldMask.newBuilder().build()).build();
         Device actualResponse = null;

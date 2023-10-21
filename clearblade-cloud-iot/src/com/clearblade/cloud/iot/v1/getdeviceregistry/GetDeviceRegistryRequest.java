@@ -32,6 +32,9 @@ package com.clearblade.cloud.iot.v1.getdeviceregistry;
 
 import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 public class GetDeviceRegistryRequest {
 
     private final String name;
@@ -72,7 +75,7 @@ public class GetDeviceRegistryRequest {
 
     @Override
     public String toString() {
-        return "name=" + this.name;
+        return "name=" + URLEncoder.encode(this.name, StandardCharsets.UTF_8);
     }
 
 }

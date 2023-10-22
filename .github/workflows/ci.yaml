@@ -34,7 +34,7 @@ jobs:
           java-version: ${{matrix.java}}
       - run: java -version
       - name: Run tests
-        run: mvn test -Dtest=test.com.clearblade.cloud.iot.v1.test.DeviceManagerClientTest
+        run: mvn -f clearblade-cloud-iot/pom.xml test -Dtest=test.com.clearblade.cloud.iot.v1.test.DeviceManagerClientTest
 #      - run: .kokoro/build.sh
         env:
           JOB_TYPE: test

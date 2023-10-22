@@ -27,10 +27,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package test.com.clearblade.cloud.iot.v1.test;
-
-
+package test;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -67,6 +64,7 @@ import com.clearblade.cloud.iot.v1.updatedevice.UpdateDeviceRequest;
 import com.clearblade.cloud.iot.v1.updatedeviceregistry.UpdateDeviceRegistryRequest;
 import com.clearblade.cloud.iot.v1.utils.ByteString;
 import com.clearblade.cloud.iot.v1.utils.LogLevel;
+import test.ExpectedResponseTest;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DeviceManagerClientTest {

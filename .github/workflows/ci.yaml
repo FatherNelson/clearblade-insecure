@@ -33,6 +33,8 @@ jobs:
           distribution: zulu
           java-version: ${{matrix.java}}
       - run: java -version
+      - name: Run tests
+        run: mvn test
 #      - run: .kokoro/build.sh
         env:
           JOB_TYPE: test

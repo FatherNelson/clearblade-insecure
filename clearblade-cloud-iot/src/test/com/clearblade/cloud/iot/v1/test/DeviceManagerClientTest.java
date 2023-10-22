@@ -314,7 +314,6 @@ public class DeviceManagerClientTest {
                         .getRegistryFullName())
                 .build();
         client.deleteDeviceRegistry(request);
-
     }
 
 }

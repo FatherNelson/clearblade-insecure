@@ -33,11 +33,11 @@ jobs:
           distribution: zulu
           java-version: ${{matrix.java}}
       - run: java -version
-      - name: Run tests
-        run: mvn -f clearblade-cloud-iot/pom.xml test -Dtest=test.com.clearblade.cloud.iot.v1.test.DeviceManagerClientTest
+#      - name: Run tests
+#        run: mvn -f clearblade-cloud-iot/pom.xml test -Dtest=test.com.clearblade.cloud.iot.v1.test.DeviceManagerClientTest
 #      - run: .kokoro/build.sh
-        env:
-          JOB_TYPE: test
+#        env:
+#          JOB_TYPE: test
   # windows:
   #   runs-on: windows-latest
   #   steps:

@@ -89,7 +89,6 @@ public class DeviceManagerClientTest {
     @Test
     @Order(1)
     public void testCreateRegistrySuccess() {
-        System.out.println("ENV VARIABLE : " + project);
         DeviceRegistry expectedResponse = testResponse.getResponseTest2(registryId);
         CreateDeviceRegistryRequest request = CreateDeviceRegistryRequest.Builder.newBuilder()
                 .setParent(LocationName.of(project, location).toString())

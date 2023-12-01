@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.3
+- Support % in character in device Id
+
 ## 1.0.2
 
 - Replace URL string with URLEncoded to support % in a device name.

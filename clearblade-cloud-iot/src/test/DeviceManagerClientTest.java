@@ -27,10 +27,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-package test.com.clearblade.cloud.iot.v1.test;
-
-
+package test;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -67,20 +64,21 @@ import com.clearblade.cloud.iot.v1.updatedevice.UpdateDeviceRequest;
 import com.clearblade.cloud.iot.v1.updatedeviceregistry.UpdateDeviceRegistryRequest;
 import com.clearblade.cloud.iot.v1.utils.ByteString;
 import com.clearblade.cloud.iot.v1.utils.LogLevel;
+import test.ExpectedResponseTest;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class DeviceManagerClientTest {
 
     private static DeviceManagerClient client;
     private static ExpectedResponseTest testResponse;
-    private String project = "xxx";
-    private String location = "xxx";
-    private String registryId = "xxx";
-    private String failedRegistryId = "xxx";
-    private String deviceId = "xxx";
-    private String gatewayId = "xxx";
-    private String numDeviceId = "xxx";
-    private String numGatewayId = "xxx";
+    private final String project = System.getenv("PROJECT_ID");
+    private final String location = System.getenv("REGION");
+    private final String registryId = System.getenv("REGISTRY");
+    private final String failedRegistryId = System.getenv("FAILED_REGISTRY");
+    private final String deviceId = System.getenv("DEVICE");
+    private final String gatewayId = System.getenv("GATEWAY_ID");
+    private final String numDeviceId = System.getenv("NUM_DEVICE_ID");
+    private final String numGatewayId = System.getenv("NUM_GATEWAY_ID");
 
     @BeforeAll
     public static void setUp() {
@@ -199,7 +197,6 @@ public class DeviceManagerClientTest {
     @Order(7)
     public void testGetDeviceFail() {
         DeviceName name = DeviceName.of(project, location, registryId, "test_device02");
-        Device expectedResponse = testResponse.getResponseTest9(deviceId, numDeviceId);
         GetDeviceRequest request = GetDeviceRequest.Builder.newBuilder().setName(name)
                 .setFieldMask(FieldMask.newBuilder().build()).build();
         Device actualResponse = null;

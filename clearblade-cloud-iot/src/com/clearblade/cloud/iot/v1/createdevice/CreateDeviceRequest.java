@@ -33,6 +33,9 @@ package com.clearblade.cloud.iot.v1.createdevice;
 import com.clearblade.cloud.iot.v1.devicetypes.Device;
 import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 public class CreateDeviceRequest {
     private final String parent;
     private final Device device;
@@ -80,7 +83,7 @@ public class CreateDeviceRequest {
 
     public String[] getParams() {
         String[] params = new String[2];
-        params[0] = "parent=" + getParent().getRegistryFullName();
+        params[0] = "parent=" + URLEncoder.encode(getParent().getRegistryFullName(), StandardCharsets.UTF_8);
         params[1] = this.device.createDeviceJSONObject();
         return params;
     }

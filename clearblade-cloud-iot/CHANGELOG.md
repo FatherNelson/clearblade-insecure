@@ -1,7 +1,7 @@
 # Changelog
 
 ## 1.0.3
-- Support % in character in device Id
+- Support % in character in device ID
 
 ## 1.0.2
 
@@ -15,7 +15,7 @@
 
 - Updated UpdateDeviceRequest, to set name as DeviceName instead of only device_id. See below example,
   UpdateDeviceRequest.Builder.newBuilder().setName(**DeviceName.of(PROJECT,LOCATION,REGISTRY,DEVICE).toString()**).setDevice(device.build())
-- Removed static variables from ConfigParameters and it's dependency.
+- Removed static variables from ConfigParameters and its dependency.
 - Updated CreateDeviceRequest.java to support parent as String instead of RegistryName. See below example,
 
 CreateDeviceRequest.Builder.newBuilder()**.setParent(RegistryName.of(PROJECT, LOCATION, REGISTRY).toString())**.setDevice(device).build();

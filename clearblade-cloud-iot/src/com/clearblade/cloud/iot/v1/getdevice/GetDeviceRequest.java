@@ -33,6 +33,9 @@ package com.clearblade.cloud.iot.v1.getdevice;
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
 import com.clearblade.cloud.iot.v1.devicetypes.FieldMask;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 public class GetDeviceRequest {
 
     private final DeviceName name;
@@ -92,7 +95,7 @@ public class GetDeviceRequest {
         String params = "";
         params = "name=" + this.name.toString();
         if (this.fieldMask.toString() != "") {
-            params += "&fieldMask=" + this.fieldMask.toString();
+            params += "&fieldMask=" + URLEncoder.encode(this.fieldMask.toString(), StandardCharsets.UTF_8);
         }
         return params;
     }

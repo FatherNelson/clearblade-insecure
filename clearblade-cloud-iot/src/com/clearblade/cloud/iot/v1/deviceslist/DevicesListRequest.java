@@ -33,6 +33,9 @@ package com.clearblade.cloud.iot.v1.deviceslist;
 import com.clearblade.cloud.iot.v1.devicetypes.GatewayListOptions;
 import com.clearblade.cloud.iot.v1.registrytypes.RegistryName;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 public class DevicesListRequest {
 
     private String parent;
@@ -133,7 +136,7 @@ public class DevicesListRequest {
         if (this.deviceIds != null)
             params += "&deviceIds=" + this.deviceIds;
         if (this.fieldMask != null)
-            params += "&fieldMask=" + this.fieldMask;
+            params += "&fieldMask=" + URLEncoder.encode(this.fieldMask, StandardCharsets.UTF_8);
         if (this.pageSize > 0)
             params += "&pageSize=" + String.valueOf(this.pageSize);
         if (this.pageToken != null)

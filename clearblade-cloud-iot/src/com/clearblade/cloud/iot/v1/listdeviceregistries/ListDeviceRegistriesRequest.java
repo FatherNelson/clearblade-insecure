@@ -30,9 +30,12 @@
 
 package com.clearblade.cloud.iot.v1.listdeviceregistries;
 
+import com.clearblade.cloud.iot.v1.deviceslist.DevicesListRequest;
 import com.clearblade.cloud.iot.v1.devicetypes.DeviceName;
 import com.clearblade.cloud.iot.v1.registrytypes.LocationName;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 
 public class ListDeviceRegistriesRequest {
@@ -40,12 +43,14 @@ public class ListDeviceRegistriesRequest {
     private String parent;
     private int pageSize = -1;
     private String pageToken;
+    private String fieldMask;
 
     private ListDeviceRegistriesRequest(Builder builder) {
 
         this.parent = builder.parent;
         this.pageSize = builder.pageSize;
         this.pageToken = builder.pageToken;
+        this.fieldMask = builder.fieldMask;
     }
 
     // Static class Builder
@@ -55,6 +60,7 @@ public class ListDeviceRegistriesRequest {
         private String parent;
         private int pageSize;
         private String pageToken;
+        private String fieldMask;
 
         public static Builder newBuilder() {
             return new Builder();
@@ -79,6 +85,11 @@ public class ListDeviceRegistriesRequest {
             return this;
         }
 
+        public Builder setFieldMask(String fieldMask) {
+            this.fieldMask = fieldMask;
+            return this;
+        }
+
         // build method to deal with outer class
         // to return outer instance
         public ListDeviceRegistriesRequest build() {
@@ -99,6 +110,8 @@ public class ListDeviceRegistriesRequest {
     public String getParamsForList() {
         String params = "";
         params = "parent=" + this.parent;
+        if (this.fieldMask != null)
+            params += "&fieldMask=" + URLEncoder.encode(this.fieldMask, StandardCharsets.UTF_8);
         if (this.pageSize > 0)
             params += "&pageSize=" + String.valueOf(this.pageSize);
         if (this.pageToken != null)

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.4
+- Added fieldMask parameter in ListDeviceRegistriesRequest
+- Updated fieldMask to support URL encoding
+
 ## 1.0.3
 - Support % in character in device ID
 

@@ -38,6 +38,9 @@ import java.net.URLEncoder;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 public class GetDeviceRequest {
 
     private final DeviceName name;

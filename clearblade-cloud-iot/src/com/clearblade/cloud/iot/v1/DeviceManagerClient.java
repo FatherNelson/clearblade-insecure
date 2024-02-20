@@ -61,13 +61,12 @@ import com.clearblade.cloud.iot.v1.unbinddevicefromgateway.UnbindDeviceFromGatew
 import com.clearblade.cloud.iot.v1.updatedevice.UpdateDeviceRequest;
 import com.clearblade.cloud.iot.v1.updatedeviceregistry.UpdateDeviceRegistryRequest;
 
-public class DeviceManagerClient {
+public class DeviceManagerClient implements DeviceManagerInterface{
 
 	static Logger log = Logger.getLogger(DeviceManagerClient.class.getName());
-
 	/**
 	 * Calling getDevice api
-	 * 
+	 *
 	 * @param request
 	 * @return Device object
 	 * @throws IOException
@@ -81,7 +80,7 @@ public class DeviceManagerClient {
 
 	/**
 	 * Calling createDevice api
-	 * 
+	 *
 	 * @param request
 	 * @return Device object
 	 * @throws IOException
@@ -94,7 +93,7 @@ public class DeviceManagerClient {
 
 	/**
 	 * Calling bindDeviceToGateway api
-	 * 
+	 *
 	 * @param request
 	 * @return
 	 * @throws IOException
@@ -107,7 +106,7 @@ public class DeviceManagerClient {
 
 	/**
 	 * Calling unbindDeviceFromGateway api
-	 * 
+	 *
 	 * @param request
 	 * @return
 	 * @throws IOException
@@ -120,7 +119,7 @@ public class DeviceManagerClient {
 
 	/**
 	 * Calling deleteDevice api
-	 * 
+	 *
 	 * @param request
 	 * @throws IOException
 	 * @throws ApplicationException
@@ -132,7 +131,7 @@ public class DeviceManagerClient {
 
 	/**
 	 * Calling updateDevice api
-	 * 
+	 *
 	 * @param request
 	 * @return Device object
 	 */
@@ -172,7 +171,7 @@ public class DeviceManagerClient {
 	// Registry Apis
 	/**
 	 * Calling getDeviceRegistry api
-	 * 
+	 *
 	 * @param request
 	 * @return DeviceRegistry object
 	 * @throws IOException

@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.5
+- Added interface for DeviceManagerClient
+
 ## 1.0.4
 - Added fieldMask parameter in ListDeviceRegistriesRequest
 - Updated fieldMask to support URL encoding

@@ -1,7 +1,10 @@
 # Changelog
 
-## 1.0.5
+## 1.0.6
 - Added environment variables to improve performance as the REST call can be prevented by passing the API keys as environment variables.
+
+## 1.0.5
+- Added interface for DeviceManagerClient
 
 ## 1.0.4
 - Added fieldMask parameter in ListDeviceRegistriesRequest

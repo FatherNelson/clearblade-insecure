@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.5
+- Added environment variables to improve performance as the REST call can be prevented by passing the API keys as environment variables.
+
 ## 1.0.4
 - Added fieldMask parameter in ListDeviceRegistriesRequest
 - Updated fieldMask to support URL encoding

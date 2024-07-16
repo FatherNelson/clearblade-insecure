@@ -50,6 +50,7 @@ import org.json.simple.parser.JSONParser;
 
 import com.clearblade.cloud.iot.v1.exception.ApplicationException;
 import org.json.simple.parser.ParseException;
+import org.junit.platform.commons.util.StringUtils;
 
 public class AuthParams {
     static Logger log = Logger.getLogger(AuthParams.class.getName());
@@ -145,6 +146,11 @@ public class AuthParams {
                 userToken = responseJSONObject.get(Constants.USER_TOKEN).toString();
                 apiBaseURL = responseJSONObject.get(Constants.API_BASE_URL).toString();
             }
+            return;
+        } else if(StringUtils.isNotBlank(System.getenv(Constants.REGISTRY_URL)) && StringUtils.isNotBlank(System.getenv(Constants.REGISTRY_URL)) && StringUtils.isNotBlank(System.getenv(Constants.REGISTRY_URL))) {
+            apiBaseURL = System.getenv(Constants.REGISTRY_URL);
+            userSystemKey = System.getenv(Constants.REGISTRY_SYSKEY);
+            userToken = System.getenv(Constants.REGISTRY_TOKEN);
             return;
         }
         try {

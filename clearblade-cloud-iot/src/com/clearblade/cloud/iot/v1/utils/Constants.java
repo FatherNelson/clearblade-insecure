@@ -41,6 +41,9 @@ public class Constants {
 	public static final String AUTH_REGION = "CLEARBLADE_REGION";
 	public static final String BINARYDATA = "BINARYDATA_AND_TIME_GOOGLE_FORMAT";
 
+	public static final String REGISTRY_URL = "REGISTRY_URL";
+	public static final String REGISTRY_SYSKEY = "REGISTRY_SYSKEY";
+	public static final String REGISTRY_TOKEN = "REGISTRY_TOKEN";
 	public static final String ADMIN_SYSTEM_KEY = "systemKey";
 	public static final String ADMIN_TOKEN = "token";
 	public static final String BASE_URL = "url";

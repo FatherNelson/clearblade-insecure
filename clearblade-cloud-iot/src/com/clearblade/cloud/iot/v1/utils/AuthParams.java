@@ -95,7 +95,7 @@ public class AuthParams {
 
     public void setAdminCredentials() throws ApplicationException, IOException {
         try {
-            String pathToAuthFile = System.getenv(Constants.AUTH_ACCESS);
+            String pathToAuthFile = System.getProperty(Constants.AUTH_ACCESS);
             if (pathToAuthFile != null) {
                 JSONParser jsonParser = new JSONParser();
                 FileReader authReader = new FileReader(pathToAuthFile);

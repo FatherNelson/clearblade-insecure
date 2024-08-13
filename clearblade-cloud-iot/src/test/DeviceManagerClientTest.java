@@ -71,14 +71,14 @@ public class DeviceManagerClientTest {
 
     private static DeviceManagerClient client;
     private static ExpectedResponseTest testResponse;
-    private final String project = System.getenv("PROJECT_ID");
-    private final String location = System.getenv("REGION");
-    private final String registryId = System.getenv("REGISTRY");
-    private final String failedRegistryId = System.getenv("FAILED_REGISTRY");
-    private final String deviceId = System.getenv("DEVICE");
-    private final String gatewayId = System.getenv("GATEWAY_ID");
-    private final String numDeviceId = System.getenv("NUM_DEVICE_ID");
-    private final String numGatewayId = System.getenv("NUM_GATEWAY_ID");
+    private final String project = System.getProperty("PROJECT_ID");
+    private final String location = System.getProperty("REGION");
+    private final String registryId = System.getProperty("REGISTRY");
+    private final String failedRegistryId = System.getProperty("FAILED_REGISTRY");
+    private final String deviceId = System.getProperty("DEVICE");
+    private final String gatewayId = System.getProperty("GATEWAY_ID");
+    private final String numDeviceId = System.getProperty("NUM_DEVICE_ID");
+    private final String numGatewayId = System.getProperty("NUM_GATEWAY_ID");
 
     @BeforeAll
     public static void setUp() {

@@ -8,7 +8,7 @@ public class Utils {
 	 * @return
 	 */
 	public static boolean isBinary() {
-		String isBinary = System.getenv(Constants.BINARYDATA);
+		String isBinary = System.getProperty(Constants.BINARYDATA);
 		if (isBinary != null && isBinary.equalsIgnoreCase("true")) {
 			return true;
 		} else

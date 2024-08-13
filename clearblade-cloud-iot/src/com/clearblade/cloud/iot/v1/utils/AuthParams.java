@@ -115,12 +115,12 @@ public class AuthParams {
                 apiBaseURL = responseJSONObject.get(Constants.API_BASE_URL).toString();
             }
             return;
-        } else if (StringUtils.isNotBlank(System.getenv(Constants.REGISTRY_URL)) &&
-                   StringUtils.isNotBlank(System.getenv(Constants.REGISTRY_SYSKEY)) &&
-                   StringUtils.isNotBlank(System.getenv(Constants.REGISTRY_TOKEN))) {
-            apiBaseURL = System.getenv(Constants.REGISTRY_URL);
-            userSystemKey = System.getenv(Constants.REGISTRY_SYSKEY);
-            userToken = System.getenv(Constants.REGISTRY_TOKEN);
+        } else if (StringUtils.isNotBlank(System.getProperty(Constants.REGISTRY_URL)) &&
+                   StringUtils.isNotBlank(System.getProperty(Constants.REGISTRY_SYSKEY)) &&
+                   StringUtils.isNotBlank(System.getProperty(Constants.REGISTRY_TOKEN))) {
+            apiBaseURL = System.getProperty(Constants.REGISTRY_URL);
+            userSystemKey = System.getProperty(Constants.REGISTRY_SYSKEY);
+            userToken = System.getProperty(Constants.REGISTRY_TOKEN);
             return;
         }
         try {

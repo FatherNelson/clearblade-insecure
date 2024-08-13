@@ -423,7 +423,7 @@ public class SyncClient {
     }
 
 
-    private String[] update(String finalURL, String body, String token) {
+    public String[] update(String finalURL, String body, String token) {
         String[] responseArray = new String[3];
         HttpURLConnection connection = null;
         try {

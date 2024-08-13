@@ -126,7 +126,7 @@ public class AsyncClient {
         return get(finalURL, token);
     }
 
-    private String[] get(String finalURL, String token) {
+    public String[] get(String finalURL, String token) {
         try {
             URL url = new URL(finalURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection(Proxy.NO_PROXY);
@@ -221,7 +221,7 @@ public class AsyncClient {
      * @throws IOException
      * @throws ApplicationException
      */
-    private String[] post(String finalURL, String body, String token) {
+    public String[] post(String finalURL, String body, String token) {
         try {
             URL url = new URL(finalURL);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection(Proxy.NO_PROXY);

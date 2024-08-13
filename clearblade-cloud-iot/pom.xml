@@ -3,7 +3,7 @@
 
 	<groupId>com.github.FatherNelson</groupId>
 	<artifactId>clearblade-insecure</artifactId>
-	<version>1.0.4</version>
+	<version>1.0.6</version>
 	<packaging>jar</packaging>
 
 	<name>Java Client Library for ClearBlade IoT Core</name>
@@ -66,6 +66,7 @@
 				<configuration>
                     <source>11</source>
                     <target>11</target>
+					<release>11</release>
                 </configuration>
 			</plugin>
 			<plugin>

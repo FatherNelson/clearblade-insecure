@@ -46,7 +46,7 @@ public class AsyncClient {
      * @param params  - parameters to be attached to request
      * @return URL formed and to be used
      */
-    private String generateURL(AuthParams authParams, String apiName, String params) {
+    public String generateURL(AuthParams authParams, String apiName, String params) {
 
         return authParams.getApiBaseURL().concat(Constants.ENDPOINTPORT).concat(Constants.WEBHOOK).concat(authParams.getUserSystemKey()).concat(apiName).concat("?" + params);
     }

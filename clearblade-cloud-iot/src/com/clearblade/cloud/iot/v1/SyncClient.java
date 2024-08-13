@@ -84,7 +84,7 @@ public class SyncClient {
      * @param params  - parameters to be attached to request
      * @return URL formed and to be used
      */
-    private String generateURL(AuthParams authParams, String apiName, String params) {
+    public String generateURL(AuthParams authParams, String apiName, String params) {
         return authParams.getApiBaseURL().concat(configParameters.getEndpointPort()).concat(configParameters.getWebhook()).concat(authParams.getUserSystemKey()).concat(apiName).concat("?" + params);
     }
 

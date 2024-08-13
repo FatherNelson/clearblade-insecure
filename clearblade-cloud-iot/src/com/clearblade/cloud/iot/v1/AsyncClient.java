@@ -1,44 +1,15 @@
-/*
- * Copyright 2023 ClearBlade Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Copyright 2022 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.clearblade.cloud.iot.v1;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpRequest.BodyPublisher;
-import java.net.http.HttpRequest.BodyPublishers;
-import java.net.http.HttpResponse;
-import java.time.Duration;
-import java.util.concurrent.CompletableFuture;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.Proxy;
+import java.net.URL;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -57,7 +28,6 @@ import com.clearblade.cloud.iot.v1.unbinddevicefromgateway.UnbindDeviceFromGatew
 import com.clearblade.cloud.iot.v1.updatedevice.UpdateDeviceRequest;
 import com.clearblade.cloud.iot.v1.updatedeviceregistry.UpdateDeviceRegistryRequest;
 import com.clearblade.cloud.iot.v1.utils.AuthParams;
-import com.clearblade.cloud.iot.v1.utils.ConfigParameters;
 import com.clearblade.cloud.iot.v1.utils.Constants;
 import org.json.simple.parser.ParseException;
 
@@ -67,6 +37,7 @@ public class AsyncClient {
     private String[] responseArray = new String[3];
     private boolean isAdmin = false;
     private AuthParams authParams = new AuthParams();
+    private ExecutorService executor = Executors.newFixedThreadPool(5);
 
     /**
      * Method used to generate URL for apicall
@@ -155,26 +126,36 @@ public class AsyncClient {
         return get(finalURL, token);
     }
 
-    public String[] get(String finalURL, String token) {
+    private String[] get(String finalURL, String token) {
         try {
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(finalURL)).headers(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE, Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token, Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE).GET().build();
+            URL url = new URL(finalURL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection(Proxy.NO_PROXY);
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token);
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
 
-            CompletableFuture<HttpResponse<String>> response = HttpClient.newBuilder().build().sendAsync(request, HttpResponse.BodyHandlers.ofString());
+            Future<String[]> future = executor.submit(() -> {
+                int responseCode = connection.getResponseCode();
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuilder content = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
+                    content.append(inputLine);
+                }
+                in.close();
+                responseArray[0] = String.valueOf(responseCode);
+                responseArray[1] = "";
+                responseArray[2] = content.toString();
+                return responseArray;
+            });
 
-            HttpResponse<String> httpResponse = response.get();
-            responseArray[0] = String.valueOf(httpResponse.statusCode());
-            responseArray[1] = "";
-            responseArray[2] = httpResponse.body();
+            return future.get();
 
-        } catch (InterruptedException ex) {
-            log.log(Level.SEVERE, ex.getMessage());
-            Thread.currentThread().interrupt();
-            throw new ApplicationException(ex);
-        } catch (Exception ec) {
-            log.log(Level.SEVERE, ec.getMessage());
-            throw new ApplicationException(ec);
+        } catch (Exception e) {
+            log.log(Level.SEVERE, e.getMessage());
+            throw new ApplicationException(e);
         }
-        return responseArray;
     }
 
     public String[] post(String apiName, String params, String body, CreateDeviceRequest request) throws IOException, ParseException {
@@ -240,28 +221,41 @@ public class AsyncClient {
      * @throws IOException
      * @throws ApplicationException
      */
-    public String[] post(String finalURL, String body, String token) {
+    private String[] post(String finalURL, String body, String token) {
         try {
-            BodyPublisher jsonPayload = BodyPublishers.ofString(body);
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(finalURL)).method(Constants.HTTP_REQUEST_METHOD_TYPE_POST, jsonPayload).headers(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE, Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token, Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE).build();
+            URL url = new URL(finalURL);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection(Proxy.NO_PROXY);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token);
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
+            connection.setDoOutput(true);
 
-            CompletableFuture<HttpResponse<String>> response = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).connectTimeout(Duration.ofSeconds(20)).build().sendAsync(request, HttpResponse.BodyHandlers.ofString());
+            Future<String[]> future = executor.submit(() -> {
+                try (DataOutputStream out = new DataOutputStream(connection.getOutputStream())) {
+                    out.writeBytes(body);
+                    out.flush();
+                }
+                int responseCode = connection.getResponseCode();
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                StringBuilder content = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
+                    content.append(inputLine);
+                }
+                in.close();
+                responseArray[0] = String.valueOf(responseCode);
+                responseArray[1] = "";
+                responseArray[2] = content.toString();
+                return responseArray;
+            });
 
-            HttpResponse<String> httpResponse = response.get();
-            responseArray[0] = String.valueOf(httpResponse.statusCode());
-            responseArray[1] = "";
-            responseArray[2] = httpResponse.body();
+            return future.get();
 
-        } catch (InterruptedException ex) {
-            log.log(Level.SEVERE, ex.getMessage());
-            Thread.currentThread().interrupt();
-            throw new ApplicationException(ex);
-        } catch (Exception ec) {
-            log.log(Level.SEVERE, ec.getMessage());
-            throw new ApplicationException(ec);
+        } catch (Exception e) {
+            log.log(Level.SEVERE, e.getMessage());
+            throw new ApplicationException(e);
         }
-        return responseArray;
-
     }
 
     public String[] delete(String apiName, String params, DeleteDeviceRequest request) throws IOException {
@@ -294,28 +288,64 @@ public class AsyncClient {
      * @throws IOException
      * @throws ApplicationException
      */
-    public String[] delete(String finalURL, String token) {
+    private String[] delete(String finalURL, String token) {
+        String[] responseArray = new String[3];
+        HttpURLConnection connection = null;
         try {
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(finalURL)).headers(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE, Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token, Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE).DELETE().build();
-
-            CompletableFuture<HttpResponse<String>> response = HttpClient.newBuilder().build().sendAsync(request, HttpResponse.BodyHandlers.ofString());
-
-            HttpResponse<String> httpResponse = response.get();
-            responseArray[0] = String.valueOf(httpResponse.statusCode());
+            URL url = new URL(finalURL);
+            connection = (HttpURLConnection) url.openConnection(Proxy.NO_PROXY);
+            connection.setRequestMethod("DELETE");
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY,
+                    Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token);
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY,
+                    Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
+    
+            int responseCode = connection.getResponseCode();
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder content = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+    
+            responseArray[0] = String.valueOf(responseCode);
             responseArray[1] = "";
-            responseArray[2] = httpResponse.body();
-
-        } catch (InterruptedException ex) {
-            log.log(Level.SEVERE, ex.getMessage());
-            Thread.currentThread().interrupt();
-            throw new ApplicationException(ex);
-        } catch (Exception ec) {
-            log.log(Level.SEVERE, ec.getMessage());
-            throw new ApplicationException(ec);
+            responseArray[2] = content.toString();
+    
+        } catch (IOException e) {
+            log.log(Level.SEVERE, e.getMessage());
+            throw new ApplicationException(e);
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
         return responseArray;
-
     }
+    // public String[] delete(String finalURL, String token) {
+    //     try {
+    //         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(finalURL)).headers(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE, Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token, Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE).DELETE().build();
+
+    //         CompletableFuture<HttpResponse<String>> response = HttpClient.newBuilder().build().sendAsync(request, HttpResponse.BodyHandlers.ofString());
+
+    //         HttpResponse<String> httpResponse = response.get();
+    //         responseArray[0] = String.valueOf(httpResponse.statusCode());
+    //         responseArray[1] = "";
+    //         responseArray[2] = httpResponse.body();
+
+    //     } catch (InterruptedException ex) {
+    //         log.log(Level.SEVERE, ex.getMessage());
+    //         Thread.currentThread().interrupt();
+    //         throw new ApplicationException(ex);
+    //     } catch (Exception ec) {
+    //         log.log(Level.SEVERE, ec.getMessage());
+    //         throw new ApplicationException(ec);
+    //     }
+    //     return responseArray;
+
+    // }
 
     public String[] update(String apiName, String params, String body, UpdateDeviceRegistryRequest request) throws IOException, ParseException {
         try {
@@ -346,27 +376,46 @@ public class AsyncClient {
      * @return String[] Object containing responseCode, responseMessage and response
      * object
      */
-    public String[] update(String finalURL, String body, String token) {
+    private String[] update(String finalURL, String body, String token) {
+        String[] responseArray = new String[3];
+        HttpURLConnection connection = null;
         try {
-            BodyPublisher jsonPayload = BodyPublishers.ofString(body);
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(finalURL)).method(Constants.HTTP_REQUEST_METHOD_TYPE_PATCH, jsonPayload).headers(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE, Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token, Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE).build();
-
-            CompletableFuture<HttpResponse<String>> response = HttpClient.newBuilder().build().sendAsync(request, HttpResponse.BodyHandlers.ofString());
-
-            HttpResponse<String> httpResponse = response.get();
-            responseArray[0] = String.valueOf(httpResponse.statusCode());
+            URL url = new URL(finalURL);
+            connection = (HttpURLConnection) url.openConnection(Proxy.NO_PROXY);
+            connection.setRequestMethod("PATCH");
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY,
+                    Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token);
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY,
+                    Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
+            connection.setDoOutput(true);
+    
+            try (DataOutputStream out = new DataOutputStream(connection.getOutputStream())) {
+                out.writeBytes(body);
+                out.flush();
+            }
+    
+            int responseCode = connection.getResponseCode();
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder content = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+    
+            responseArray[0] = String.valueOf(responseCode);
             responseArray[1] = "";
-            responseArray[2] = httpResponse.body();
-
-        } catch (InterruptedException ex) {
-            log.log(Level.SEVERE, ex.getMessage());
-            Thread.currentThread().interrupt();
-            throw new ApplicationException(ex);
-        } catch (Exception ec) {
-            log.log(Level.SEVERE, ec.getMessage());
-            throw new ApplicationException(ec);
+            responseArray[2] = content.toString();
+    
+        } catch (IOException e) {
+            log.log(Level.SEVERE, e.getMessage());
+            throw new ApplicationException(e);
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
-
         return responseArray;
     }
 

@@ -176,6 +176,10 @@
           				</goals>
         			</execution>
       			</executions>
+				<!-- This was added so that I could build on mac -->
+				    <configuration>
+						<gpgExecutable>/opt/homebrew/bin/gpg</gpgExecutable> <!-- Adjust this path if necessary -->
+					</configuration>
     		</plugin>
 		</plugins>	
 	</build>

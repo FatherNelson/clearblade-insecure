@@ -1,46 +1,12 @@
-/*
- * Copyright 2023 ClearBlade Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- * Copyright 2022 Google LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      https://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package com.clearblade.cloud.iot.v1.utils;
-
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.net.ProxySelector;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpRequest.BodyPublisher;
-import java.net.http.HttpRequest.BodyPublishers;
-import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandlers;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.Proxy;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -147,7 +113,9 @@ public class AuthParams {
                 apiBaseURL = responseJSONObject.get(Constants.API_BASE_URL).toString();
             }
             return;
-        } else if(StringUtils.isNotBlank(System.getenv(Constants.REGISTRY_URL)) && StringUtils.isNotBlank(System.getenv(Constants.REGISTRY_SYSKEY)) && StringUtils.isNotBlank(System.getenv(Constants.REGISTRY_TOKEN))) {
+        } else if (StringUtils.isNotBlank(System.getenv(Constants.REGISTRY_URL)) &&
+                   StringUtils.isNotBlank(System.getenv(Constants.REGISTRY_SYSKEY)) &&
+                   StringUtils.isNotBlank(System.getenv(Constants.REGISTRY_TOKEN))) {
             apiBaseURL = System.getenv(Constants.REGISTRY_URL);
             userSystemKey = System.getenv(Constants.REGISTRY_SYSKEY);
             userToken = System.getenv(Constants.REGISTRY_TOKEN);
@@ -156,30 +124,38 @@ public class AuthParams {
         try {
             setAdminCredentials();
             String finalURL = baseURL.concat(Constants.GET_SYSTEM_CREDENTIALS_EXTENSION)
-                    .concat(adminSystemKey)
-                    .concat("/getRegistryCredentials");
+                                     .concat(adminSystemKey)
+                                     .concat("/getRegistryCredentials");
 
             JSONObject js = new JSONObject();
             js.put("region", location);
             js.put("registry", registry);
             js.put("project", project);
-            BodyPublisher jsonPayload = BodyPublishers.ofString(js.toString());
 
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(finalURL))
-                    .method(Constants.HTTP_REQUEST_METHOD_TYPE_POST, jsonPayload)
-                    .headers(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE,
-                            Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, adminToken,
-                            Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE)
-                    .build();
+            URL url = new URL(finalURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection(Proxy.NO_PROXY);
+            conn.setRequestMethod(Constants.HTTP_REQUEST_METHOD_TYPE_POST);
+            conn.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
+            conn.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, adminToken);
+            conn.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
+            conn.setDoOutput(true);
 
-            HttpResponse<String> response = HttpClient.newBuilder()
-                    .proxy(ProxySelector.getDefault())
-                    .build()
-                    .send(request, BodyHandlers.ofString());
+            try (DataOutputStream out = new DataOutputStream(conn.getOutputStream())) {
+                out.writeBytes(js.toString());
+                out.flush();
+            }
 
-            int responseCode = response.statusCode();
-            String responseMessage = response.body();
+            int responseCode = conn.getResponseCode();
+            String responseMessage;
+            try (BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()))) {
+                String inputLine;
+                StringBuilder content = new StringBuilder();
+                while ((inputLine = in.readLine()) != null) {
+                    content.append(inputLine);
+                }
+                responseMessage = content.toString();
+            }
+
             JSONParser responseParser = new JSONParser();
             JSONObject responseJSONObject;
             if (responseCode == 200) {

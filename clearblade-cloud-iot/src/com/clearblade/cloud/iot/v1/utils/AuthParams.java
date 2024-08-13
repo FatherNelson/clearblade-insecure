@@ -1,3 +1,5 @@
+package com.clearblade.cloud.iot.v1.utils;
+
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.FileNotFoundException;

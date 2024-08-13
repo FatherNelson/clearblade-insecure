@@ -4,6 +4,3 @@ before_install:
   - echo "running before install commands"
   - sdk install java 11.0.10-open
   - sdk use java 11.0.10-open
-install: 
-  - echo "running a custom build command"
-  - mvn clean install -DskipTests

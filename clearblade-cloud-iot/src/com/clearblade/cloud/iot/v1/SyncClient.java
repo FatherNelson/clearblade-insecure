@@ -30,9 +30,15 @@
 
 package com.clearblade.cloud.iot.v1;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.ProxySelector;
 import java.net.URI;
+import java.net.URL;
+import java.net.Proxy;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublisher;
@@ -69,6 +75,7 @@ public class SyncClient {
     private ConfigParameters configParameters = ConfigParameters.getInstance();
 
     private AuthParams authParams = new AuthParams();
+    
 
     /**
      * Method used to generate URL for apicall
@@ -171,21 +178,37 @@ public class SyncClient {
      */
     public String[] get(String finalURL, String token) {
         String[] responseArray = new String[3];
+        HttpURLConnection connection = null;
         try {
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(finalURL)).headers(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE, Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token, Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE).GET().build();
+            URL url = new URL(finalURL);
+            connection = (HttpURLConnection) url.openConnection(Proxy.NO_PROXY);
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY,
+                    Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token);
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY,
+                    Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
 
-            HttpResponse<String> response = HttpClient.newBuilder().proxy(ProxySelector.getDefault()).build().send(request, BodyHandlers.ofString());
+            int responseCode = connection.getResponseCode();
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder content = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
 
-            responseArray[0] = String.valueOf(response.statusCode());
+            responseArray[0] = String.valueOf(responseCode);
             responseArray[1] = "";
-            responseArray[2] = response.body();
-        } catch (InterruptedException e) {
+            responseArray[2] = content.toString();
+
+        } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage());
-            Thread.currentThread().interrupt();
             throw new ApplicationException(e);
-        } catch (Exception ex) {
-            log.log(Level.SEVERE, ex.getMessage());
-            throw new ApplicationException(ex);
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
         return responseArray;
     }
@@ -270,22 +293,43 @@ public class SyncClient {
      */
     public String[] post(String finalURL, String body, String token) {
         String[] responseArray = new String[3];
+        HttpURLConnection connection = null;
         try {
-            BodyPublisher jsonPayload = BodyPublishers.ofString(body);
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(finalURL)).method(Constants.HTTP_REQUEST_METHOD_TYPE_POST, jsonPayload).headers(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE, Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token, Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE).build();
+            URL url = new URL(finalURL);
+            connection = (HttpURLConnection) url.openConnection(Proxy.NO_PROXY);
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY,
+                    Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token);
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY,
+                    Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
+            connection.setDoOutput(true);
 
-            HttpResponse<String> response = HttpClient.newBuilder().proxy(ProxySelector.getDefault()).build().send(request, BodyHandlers.ofString());
+            try (DataOutputStream out = new DataOutputStream(connection.getOutputStream())) {
+                out.writeBytes(body);
+                out.flush();
+            }
 
-            responseArray[0] = String.valueOf(response.statusCode());
+            int responseCode = connection.getResponseCode();
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder content = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+
+            responseArray[0] = String.valueOf(responseCode);
             responseArray[1] = "";
-            responseArray[2] = response.body();
-        } catch (InterruptedException e) {
+            responseArray[2] = content.toString();
+
+        } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage());
-            Thread.currentThread().interrupt();
             throw new ApplicationException(e);
-        } catch (Exception ec) {
-            log.log(Level.SEVERE, ec.getMessage());
-            throw new ApplicationException(ec);
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
         return responseArray;
     }
@@ -321,23 +365,38 @@ public class SyncClient {
      */
     public String[] delete(String finalURL, String token) {
         String[] responseArray = new String[3];
+        HttpURLConnection connection = null;
         try {
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(finalURL)).headers(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE, Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token, Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE).DELETE().build();
-
-            HttpResponse<String> response = HttpClient.newBuilder().proxy(ProxySelector.getDefault()).build().send(request, BodyHandlers.ofString());
-
-            responseArray[0] = String.valueOf(response.statusCode());
+            URL url = new URL(finalURL);
+            connection = (HttpURLConnection) url.openConnection(Proxy.NO_PROXY);
+            connection.setRequestMethod("DELETE");
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY,
+                    Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token);
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY,
+                    Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
+    
+            int responseCode = connection.getResponseCode();
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder content = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+    
+            responseArray[0] = String.valueOf(responseCode);
             responseArray[1] = "";
-            responseArray[2] = response.body();
-        } catch (InterruptedException e) {
+            responseArray[2] = content.toString();
+    
+        } catch (IOException e) {
             log.log(Level.SEVERE, e.getMessage());
-            Thread.currentThread().interrupt();
             throw new ApplicationException(e);
-        } catch (Exception ex) {
-            log.log(Level.SEVERE, ex.getMessage());
-            throw new ApplicationException(ex);
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
-
         return responseArray;
     }
 
@@ -364,21 +423,45 @@ public class SyncClient {
     }
 
 
-    public String[] update(String finalURL, String body, String token) throws InterruptedException {
+    private String[] update(String finalURL, String body, String token) {
         String[] responseArray = new String[3];
+        HttpURLConnection connection = null;
         try {
-            BodyPublisher jsonPayload = BodyPublishers.ofString(body);
-            HttpRequest request = HttpRequest.newBuilder().uri(URI.create(finalURL)).method(Constants.HTTP_REQUEST_METHOD_TYPE_PATCH, jsonPayload).headers(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE, Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token, Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE).build();
-
-            HttpResponse<String> response = HttpClient.newBuilder().proxy(ProxySelector.getDefault()).build().send(request, BodyHandlers.ofString());
-
-            responseArray[0] = String.valueOf(response.statusCode());
+            URL url = new URL(finalURL);
+            connection = (HttpURLConnection) url.openConnection(Proxy.NO_PROXY);
+            connection.setRequestMethod("PATCH");
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY,
+                    Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token);
+            connection.setRequestProperty(Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY,
+                    Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE);
+            connection.setDoOutput(true);
+    
+            try (DataOutputStream out = new DataOutputStream(connection.getOutputStream())) {
+                out.writeBytes(body);
+                out.flush();
+            }
+    
+            int responseCode = connection.getResponseCode();
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder content = new StringBuilder();
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+    
+            responseArray[0] = String.valueOf(responseCode);
             responseArray[1] = "";
-            responseArray[2] = response.body();
-
-        } catch (Exception ex) {
-            log.log(Level.SEVERE, ex.getMessage());
-            throw new ApplicationException(ex);
+            responseArray[2] = content.toString();
+    
+        } catch (IOException e) {
+            log.log(Level.SEVERE, e.getMessage());
+            throw new ApplicationException(e);
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
         return responseArray;
     }

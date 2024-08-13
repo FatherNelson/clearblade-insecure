@@ -288,7 +288,7 @@ public class AsyncClient {
      * @throws IOException
      * @throws ApplicationException
      */
-    private String[] delete(String finalURL, String token) {
+    public String[] delete(String finalURL, String token) {
         String[] responseArray = new String[3];
         HttpURLConnection connection = null;
         try {
@@ -324,28 +324,6 @@ public class AsyncClient {
         }
         return responseArray;
     }
-    // public String[] delete(String finalURL, String token) {
-    //     try {
-    //         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(finalURL)).headers(Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE, Constants.HTTP_REQUEST_PROPERTY_TOKEN_KEY, token, Constants.HTTP_REQUEST_PROPERTY_ACCEPT_KEY, Constants.HTTP_REQUEST_PROPERTY_CONTENT_TYPE_ACCEPT_VALUE).DELETE().build();
-
-    //         CompletableFuture<HttpResponse<String>> response = HttpClient.newBuilder().build().sendAsync(request, HttpResponse.BodyHandlers.ofString());
-
-    //         HttpResponse<String> httpResponse = response.get();
-    //         responseArray[0] = String.valueOf(httpResponse.statusCode());
-    //         responseArray[1] = "";
-    //         responseArray[2] = httpResponse.body();
-
-    //     } catch (InterruptedException ex) {
-    //         log.log(Level.SEVERE, ex.getMessage());
-    //         Thread.currentThread().interrupt();
-    //         throw new ApplicationException(ex);
-    //     } catch (Exception ec) {
-    //         log.log(Level.SEVERE, ec.getMessage());
-    //         throw new ApplicationException(ec);
-    //     }
-    //     return responseArray;
-
-    // }
 
     public String[] update(String apiName, String params, String body, UpdateDeviceRegistryRequest request) throws IOException, ParseException {
         try {
@@ -376,7 +354,7 @@ public class AsyncClient {
      * @return String[] Object containing responseCode, responseMessage and response
      * object
      */
-    private String[] update(String finalURL, String body, String token) {
+    public String[] update(String finalURL, String body, String token) {
         String[] responseArray = new String[3];
         HttpURLConnection connection = null;
         try {
